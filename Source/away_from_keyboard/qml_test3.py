@@ -42,15 +42,30 @@
 import os
 from pathlib import Path
 import sys
-from PySide6.QtCore import QTimer, QUrl
+from PySide6.QtCore import QTimer, QUrl, QObject, Signal, Slot
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQuick import QQuickView
+
+time_cnt = 0
+
+class PyLabel(QObject):
+    send_text = Signal(str)
+
+
+def time_out():
+    global time_cnt
+
+    time_cnt = time_cnt + 1
+    print(time_cnt)
+    label.send_text.emit(str(time_cnt))
+    
+
 
 if __name__ == '__main__':
     app = QGuiApplication(sys.argv)
 
     timer = QTimer()
-    timer.start(2000)
+    timer.start(1000)
 
     view = QQuickView()
     qml_file = "Source/away_from_keyboard/qml_test3.qml"
@@ -59,7 +74,13 @@ if __name__ == '__main__':
         sys.exit(-1)
     root = view.rootObject()
 
-    timer.timeout.connect(root.updateRotater)
+    #timer.timeout.connect(root.updateRotater)
+    #timer.timeout.connect(root.updateTime, text)
+
+    timer.timeout.connect(time_out)
+
+    label = PyLabel()
+    label.send_text.connect(root.updateTime)
 
     view.show()
     res = app.exec_()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtDesignStudio 2.1.0, 2021-05-08T12:46:32. -->
+<!-- Written by QtDesignStudio 2.1.0, 2021-05-09T02:00:57. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -112,6 +112,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/fonts/Roboto-Bold.ttf</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/fonts/Roboto-Bold.ttf</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/fonts/Roboto-Bold.ttf</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{ef859821-c119-452e-a7b6-7fa27bee280b}</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Script">D:\02_Personal_Projects\Away_From_Keyboard\Source\away_from_keyboard\fonts\Roboto-Bold.ttf</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
@@ -119,7 +120,83 @@
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/fonts</value>
    </valuemap>
-   <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">2</value>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.2">
+    <value type="bool" key="Analyzer.QmlProfiler.AggregateTraces">false</value>
+    <value type="bool" key="Analyzer.QmlProfiler.FlushEnabled">false</value>
+    <value type="uint" key="Analyzer.QmlProfiler.FlushInterval">1000</value>
+    <value type="QString" key="Analyzer.QmlProfiler.LastTraceFile"></value>
+    <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
+    <value type="int" key="PE.EnvironmentAspect.Base">2</value>
+    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/fonts/Roboto-Black.ttf</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/fonts/Roboto-Black.ttf</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/fonts/Roboto-Black.ttf</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">D:\02_Personal_Projects\Away_From_Keyboard\Source\away_from_keyboard\fonts\Roboto-Black.ttf</value>
+    <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/fonts</value>
+   </valuemap>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.3">
+    <value type="bool" key="Analyzer.QmlProfiler.AggregateTraces">false</value>
+    <value type="bool" key="Analyzer.QmlProfiler.FlushEnabled">false</value>
+    <value type="uint" key="Analyzer.QmlProfiler.FlushInterval">1000</value>
+    <value type="QString" key="Analyzer.QmlProfiler.LastTraceFile"></value>
+    <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
+    <value type="int" key="PE.EnvironmentAspect.Base">2</value>
+    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/menu.png</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/menu.png</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/menu.png</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">D:\02_Personal_Projects\Away_From_Keyboard\Source\away_from_keyboard\images\menu.png</value>
+    <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images</value>
+   </valuemap>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.4">
+    <value type="bool" key="Analyzer.QmlProfiler.AggregateTraces">false</value>
+    <value type="bool" key="Analyzer.QmlProfiler.FlushEnabled">false</value>
+    <value type="uint" key="Analyzer.QmlProfiler.FlushInterval">1000</value>
+    <value type="QString" key="Analyzer.QmlProfiler.LastTraceFile"></value>
+    <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
+    <value type="int" key="PE.EnvironmentAspect.Base">2</value>
+    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/menu_vertical.png</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/menu_vertical.png</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/menu_vertical.png</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">D:\02_Personal_Projects\Away_From_Keyboard\Source\away_from_keyboard\images\menu_vertical.png</value>
+    <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images</value>
+   </valuemap>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.5">
+    <value type="bool" key="Analyzer.QmlProfiler.AggregateTraces">false</value>
+    <value type="bool" key="Analyzer.QmlProfiler.FlushEnabled">false</value>
+    <value type="uint" key="Analyzer.QmlProfiler.FlushInterval">1000</value>
+    <value type="QString" key="Analyzer.QmlProfiler.LastTraceFile"></value>
+    <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
+    <valuelist type="QVariantList" key="CustomOutputParsers"/>
+    <value type="int" key="PE.EnvironmentAspect.Base">2</value>
+    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/close.png</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/close.png</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/close.png</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">D:\02_Personal_Projects\Away_From_Keyboard\Source\away_from_keyboard\images\close.png</value>
+    <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images</value>
+   </valuemap>
+   <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">6</value>
   </valuemap>
  </data>
  <data>

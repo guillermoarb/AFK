@@ -38,13 +38,22 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.0
+
+
+//More info https://wiki.qt.io/Qt_for_Python/Connecting_QML_Signals
+
+import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 Rectangle {
     id: page
 
     function updateRotater() {
         rotater.angle = rotater.angle + 45
+    }
+
+    function updateTime(text) {
+        activity_timer_lb.text = text
     }
 
     width: 500; height: 200
@@ -68,6 +77,23 @@ Rectangle {
                 }
             }
         }
+    }
+
+    Label {
+        id: activity_timer_lb
+        x: 8
+        y: 8
+        width: 145
+        height: 50
+        color: "#2e3440"
+        text: qsTr("01:23")
+        font.pixelSize: 50
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        font.weight: Font.Black
+        font.bold: false
+        styleColor: "#b62323"
+        font.family: "Roboto Black"
     }
 
 }
