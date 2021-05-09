@@ -94,6 +94,19 @@ Rectangle {
         font.bold: false
         styleColor: "#b62323"
         font.family: "Roboto Black"
-    }
+        
+        MouseArea {
+            id: labelMouseArea
+            objectName: "labelMouseArea"
+            anchors.fill: parent
+            onClicked: {
+                // once the "con" context has been declared,
+                // slots can be called like functions
+                con.outputInt(activity_timer_lb.text)
 
+            }
+        }
+
+
+    }
 }

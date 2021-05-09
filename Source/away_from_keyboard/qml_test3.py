@@ -52,11 +52,18 @@ class PyLabel(QObject):
     send_text = Signal(str)
 
 
+class Console(QObject):
+
+    @Slot(int)
+    def outputInt(self, val):
+        print(val)
+
+
 def time_out():
     global time_cnt
 
     time_cnt = time_cnt + 1
-    print(time_cnt)
+    #print(time_cnt)
     label.send_text.emit(str(time_cnt))
     
 
@@ -74,13 +81,19 @@ if __name__ == '__main__':
         sys.exit(-1)
     root = view.rootObject()
 
-    #timer.timeout.connect(root.updateRotater)
+    timer.timeout.connect(root.updateRotater)
     #timer.timeout.connect(root.updateTime, text)
 
     timer.timeout.connect(time_out)
 
     label = PyLabel()
     label.send_text.connect(root.updateTime)
+
+    con = Console()
+
+    # Expose the object to QML.
+    context = view.rootContext()
+    context.setContextProperty("con", con)
 
     view.show()
     res = app.exec_()
