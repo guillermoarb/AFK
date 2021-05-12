@@ -23,6 +23,34 @@ class Console(QObject):
         print(s)
 
 
+class Backend(QObject):
+
+    #Menu mouse area click event
+    @Slot()
+    def menu_ma_clicked(self):
+        print("Menu Clicked")
+        
+    # Task mouse area click event
+    @Slot(str)
+    def task_ma_clicked(self, text):
+        print(f"Task clicked, contains: {text}")
+
+    # Day timer mouse area click event
+    @Slot(str)
+    def day_timer_ma_clicked(self, text):
+        print(f"Day timer clicked, contains: {text}")
+
+    # Issue mouse area click event
+    @Slot(str)
+    def issue_ma_clicked(self, text):
+        print(f"Issue clicked, contains: {text}")
+
+    # Project mouse area click event
+    @Slot(str)
+    def project_ma_clicked(self, text):
+        print(f"Project mouse area clicked {text}")
+
+
 if __name__ == '__main__':
 
     #Create the app and QML engine
@@ -31,8 +59,11 @@ if __name__ == '__main__':
 
     #Get console context
     console = Console()
+    backend = Backend()
+    #This has to be in two lines, otherway it does not work
     context = engine.rootContext()
     context.setContextProperty("console", console)
+    context.setContextProperty("backend", backend)
 
     
     #Load UI

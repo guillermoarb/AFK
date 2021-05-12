@@ -18,6 +18,10 @@ Window {
         border.color: "#00000000"
         border.width: 1
         anchors.fill: parent
+        anchors.rightMargin: 0
+        anchors.bottomMargin: 0
+        anchors.leftMargin: 0
+        anchors.topMargin: 0
 
 
         Rectangle {
@@ -47,21 +51,30 @@ Window {
                 font.bold: false
                 styleColor: "#b62323"
                 font.family: "Roboto Black"
+                
+                MouseArea {
+                id: day_timer_ma
+                objectName: "day_timer_ma"
+                anchors.fill: parent
+                onClicked: {
+                    backend.day_timer_ma_clicked(day_timer_lb.text)
+                    }
+                }
             }
         }
 
         Rectangle {
             id: issue_rt
             height: 25
-            color: "#ffffff"
+            color: "#00000000"
             border.color: "#00000000"
-            border.width: 1
+            border.width: 2
             anchors.left: day_timer_rt.right
-            anchors.right: menu_im.left
+            anchors.right: menu_rt.left
             anchors.top: project_rt.bottom
             anchors.rightMargin: 10
+            anchors.topMargin: -2
             anchors.leftMargin: 10
-            anchors.topMargin: 0
 
             Label {
                 id: issue_lb
@@ -74,17 +87,27 @@ Window {
                 topPadding: 3
                 font.kerning: true
                 font.family: "Roboto"
+                
+                MouseArea {
+                id: issue_ma
+                objectName: "issue_ma"
+                anchors.fill: parent
+                onClicked: {
+                    backend.issue_ma_clicked(issue_lb.text)
+                    }
+                }
             }
         }
 
         Rectangle {
             id: project_rt
+            width: 100
             height: 25
-            color: "#ffffff"
+            color: "#00000000"
             border.color: "#00000000"
             border.width: 1
             anchors.left: day_timer_rt.right
-            anchors.right: menu_im.left
+            anchors.right: menu_rt.left
             anchors.top: parent.top
             anchors.rightMargin: 10
             anchors.leftMargin: 10
@@ -96,22 +119,30 @@ Window {
                 anchors.fill: parent
                 font.pixelSize: 15
                 verticalAlignment: Text.AlignBottom
-
                 font.family: "Roboto"
+                
+                MouseArea {
+                    id: project_ma
+                    anchors.fill: parent
+                objectName: "project_ma"
+                onClicked: {
+                    backend.project_ma_clicked(project_lb.text)
+                    }
+                }
             }
         }
 
         Rectangle {
             id: task_rt
             height: 20
-            color: "#ffffff"
+            color: "#00000000"
             border.color: "#00000000"
             anchors.left: parent.left
-            anchors.right: menu_im.left
+            anchors.right: menu_rt.left
             anchors.top: day_timer_rt.bottom
-            anchors.rightMargin: 10
             anchors.topMargin: 5
             anchors.leftMargin: 10
+            anchors.rightMargin: 10
 
             Label {
                 id: task_lb
@@ -121,6 +152,15 @@ Window {
                 verticalAlignment: Text.AlignVCenter
                 wrapMode: Text.WrapAnywhere
                 font.family: "Roboto"
+                
+                MouseArea {
+                id: task_ma
+                objectName: "task_ma"
+                anchors.fill: parent
+                onClicked: {
+                    backend.task_ma_clicked(task_lb.text)
+                    }
+                }
             }
         }
 
@@ -129,7 +169,8 @@ Window {
             x: 332
             width: 24
             height: 24
-            color: "#ffffff"
+            color: "#00000000"
+            border.color: "#00000000"
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.rightMargin: 10
@@ -154,6 +195,7 @@ Window {
                     // once the "con" context has been declared,
                     // slots can be called like functions
                     console.outputInt("Menu clicked")
+                    backend.menu_ma_clicked()
                     }
                 onDoubleClicked: {
                     // once the "con" context has been declared,
@@ -168,6 +210,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50"}
+    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:1.5}D{i:5}D{i:11}
 }
 ##^##*/
