@@ -9,6 +9,29 @@ Window {
     visible: true
     color: "#00000000"
     title: qsTr("Hello World")
+    flags: Qt.Window | Qt.FramelessWindowHint
+
+
+    Connections{
+        target: backend
+        //Python signal is setText, sintax is strange
+        function onDayTimerSetText(text){
+            day_timer_lb.text = text
+        }
+
+        function onProjectSetText(text){
+            project_lb.text = text
+        }
+
+        function onIssueSetText(text){
+            issue_lb.text = text
+        }
+
+        function onTaskSetText(text){
+            task_lb.text = text
+        }
+
+    }
 
     Rectangle {
         id: app_container
@@ -194,13 +217,13 @@ Window {
                 onClicked: {
                     // once the "con" context has been declared,
                     // slots can be called like functions
-                    console.outputInt("Menu clicked")
+                    //console.outputInt("Menu clicked")
                     backend.menu_ma_clicked()
                     }
                 onDoubleClicked: {
                     // once the "con" context has been declared,
                     // slots can be called like functions
-                    console.outputInt("Menu double clicked")
+                    //console.outputInt("Menu double clicked")
                     }
                 }
             }

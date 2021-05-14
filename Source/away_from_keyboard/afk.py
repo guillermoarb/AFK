@@ -25,11 +25,17 @@ class Console(QObject):
 
 class Backend(QObject):
 
+    dayTimerSetText = Signal(str)
+    projectSetText = Signal(str)
+    issueSetText = Signal(str)
+    taskSetText = Signal(str)
+
+
     #Menu mouse area click event
     @Slot()
     def menu_ma_clicked(self):
         print("Menu Clicked")
-        
+
     # Task mouse area click event
     @Slot(str)
     def task_ma_clicked(self, text):
@@ -50,14 +56,24 @@ class Backend(QObject):
     def project_ma_clicked(self, text):
         print(f"Project mouse area clicked {text}")
 
+    def set_day_timer_text_ui(self,s):
+        self.dayTimerSetText.emit(s)
+
+    def set_project_text_ui(self, s):
+        self.projectSetText.emit(s)
+
+    def set_issue_text_ui(self, s):
+        self.issueSetText.emit(s)
+
+    def set_task_text_ui(self,s):
+        self.taskSetText.emit(s)
 
 if __name__ == '__main__':
-
     #Create the app and QML engine
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
-    #Get console context
+    #Prepare backends 
     console = Console()
     backend = Backend()
     #This has to be in two lines, otherway it does not work
@@ -65,10 +81,14 @@ if __name__ == '__main__':
     context.setContextProperty("console", console)
     context.setContextProperty("backend", backend)
 
-    
     #Load UI
     engine.load(os.fspath(Path(__file__).resolve().parent / "qml/main.qml"))
 
+    #Init UI
+    backend.set_day_timer_text_ui("00:00")
+    backend.set_project_text_ui("Project")
+    backend.set_issue_text_ui("Issue")
+    backend.set_task_text_ui("Task")
 
 
     if not engine.rootObjects():
