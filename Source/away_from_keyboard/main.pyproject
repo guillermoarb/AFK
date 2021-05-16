@@ -1,3 +1,3 @@
 {
-    "files": ["fonts/Roboto-Black.ttf","images/menu_vertical.png","fonts/Roboto-Bold.ttf","images/close.png","images/menu_lines.png","images/menu.png","main.qml","qml/main.qml","main.py"]
+    "files": ["fonts/Roboto-Bold.ttf","fonts/Roboto-Black.ttf","main.qml","main.py","images/close.png","images/menu_lines.png","images/menu.png","images/menu_vertical.png","qml/main.qml","images/arrow-down-sign-to-navigate.png"]
 }

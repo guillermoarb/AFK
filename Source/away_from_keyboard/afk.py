@@ -9,6 +9,7 @@ version 2.0
 import os
 from pathlib import Path
 import sys
+from typing import List
 
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
@@ -55,6 +56,27 @@ class Backend(QObject):
     @Slot(str)
     def project_ma_clicked(self, text):
         print(f"Project mouse area clicked {text}")
+
+    # Edit dialog close button event
+    @Slot()
+    def edit_close_ma_clicked(self):
+        print("Edit close clicked")
+    
+    # Edit dialog check button event
+    @Slot(str, str, str)
+    def edit_check_ma_clicked(self, project, issue , task):
+        print(f"Edit check clicked  {project} {issue} {task}")
+
+        # Validate data and then set the text in the ui and set global variables
+
+        #Validation
+        #Is empty ???
+        #Is a valid value ???
+
+        self.set_project_text_ui(project)
+        self.set_issue_text_ui(issue)
+        self.set_task_text_ui(task)
+
 
     def set_day_timer_text_ui(self,s):
         self.dayTimerSetText.emit(s)

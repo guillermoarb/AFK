@@ -5,7 +5,7 @@ import QtQuick.Controls 2.15
 Window {
     id: window
     width: 400
-    height: 100
+    height: 400
     visible: true
     color: "#00000000"
     title: qsTr("Hello World")
@@ -35,16 +35,14 @@ Window {
 
     Rectangle {
         id: app_container
+        x: 0
+        y: 159
+        width: 400
+        height: 100
         visible: true
-        color: "#eceff4"
         radius: 5
         border.color: "#00000000"
         border.width: 1
-        anchors.fill: parent
-        anchors.rightMargin: 0
-        anchors.bottomMargin: 0
-        anchors.leftMargin: 0
-        anchors.topMargin: 0
 
 
         Rectangle {
@@ -76,11 +74,12 @@ Window {
                 font.family: "Roboto Black"
                 
                 MouseArea {
-                id: day_timer_ma
-                objectName: "day_timer_ma"
-                anchors.fill: parent
-                onClicked: {
-                    backend.day_timer_ma_clicked(day_timer_lb.text)
+                    id: day_timer_ma
+                    objectName: "day_timer_ma"
+                    anchors.fill: parent
+                    onClicked: {
+                        backend.day_timer_ma_clicked(day_timer_lb.text)
+                        edit_container.visible = true
                     }
                 }
             }
@@ -112,11 +111,13 @@ Window {
                 font.family: "Roboto"
                 
                 MouseArea {
-                id: issue_ma
-                objectName: "issue_ma"
-                anchors.fill: parent
-                onClicked: {
-                    backend.issue_ma_clicked(issue_lb.text)
+                    id: issue_ma
+                    objectName: "issue_ma"
+                    anchors.fill: parent
+                    onClicked: {
+                        backend.issue_ma_clicked(issue_lb.text)
+                        edit_container.visible = false
+
                     }
                 }
             }
@@ -147,9 +148,9 @@ Window {
                 MouseArea {
                     id: project_ma
                     anchors.fill: parent
-                objectName: "project_ma"
-                onClicked: {
-                    backend.project_ma_clicked(project_lb.text)
+                    objectName: "project_ma"
+                    onClicked: {
+                        backend.project_ma_clicked(project_lb.text)
                     }
                 }
             }
@@ -177,11 +178,11 @@ Window {
                 font.family: "Roboto"
                 
                 MouseArea {
-                id: task_ma
-                objectName: "task_ma"
-                anchors.fill: parent
-                onClicked: {
-                    backend.task_ma_clicked(task_lb.text)
+                    id: task_ma
+                    objectName: "task_ma"
+                    anchors.fill: parent
+                    onClicked: {
+                        backend.task_ma_clicked(task_lb.text)
                     }
                 }
             }
@@ -211,28 +212,296 @@ Window {
                 fillMode: Image.PreserveAspectFit
                 
                 MouseArea {
-                id: menu_ma
-                objectName: "menu_ma"
-                anchors.fill: parent
-                onClicked: {
-                    // once the "con" context has been declared,
-                    // slots can be called like functions
-                    //console.outputInt("Menu clicked")
-                    backend.menu_ma_clicked()
+                    id: menu_ma
+                    objectName: "menu_ma"
+                    anchors.fill: parent
+                    onClicked: {
+                        // once the "con" context has been declared,
+                        // slots can be called like functions
+                        //console.outputInt("Menu clicked")
+                        backend.menu_ma_clicked()
                     }
-                onDoubleClicked: {
-                    // once the "con" context has been declared,
-                    // slots can be called like functions
-                    //console.outputInt("Menu double clicked")
+                    onDoubleClicked: {
+                        // once the "con" context has been declared,
+                        // slots can be called like functions
+                        //console.outputInt("Menu double clicked")
                     }
                 }
             }
         }
+
+
+        Rectangle {
+            id: status_clipper_rt
+            y: 85
+            height: 15
+            color: "transparent"
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.rightMargin: 0
+            anchors.leftMargin: 0
+            anchors.bottomMargin: 0
+            clip: true
+
+            Rectangle {
+                id: status_clipped_rt
+                radius: 5
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.topMargin: -3
+                anchors.rightMargin: 0
+                anchors.leftMargin: 0
+                anchors.bottomMargin: 0
+                color: "#4fe7a1"
+
+                Label {
+                    id: status_lb
+                    text: qsTr("Saving ...")
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: parent.top
+                    anchors.bottom: parent.bottom
+                    font.pixelSize: 12
+                    verticalAlignment: Text.AlignVCenter
+                    font.family: "Roboto"
+                    anchors.rightMargin: 0
+                    anchors.leftMargin: 10
+                    anchors.topMargin: 3
+                    anchors.bottomMargin: 0
+                }
+            }
+        }
     }
+
+    Rectangle {
+        id: edit_container
+        x: 0
+        y: 159
+        width: 400
+        height: 100
+        color: "#ffffff"
+        radius: 5
+        visible: false
+
+
+
+        TextField {
+            id: project_tl
+            y: 10
+            width: 200
+            height: 25
+
+            placeholderText: qsTr("Project")
+            color: "#3B4252"
+            anchors.verticalCenter: edit_project_lb_rt.verticalCenter
+            anchors.left: edit_project_lb_rt.right
+            font.pixelSize: 15
+            anchors.leftMargin: 20
+            anchors.verticalCenterOffset: 0
+            font.family: "Roboto"
+            background: Rectangle {
+                color: "#ECEFF4"
+                radius:3
+            }
+
+            selectByMouse: true
+            selectedTextColor: "#ECEFF4"
+            selectionColor: "#BF616A"
+            placeholderTextColor: "#4C566A"
+
+
+
+        }
+
+        Rectangle {
+            id: edit_project_lb_rt
+            width: 50
+            height: 25
+            color: "#00000000"
+            border.color: "#00000000"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: 10
+            anchors.topMargin: 10
+
+            Label {
+                id: edit_project_lb
+                text: qsTr("Project")
+                anchors.fill: parent
+                font.pixelSize: 15
+                verticalAlignment: Text.AlignVCenter
+                font.family: "Roboto"
+            }
+        }
+
+        Rectangle {
+            id: edit_issue_lb_rt
+            width: 50
+            height: 25
+            color: "#00000000"
+            border.color: "#00000000"
+            anchors.left: parent.left
+            anchors.top: edit_project_lb_rt.bottom
+            anchors.leftMargin: 10
+            anchors.topMargin: 5
+            Label {
+                id: edit_issue_lb
+                text: qsTr("Issue")
+                anchors.fill: parent
+                font.pixelSize: 15
+                verticalAlignment: Text.AlignVCenter
+                font.family: "Roboto"
+            }
+        }
+
+        Rectangle {
+            id: edit_task_lb_rt
+            width: 50
+            height: 25
+            color: "#00000000"
+            border.color: "#00000000"
+            anchors.left: parent.left
+            anchors.top: edit_issue_lb_rt.bottom
+            anchors.leftMargin: 10
+            anchors.topMargin: 5
+            Label {
+                id: edit_task_lb
+                text: qsTr("Task")
+                anchors.fill: parent
+                font.pixelSize: 15
+                verticalAlignment: Text.AlignVCenter
+                font.family: "Roboto"
+            }
+        }
+
+        TextField {
+            id: issue_tl
+            y: 10
+            width: 200
+            height: 25
+            color: "#3b4252"
+            anchors.verticalCenter: edit_issue_lb_rt.verticalCenter
+            anchors.left: edit_issue_lb_rt.right
+            font.pixelSize: 15
+            placeholderTextColor: "#4c566a"
+            anchors.leftMargin: 20
+            selectionColor: "#bf616a"
+            font.family: "Roboto"
+            selectedTextColor: "#eceff4"
+            selectByMouse: true
+            placeholderText: qsTr("Issue")
+            background: Rectangle {
+                color: "#eceff4"
+                radius: 3
+            }
+            anchors.verticalCenterOffset: 0
+        }
+
+        TextField {
+            id: task_tl
+            y: 71
+            width: 200
+            height: 25
+            color: "#3b4252"
+            anchors.verticalCenter: edit_task_lb_rt.verticalCenter
+            anchors.left: edit_task_lb_rt.right
+            font.pixelSize: 15
+            anchors.leftMargin: 20
+            placeholderTextColor: "#4c566a"
+            selectionColor: "#bf616a"
+            font.family: "Roboto"
+            selectedTextColor: "#eceff4"
+            selectByMouse: true
+            placeholderText: qsTr("Task")
+            background: Rectangle {
+                color: "#eceff4"
+                radius: 3
+            }
+            anchors.verticalCenterOffset: 0
+        }
+
+        Rectangle {
+            id: edit_check_rt
+            x: 288
+            width: 80
+            height: 25
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.rightMargin: 10
+            anchors.topMargin: 10
+            radius: 3
+            color: "#A3BE8C"
+
+            Image {
+                id: check_im
+                width: 20
+                height: 20
+                anchors.verticalCenter: parent.verticalCenter
+                source: "../images/check.png"
+                anchors.horizontalCenter: parent.horizontalCenter
+                sourceSize.height: 24
+                sourceSize.width: 24
+                mirror: false
+                fillMode: Image.PreserveAspectFit
+            }
+
+            MouseArea {
+                id: edit_check_ma
+                objectName: "menu_ma"
+                anchors.fill: parent
+                onClicked: {
+                    backend.edit_check_ma_clicked(qsTr(project_tl.text), qsTr(issue_tl.text), qsTr(task_tl.text))
+                    // Close the edit dialog
+                    edit_container.visible = false
+                }
+            }
+        }
+
+        Rectangle {
+            id: edit_close_rt
+            x: 310
+            width: 80
+            height: 25
+            color: "#BF616A"
+            radius: 3
+            anchors.right: parent.right
+            anchors.top: edit_check_rt.bottom
+            anchors.topMargin: 5
+            anchors.rightMargin: 10
+
+            Image {
+                id: close_im
+                x: -11
+                y: 31
+                width: 20
+                height: 20
+                anchors.verticalCenter: parent.verticalCenter
+                source: "images/close.png"
+                anchors.horizontalCenter: parent.horizontalCenter
+                fillMode: Image.PreserveAspectFit
+            }
+
+            MouseArea {
+                id: edit_close_ma
+                objectName: "menu_ma"
+                anchors.fill: parent
+                onClicked: {
+                    backend.edit_close_ma_clicked()
+                    // Close the edit dialog
+                    edit_container.visible = false
+                }
+            }
+        }
+
+    }
+
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:1.5}D{i:5}D{i:11}
+    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:0.9}D{i:25}D{i:24}D{i:26}D{i:30}D{i:34}
 }
 ##^##*/
