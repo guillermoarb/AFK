@@ -5,7 +5,7 @@ import QtQuick.Controls 2.15
 Window {
     id: window
     width: 400
-    height: 400
+    height: 1000
     visible: true
     color: "#00000000"
     title: qsTr("Hello World")
@@ -43,6 +43,8 @@ Window {
         radius: 5
         border.color: "#00000000"
         border.width: 1
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
 
 
         Rectangle {
@@ -228,6 +230,9 @@ Window {
                     }
                 }
             }
+
+
+
         }
 
 
@@ -274,6 +279,16 @@ Window {
                 }
             }
         }
+
+            DragHandler {
+                        onActiveChanged: if(active){
+                                             window.startSystemMove()
+                                             //internal.ifMaximizedWindowRestore()
+                                         }
+                    }
+
+
+
     }
 
     Rectangle {
@@ -284,6 +299,8 @@ Window {
         height: 100
         color: "#ffffff"
         radius: 5
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
         visible: false
 
 
@@ -502,6 +519,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:0.9}D{i:25}D{i:24}D{i:26}D{i:30}D{i:34}
+    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:0.9}
 }
 ##^##*/
