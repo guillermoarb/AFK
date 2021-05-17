@@ -6,16 +6,42 @@ version 2.0
 
 
 # This Python file uses the following encoding: utf-8
+from datetime import datetime
 import os
 from pathlib import Path
 import sys
 from typing import List
 
-from PySide6.QtGui import QGuiApplication
-from PySide6.QtQml import QQmlApplicationEngine
-from PySide6.QtCore import QTimer, QObject, Slot, Signal
+from PySide2.QtGui import QGuiApplication
+from PySide2.QtQml import QQmlApplicationEngine
+from PySide2.QtCore import QTimer, QObject, QUrl, Slot, Signal
 
+class State_Machine():
 
+    def __init__(self):
+        self.state = "not_init"
+
+    def one_sec_task(self):
+        pass
+
+class Report():
+
+    def __init__(self):
+        pass
+class Timer():
+    time = datetime.time()
+
+    def __init__(self, time):
+        pass
+
+    def add_time(self, time):
+        pass
+
+    def subtract_time(self, time):
+        pass
+
+    def set_time(self, time):
+        pass
 
 class Console(QObject):
 
@@ -30,7 +56,6 @@ class Backend(QObject):
     projectSetText = Signal(str)
     issueSetText = Signal(str)
     taskSetText = Signal(str)
-
 
     #Menu mouse area click event
     @Slot()
@@ -105,6 +130,8 @@ if __name__ == '__main__':
 
     #Load UI
     engine.load(os.fspath(Path(__file__).resolve().parent / "qml/main.qml"))
+    #engine.load("Source/away_from_keyboard/qml/main.qml")
+
 
     #Init UI
     backend.set_day_timer_text_ui("00:00")

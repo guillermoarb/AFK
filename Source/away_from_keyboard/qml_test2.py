@@ -42,9 +42,9 @@
 import os
 from pathlib import Path
 import sys
-from PySide6.QtCore import QObject, QUrl, Slot
-from PySide6.QtGui import QGuiApplication
-from PySide6.QtQuick import QQuickView
+from PySide2.QtCore import QObject, QUrl, Slot
+from PySide2.QtGui import QGuiApplication
+from PySide2.QtQuick import QQuickView
 
 
 class Console(QObject):
@@ -75,8 +75,8 @@ if __name__ == '__main__':
     context = view.rootContext()
     context.setContextProperty("con", con)
 
-    #qml_file = os.fspath(Path(__file__).resolve().parent / 'qml_test2.qml')
-    view.setSource(QUrl("Source/away_from_keyboard/qml_test2.qml"))
+    qml_file = os.fspath(Path(__file__).resolve().parent / 'qml_test2.qml')
+    view.setSource(qml_file)
     if view.status() == QQuickView.Error:
         sys.exit(-1)
     view.show()
