@@ -6,7 +6,8 @@ version 2.0
 
 
 # This Python file uses the following encoding: utf-8
-from datetime import datetime
+import ctypes
+import datetime
 import os
 from pathlib import Path
 import sys
@@ -21,21 +22,64 @@ class State_Machine():
     def __init__(self):
         self.state = "not_init"
 
-    def one_sec_task(self):
-        pass
+    def get_lock_status(self):
+        #Get foreground window ID
+        foreground_window = user32.GetForegroundWindow() 
+        #Get foreground window text 
+        window_text_len = user32.GetWindowTextLengthW(foreground_window)
+        window_text = ctypes.create_unicode_buffer(window_text_len + 1)
+    
+        user32.GetWindowTextW(foreground_window, window_text, window_text_len + 1)
+        #Evaluate if the PC is locked and then increase the right timer
+        if ((foreground_window == 0) or (window_text.value == "Windows Default Lock Screen")):
+            lock_status = True
+        else:
+            lock_status = False
 
-class Report():
+        return lock_status
+
+    def one_sec_task(self):
+        increment = 60
+
+        #Check if screen is not locked
+        if (self.get_lock_status() == False):
+            # Increment day timer
+            day_timer.add_time_sec(increment)
+            # Update day timer UI
+            backend.set_day_timer_text_ui(day_timer.time.strftime("%H:%M"))
+        else:
+            pass
+            #Log pause items, lock time
+
+        print(day_timer)
+
+class Timer():
+
+    time = datetime.time()
+
+    def __str__(self):
+        return self.time.strftime("%H:%M:%S")
 
     def __init__(self):
         pass
-class Timer():
-    time = datetime.time()
 
-    def __init__(self, time):
-        pass
+    def add_time_sec(self, plus_seconds):
+        seconds = self.time.second
+        minutes = self.time.minute
+        hours = self.time.hour
 
-    def add_time(self, time):
-        pass
+        seconds = seconds + plus_seconds
+
+        if (seconds >= 60):
+            minutes = minutes + 1
+            seconds = 0
+
+        if (minutes >= 60):
+                hours = hours + 1
+                minutes = 0
+
+        self.time = datetime.time(hours,minutes,seconds)
+
 
     def subtract_time(self, time):
         pass
@@ -116,13 +160,26 @@ class Backend(QObject):
         self.taskSetText.emit(s)
 
 if __name__ == '__main__':
+    #Init config values
+
+
     #Create the app and QML engine
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
+    #ctypes user32 API instance
+    user32 = ctypes.windll.User32
+
     #Prepare backends 
     console = Console()
     backend = Backend()
+    state_machine =State_Machine()
+    # Create timers
+    day_timer = Timer()
+    pause_timer = Timer()
+    task_timer = Timer()
+    issue_timer = Timer()
+
     #This has to be in two lines, otherway it does not work
     context = engine.rootContext()
     context.setContextProperty("console", console)
@@ -139,6 +196,10 @@ if __name__ == '__main__':
     backend.set_issue_text_ui("Issue")
     backend.set_task_text_ui("Task")
 
+    #Create, connect and start task timer 1 second
+    timer_1s = QTimer()
+    timer_1s.timeout.connect(state_machine.one_sec_task)
+    timer_1s.start(1000)
 
     if not engine.rootObjects():
         sys.exit(-1)
