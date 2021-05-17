@@ -204,10 +204,7 @@ Window {
 
             Image {
                 id: menu_im
-                x: 0
-                y: 0
-                width: 24
-                height: 24
+                anchors.fill: parent
                 source: "images/menu_lines.png"
                 sourceSize.height: 50
                 sourceSize.width: 50
@@ -519,6 +516,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:0.9}
+    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:0.9}D{i:16}
 }
 ##^##*/

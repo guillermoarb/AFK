@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtDesignStudio 2.1.0, 2021-05-16T02:23:11. -->
+<!-- Written by QtDesignStudio 2.1.0, 2021-05-16T13:42:49. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -112,6 +112,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/arrow-down-sign-to-navigate.png</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/arrow-down-sign-to-navigate.png</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">D:/02_Personal_Projects/Away_From_Keyboard/Source/away_from_keyboard/images/arrow-down-sign-to-navigate.png</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{ef859821-c119-452e-a7b6-7fa27bee280b}</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Script">D:\02_Personal_Projects\Away_From_Keyboard\Source\away_from_keyboard\images\arrow-down-sign-to-navigate.png</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
