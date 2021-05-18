@@ -8,6 +8,9 @@ from tabulate import tabulate
 
 class Report:
     def __init__(self):
+        #Config
+        folder_name = "Reports"
+
         #Main dictionary for report
         self.report_dic = {}
 
@@ -15,9 +18,14 @@ class Report:
         self.report_update_week()
         
         self.json_rep_file_path = "W" + str(self.week) + "_Report.json"
-        self.json_rep_file_path = os.path.join("Reports", self.json_rep_file_path)
+        self.json_rep_file_path = os.path.join(folder_name, self.json_rep_file_path)
         self.md_rep_file_path = "W" + str(self.week) + "_Report.md"
-        self.md_rep_file_path = os.path.join("Reports", self.md_rep_file_path)
+        self.md_rep_file_path = os.path.join(folder_name, self.md_rep_file_path)
+
+        #Create a directory for reports
+        if(os.path.isdir(folder_name) == False):
+            os.mkdir(folder_name)
+
 
         #Load actual json report
         if os.path.isfile(self.json_rep_file_path):
@@ -28,7 +36,7 @@ class Report:
             self.report_dic["week_number"] = 0
             self.report_dic["worked_time_hr"] = 0
             self.report_dic["worked_time_min"] = 0
-            self.report_dic["activities"] = []
+            self.report_dic["issues"] = []
             self.report_dic["days"] = []
 
     def report_update_day(self, time_counter):        
@@ -46,16 +54,25 @@ class Report:
         else: #Update the item
             self.report_dic["days"][day_idx] = day
 
-    def report_add_activity(self, name, project):
+    def report_add_issue(self, name, project):
         activity = {}
         activity["name"] = name
         activity["project"] = project
-        activity["items"] = []
+        activity["tasks"] = []
 
         activity_ind = self.activity_get_idx(name)
 
         if activity_ind == None:
-            self.report_dic["activities"].append(activity)
+            self.report_dic["issues"].append(activity)
+
+    def report_change_issue(self, name, new_name, project):
+        
+        activity_ind = self.activity_get_idx(name)
+
+        if activity_ind != None:
+            self.report_dic["issues"][activity_ind]["name"] = new_name
+            self.report_dic["issues"][activity_ind]["project"] = project
+
 
     def report_add_item(self, time, log, date, activity_name):
         item = {}
@@ -71,11 +88,11 @@ class Report:
             item_idx = self.item_get_idx(activity_ind, log)
             #If item don't exist add the item
             if item_idx == None:
-                self.report_dic["activities"][activity_ind]["items"].append(item)
+                self.report_dic["issues"][activity_ind]["tasks"].append(item)
             else: #Update the item
-                self.report_dic["activities"][activity_ind]["items"][item_idx] = item
+                self.report_dic["issues"][activity_ind]["tasks"][item_idx] = item
 
-    def report_update_item(self, time, log, date, activity_name):
+    def report_update_task(self, time, log, date, activity_name):
         item = {}
         item["time"] = time
         item["log"] = log
@@ -89,16 +106,16 @@ class Report:
             item_idx = self.item_get_idx(activity_ind, log)
             #If item don't exist add the item
             if item_idx == None:
-                self.report_dic["activities"][activity_ind]["items"].append(item)
+                self.report_dic["issues"][activity_ind]["tasks"].append(item)
             else: #Update the item
-                self.report_dic["activities"][activity_ind]["items"][item_idx] = item
+                self.report_dic["issues"][activity_ind]["tasks"][item_idx] = item
 
     def activity_get_idx(self, activity_name):
 
         incidence = False
         activity_ind = 0
 
-        for activity in self.report_dic["activities"]:
+        for activity in self.report_dic["issues"]:
             if activity["name"] == activity_name:
                 incidence = True
                 break
@@ -133,7 +150,7 @@ class Report:
         item_idx = 0
         incidence = False
 
-        for item in self.report_dic["activities"][activity_idx]["items"]:
+        for item in self.report_dic["issues"][activity_idx]["tasks"]:
             if item["log"] == item_log:
                 incidence = True
                 break
@@ -161,8 +178,8 @@ class Report:
         total_week_time_seconds = 0
         total_activity_time_seconds = 0
 
-        for activity in self.report_dic["activities"]:
-            for item in activity["items"]:
+        for activity in self.report_dic["issues"]:
+            for item in activity["tasks"]:
                 time_seconds = self.report_counter_to_sec(item["time"])
                 #Total week time in seconds
                 total_week_time_seconds = total_week_time_seconds + time_seconds
@@ -206,7 +223,7 @@ class Report:
             item_idx = self.item_get_idx(activity_idx, task)
 
             if item_idx != None:
-                act_time_split =  self.report_dic["activities"][activity_idx]["items"][item_idx]["time"].split(":")
+                act_time_split =  self.report_dic["issues"][activity_idx]["tasks"][item_idx]["time"].split(":")
                 activity_time = datetime.time(int(act_time_split[0]), int(act_time_split[1]), int(act_time_split[2]))
         
             else:
@@ -244,7 +261,7 @@ class Report:
 
     def activity_get_all(self):
         activities_array = []
-        for activity in self.report_dic["activities"]:
+        for activity in self.report_dic["issues"]:
             activities_array.append(activity["name"])
 
         return activities_array
@@ -254,7 +271,7 @@ class Report:
 
         activity_idx = self.activity_get_idx(activity)
 
-        for task in self.report_dic["activities"][activity_idx]["items"]:
+        for task in self.report_dic["issues"][activity_idx]["tasks"]:
             tasks_array.append(task["log"])
 
         return tasks_array
@@ -273,9 +290,9 @@ class Report:
 
         rows.append(txt_dictionary)
 
-        for idx, activity in enumerate(self.report_dic["activities"]):
+        for idx, activity in enumerate(self.report_dic["issues"]):
             logs = ""
-            for item in activity["items"]:
+            for item in activity["tasks"]:
                 logs = logs + item["log"] + ", " 
 
             #Rounded time to report just hours

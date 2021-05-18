@@ -1,0 +1,97 @@
+{
+    "days": [
+        {
+            "date": "051821",
+            "name": "Tuesday",
+            "worked_time_hr": 0,
+            "worked_time_min": 28
+        }
+    ],
+    "issues": [
+        {
+            "name": "",
+            "project": "",
+            "tasks": [
+                {
+                    "date": "05/18/21",
+                    "log": "",
+                    "time": "00:06:00"
+                }
+            ],
+            "total_time_hr": 0,
+            "total_time_min": 6
+        },
+        {
+            "name": "Issue",
+            "project": "Mango",
+            "tasks": [
+                {
+                    "date": "05/18/21",
+                    "log": "Task2",
+                    "time": "00:38:45"
+                },
+                {
+                    "date": "05/18/21",
+                    "log": "Task3",
+                    "time": "00:06:15"
+                },
+                {
+                    "date": "05/18/21",
+                    "log": "Task4",
+                    "time": "00:05:30"
+                }
+            ],
+            "total_time_hr": 0,
+            "total_time_min": 50
+        },
+        {
+            "name": "Issue2",
+            "project": "Project2",
+            "tasks": [
+                {
+                    "date": "05/18/21",
+                    "log": "Task4",
+                    "time": "00:15:30"
+                },
+                {
+                    "date": "05/18/21",
+                    "log": "Task5",
+                    "time": "04:44:00"
+                }
+            ],
+            "total_time_hr": 4,
+            "total_time_min": 59
+        },
+        {
+            "name": "Issue_fresa",
+            "project": "Fresa_pro",
+            "tasks": [
+                {
+                    "date": "05/18/21",
+                    "log": "Task",
+                    "time": "00:07:15"
+                },
+                {
+                    "date": "05/18/21",
+                    "log": "Task2",
+                    "time": "00:01:15"
+                },
+                {
+                    "date": "05/18/21",
+                    "log": "Task3",
+                    "time": "00:02:15"
+                },
+                {
+                    "date": "05/18/21",
+                    "log": "fresa",
+                    "time": "00:22:00"
+                }
+            ],
+            "total_time_hr": 0,
+            "total_time_min": 32
+        }
+    ],
+    "week_number": 20,
+    "worked_time_hr": 6,
+    "worked_time_min": 28
+}

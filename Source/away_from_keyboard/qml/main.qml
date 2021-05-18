@@ -313,6 +313,10 @@ Window {
             anchors.verticalCenter: edit_project_lb_rt.verticalCenter
             anchors.left: edit_project_lb_rt.right
             font.pixelSize: 15
+            padding: 0
+            rightPadding: 0
+            bottomPadding: 0
+            topPadding: 0
             anchors.leftMargin: 20
             anchors.verticalCenterOffset: 0
             font.family: "Roboto"
@@ -400,6 +404,7 @@ Window {
             anchors.verticalCenter: edit_issue_lb_rt.verticalCenter
             anchors.left: edit_issue_lb_rt.right
             font.pixelSize: 15
+            padding: 0
             placeholderTextColor: "#4c566a"
             anchors.leftMargin: 20
             selectionColor: "#bf616a"
@@ -411,7 +416,7 @@ Window {
                 color: "#eceff4"
                 radius: 3
             }
-            anchors.verticalCenterOffset: 0
+            anchors.verticalCenterOffset: 1
         }
 
         TextField {
@@ -423,6 +428,7 @@ Window {
             anchors.verticalCenter: edit_task_lb_rt.verticalCenter
             anchors.left: edit_task_lb_rt.right
             font.pixelSize: 15
+            padding: 0
             anchors.leftMargin: 20
             placeholderTextColor: "#4c566a"
             selectionColor: "#bf616a"
@@ -516,6 +522,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:0.9}D{i:16}
+    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:0.9}D{i:2;locked:true}
 }
 ##^##*/

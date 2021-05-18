@@ -17,7 +17,11 @@ from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtCore import QTimer, QObject, QUrl, Slot, Signal
 
+from  json_report import Report
+
 class State_Machine():
+
+    one_min_task_sec_cnt = 0
 
     def __init__(self):
         self.state = "not_init"
@@ -39,19 +43,31 @@ class State_Machine():
         return lock_status
 
     def one_sec_task(self):
-        increment = 60
+        sec_increment = 15  #Set to 1 for 1 sec
+
+        # Increment counters
+        self.one_min_task_sec_cnt = self.one_min_task_sec_cnt + sec_increment
 
         #Check if screen is not locked
         if (self.get_lock_status() == False):
-            # Increment day timer
-            day_timer.add_time_sec(increment)
+            # sec_Increment day timer
+            day_timer.add_time_sec(sec_increment)
+            task_timer.add_time_sec(sec_increment)
             # Update day timer UI
             backend.set_day_timer_text_ui(day_timer.time.strftime("%H:%M"))
         else:
             pass
             #Log pause items, lock time
 
-        print(day_timer)
+        #Call other tasks with greater times 
+        if(self.one_min_task_sec_cnt >= 60):
+            self.one_min_task_sec_cnt = 0
+            self.one_min_task()
+
+
+    def one_min_task(self):
+            backend.update_report()
+            print(day_timer)
 
 class Timer():
 
@@ -95,6 +111,14 @@ class Console(QObject):
 
 
 class Backend(QObject):
+    global project_text
+    global issue_text
+    global task_text
+    global day_timer 
+    global pause_timer 
+    global project_timer 
+    global task_timer 
+    global issue_timer 
 
     dayTimerSetText = Signal(str)
     projectSetText = Signal(str)
@@ -134,6 +158,10 @@ class Backend(QObject):
     # Edit dialog check button event
     @Slot(str, str, str)
     def edit_check_ma_clicked(self, project, issue , task):
+        global project_text
+        global issue_text
+        global task_text 
+        
         print(f"Edit check clicked  {project} {issue} {task}")
 
         # Validate data and then set the text in the ui and set global variables
@@ -142,9 +170,36 @@ class Backend(QObject):
         #Is empty ???
         #Is a valid value ???
 
-        self.set_project_text_ui(project)
-        self.set_issue_text_ui(issue)
-        self.set_task_text_ui(task)
+        # Is it a new issue or just new info for the actual ???
+        if(issue_text != issue):
+            #Update issue info
+            issue_text = issue
+            self.set_issue_text_ui(issue)
+            issue_timer.time = issue_timer.time.replace(0,0,0)
+            #Update task info
+            task_text = task
+            self.set_task_text_ui(task)
+            task_timer.time = task_timer.time.replace(0,0,0)        
+            #Update project info
+            project_text = project
+            self.set_project_text_ui(project)
+            project_timer.time = project_timer.time.replace(0,0,0)        
+
+
+        else:
+            # The issue is the same but project changed, this is an update of project            
+            if(project_text != project):
+                project_text = project
+                self.set_project_text_ui(project)
+                report.report_change_issue(issue_text, issue_text, project )
+
+            # Same issue just update the task
+            if(task_text != task):
+                task_text = task
+                self.set_task_text_ui(task)
+                #if task already in the issue get the time from report, else start from zero
+                #TODO
+                task_timer.time = task_timer.time.replace(0,0,0)
 
 
     def set_day_timer_text_ui(self,s):
@@ -158,6 +213,20 @@ class Backend(QObject):
 
     def set_task_text_ui(self,s):
         self.taskSetText.emit(s)
+
+    def update_report(self):
+        report.report_add_issue(issue_text, project_text)
+
+        report.report_update_task(  task_timer.time.strftime("%H:%M:%S"), 
+                                    task_text, 
+                                    datetime.datetime.now().strftime("%m/%d/%y"), 
+                                    issue_text )
+
+        report.report_update_week()
+        report.report_update_worked_time()
+        report.report_update_day(day_timer.time.strftime("%H:%M:%S"))
+        report.report_print_json()
+
 
 if __name__ == '__main__':
     #Init config values
@@ -174,11 +243,19 @@ if __name__ == '__main__':
     console = Console()
     backend = Backend()
     state_machine =State_Machine()
+    report = Report()
     # Create timers
     day_timer = Timer()
     pause_timer = Timer()
+    project_timer = Timer()
     task_timer = Timer()
     issue_timer = Timer()
+    #Create text labels
+    day_timer_text = ""
+    project_text = ""
+    issue_text = ""
+    task_text = ""
+    status_text = ""
 
     #This has to be in two lines, otherway it does not work
     context = engine.rootContext()
