@@ -156,6 +156,7 @@ class Backend(QObject):
         print("Edit close clicked")
     
     # Edit dialog check button event
+    # TODO this is not working !!!
     @Slot(str, str, str)
     def edit_check_ma_clicked(self, project, issue , task):
         global project_text
@@ -171,35 +172,61 @@ class Backend(QObject):
         #Is a valid value ???
 
         # Is it a new issue or just new info for the actual ???
-        if(issue_text != issue):
-            #Update issue info
-            issue_text = issue
-            self.set_issue_text_ui(issue)
-            issue_timer.time = issue_timer.time.replace(0,0,0)
-            #Update task info
-            task_text = task
-            self.set_task_text_ui(task)
-            task_timer.time = task_timer.time.replace(0,0,0)        
-            #Update project info
-            project_text = project
-            self.set_project_text_ui(project)
-            project_timer.time = project_timer.time.replace(0,0,0)        
 
+        report_issue_idx = report.issue_get_idx(issue) 
+
+        if(report_issue_idx == None):
+            #Ok there is not an issue with that name
+
+            #Update backend
+            issue_text = issue
+            issue_timer.time = issue_timer.time.replace(0,0,0)
+
+            task_text = task
+            task_timer.time = task_timer.time.replace(0,0,0)
+
+            project_text = project
+            project_timer.time = project_timer.time.replace(0,0,0)
 
         else:
-            # The issue is the same but project changed, this is an update of project            
-            if(project_text != project):
+
+            # Not new issue
+
+            # The issue is already in report, the project changed ???
+            report_project = report.issue_get_project(issue)
+
+            if ((report_project != None) and (report_project != project)):
+                # Update backend
                 project_text = project
-                self.set_project_text_ui(project)
+                #Update report
                 report.report_change_issue(issue_text, issue_text, project )
 
-            # Same issue just update the task
-            if(task_text != task):
+            # Same issue, is the task new ???
+            report_task_idx = report.issue_task_get_idx(issue, task)
+
+            if(report_task_idx != None):
+                #Update backend
+                task_text = task
+                task_timer.time = task_timer.time.replace(0,0,0)
+
+            # Same issue and a task was already in the report
+            else:
+                # Update backend
                 task_text = task
                 self.set_task_text_ui(task)
-                #if task already in the issue get the time from report, else start from zero
-                #TODO
-                task_timer.time = task_timer.time.replace(0,0,0)
+                task_timer.time = report.report_get_task_time(issue, task)
+
+
+        # Update UI
+        self.set_issue_text_ui(issue_text)
+        self.set_task_text_ui(task_text)
+        self.set_project_text_ui(project_text)
+        # Update report
+        report.report_add_issue(issue_text, project_text)
+        report.report_update_task(  task_timer.time.strftime("%H:%M:%S"), 
+                                    task_text, 
+                                    datetime.datetime.now().strftime("%m/%d/%y"), 
+                                    issue_text )
 
 
     def set_day_timer_text_ui(self,s):
@@ -215,16 +242,17 @@ class Backend(QObject):
         self.taskSetText.emit(s)
 
     def update_report(self):
-        report.report_add_issue(issue_text, project_text)
+
+#        report.report_add_issue(issue_text, project_text)
 
         report.report_update_task(  task_timer.time.strftime("%H:%M:%S"), 
                                     task_text, 
                                     datetime.datetime.now().strftime("%m/%d/%y"), 
                                     issue_text )
 
-        report.report_update_week()
-        report.report_update_worked_time()
-        report.report_update_day(day_timer.time.strftime("%H:%M:%S"))
+#        report.report_update_week()
+#        report.report_update_worked_time()
+#        report.report_update_day(day_timer.time.strftime("%H:%M:%S"))
         report.report_print_json()
 
 
@@ -252,9 +280,9 @@ if __name__ == '__main__':
     issue_timer = Timer()
     #Create text labels
     day_timer_text = ""
-    project_text = ""
-    issue_text = ""
-    task_text = ""
+    project_text = "pt_01"
+    issue_text = "it_01"
+    task_text = "tt_01"
     status_text = ""
 
     #This has to be in two lines, otherway it does not work

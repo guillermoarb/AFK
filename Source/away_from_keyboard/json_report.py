@@ -60,14 +60,14 @@ class Report:
         activity["project"] = project
         activity["tasks"] = []
 
-        activity_ind = self.activity_get_idx(name)
+        activity_ind = self.issue_get_idx(name)
 
         if activity_ind == None:
             self.report_dic["issues"].append(activity)
 
     def report_change_issue(self, name, new_name, project):
         
-        activity_ind = self.activity_get_idx(name)
+        activity_ind = self.issue_get_idx(name)
 
         if activity_ind != None:
             self.report_dic["issues"][activity_ind]["name"] = new_name
@@ -80,12 +80,12 @@ class Report:
         item["log"] = log
         item["date"] = date
 
-        activity_ind = self.activity_get_idx(activity_name)
+        activity_ind = self.issue_get_idx(activity_name)
 
         #If activity exist
         if activity_ind != None:
 
-            item_idx = self.item_get_idx(activity_ind, log)
+            item_idx = self.task_get_idx(activity_ind, log)
             #If item don't exist add the item
             if item_idx == None:
                 self.report_dic["issues"][activity_ind]["tasks"].append(item)
@@ -98,25 +98,39 @@ class Report:
         item["log"] = log
         item["date"] = date
 
-        activity_ind = self.activity_get_idx(activity_name)
+        activity_ind = self.issue_get_idx(activity_name)
 
         #If activity exist
         if activity_ind != None:
 
-            item_idx = self.item_get_idx(activity_ind, log)
+            item_idx = self.task_get_idx(activity_ind, log)
             #If item don't exist add the item
             if item_idx == None:
                 self.report_dic["issues"][activity_ind]["tasks"].append(item)
             else: #Update the item
                 self.report_dic["issues"][activity_ind]["tasks"][item_idx] = item
 
-    def activity_get_idx(self, activity_name):
+    def report_set_issue(self, issue_name, time):
+
+        issue_idx = self.issue_get_idx(issue_name)
+
+        #If activity exist
+        if issue_idx != None:
+            error = "none"
+            self.report_dic["issues"][issue_idx]["time"] = time.strftime("%H:%M:%S")
+        else:
+            error = "not_found"
+
+        return error
+
+    def issue_get_idx(self, issue_name):
+
 
         incidence = False
         activity_ind = 0
 
         for activity in self.report_dic["issues"]:
-            if activity["name"] == activity_name:
+            if activity["name"] == issue_name:
                 incidence = True
                 break
 
@@ -126,6 +140,18 @@ class Report:
             activity_ind = None 
 
         return activity_ind
+
+    def issue_get_project(self, issue_name):
+
+        issue_idx = self.issue_get_idx(issue_name)
+
+        # If issue exist
+        if issue_idx != None:
+            project = self.report_dic["issues"][issue_idx]["project"]
+        else:
+            project = None
+
+        return project
 
     def day_get_idx(self, day_name):
 
@@ -145,13 +171,34 @@ class Report:
         return day_idx
 
 
-    def item_get_idx(self, activity_idx, item_log):
+    def task_get_idx(self, activity_idx, item_log):
 
         item_idx = 0
         incidence = False
 
         for item in self.report_dic["issues"][activity_idx]["tasks"]:
             if item["log"] == item_log:
+                incidence = True
+                break
+
+            item_idx = item_idx + 1
+
+        if incidence == False:
+            item_idx = None
+
+
+        return item_idx
+
+
+    def issue_task_get_idx(self, issue_name, task):
+
+        item_idx = 0
+        incidence = False
+
+        issue_idx = self.issue_get_idx(issue_name)
+
+        for item in self.report_dic["issues"][issue_idx]["tasks"]:
+            if item["log"] == task:
                 incidence = True
                 break
 
@@ -173,6 +220,7 @@ class Report:
         self.week = self.today.isocalendar()[1]
         self.report_dic["week_number"] = self.week
 
+
     def report_update_worked_time(self):
 
         total_week_time_seconds = 0
@@ -191,6 +239,7 @@ class Report:
 
             activity["total_time_hr"] = activity_time_hours
             activity["total_time_min"] = activity_time_minutes
+
 
             total_activity_time_seconds = 0
 
@@ -213,26 +262,24 @@ class Report:
 
         return hours, minutes
 
-    def report_get_task_time(self, activity, task):
+    def report_get_task_time(self, issue_name, task):
 
-        activity_time = datetime.time()
+        issue_time = datetime.time()
         
-        activity_idx = self.activity_get_idx(activity)
+        activity_idx = self.issue_get_idx(issue_name)
 
         if activity_idx != None:
-            item_idx = self.item_get_idx(activity_idx, task)
+            task_idx = self.task_get_idx(activity_idx, task)
 
-            if item_idx != None:
-                act_time_split =  self.report_dic["issues"][activity_idx]["tasks"][item_idx]["time"].split(":")
-                activity_time = datetime.time(int(act_time_split[0]), int(act_time_split[1]), int(act_time_split[2]))
-        
+            if task_idx != None:
+                act_time_split =  self.report_dic["issues"][activity_idx]["tasks"][task_idx]["time"].split(":")
+                issue_time = datetime.time(int(act_time_split[0]), int(act_time_split[1]), int(act_time_split[2]))
             else:
-                activity_time = datetime.time(0, 0, 0)
+                issue_time = datetime.time(0, 0, 0)
         else:
-            activity_time = datetime.time(0, 0, 0)
+            issue_time = datetime.time(0, 0, 0)
 
-
-        return activity_time
+        return issue_time
             
 
     def json_report_open(self):
@@ -269,7 +316,7 @@ class Report:
     def task_get_all(self, activity):
         tasks_array = []
 
-        activity_idx = self.activity_get_idx(activity)
+        activity_idx = self.issue_get_idx(activity)
 
         for task in self.report_dic["issues"][activity_idx]["tasks"]:
             tasks_array.append(task["log"])
