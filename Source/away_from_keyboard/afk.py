@@ -190,7 +190,8 @@ class Backend(QObject):
 
         else:
 
-            # Not new issue
+            # Not new issue, but update back end
+            issue_text = issue
 
             # The issue is already in report, the project changed ???
             report_project = report.issue_get_project(issue)
@@ -204,7 +205,7 @@ class Backend(QObject):
             # Same issue, is the task new ???
             report_task_idx = report.issue_task_get_idx(issue, task)
 
-            if(report_task_idx != None):
+            if(report_task_idx == None):
                 #Update backend
                 task_text = task
                 task_timer.time = task_timer.time.replace(0,0,0)
