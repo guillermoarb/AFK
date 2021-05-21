@@ -518,6 +518,102 @@ Window {
 
     }
 
+    ComboBox {
+        id: comboBox
+        x: 41
+        y: 287
+        width: 250
+        height: 25
+        font.pixelSize: 15
+        flat: true
+        editable: true
+        font.family: "Roboto"
+        
+
+
+
+        background: Rectangle {
+
+            radius: 4
+
+            color : "white"
+            height: comboBox.height
+            width: comboBox.width
+            smooth: true
+            border.width: 1
+            border.color: "white"
+
+
+        }
+
+                delegate: ItemDelegate {
+            id:itemDelegate
+            width: comboButton.width
+
+            background:Rectangle{
+                gradient: Gradient {
+                    GradientStop {
+                        position: 0.0
+                        color: itemDelegate.down ? "white" : "blue"
+                    }
+                    GradientStop {
+                        position: 1.0
+                        color: itemDelegate.down ? "yellow" : "orange"
+                    }
+                }
+            }
+
+            contentItem: Text {
+                text: modelData
+                elide: Text.ElideRight
+
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                font.pointSize: 11
+                font.family: "Arial"
+                color:  itemDelegate.down ? "black" : "white"
+            }
+            highlighted: comboButton.highlightedIndex === index
+
+        }
+
+        model: ListModel
+        {
+            id: cbItems
+            ListElement { text: "Banana"}
+            ListElement { text: "Apple" }
+            ListElement { text: "Coconut"}
+            ListElement { text: "Perro"}
+            ListElement { text: "Gato"}
+        }
+
+        popup: Popup {
+            y: comboBox.height
+            width: comboBox.width - 5
+
+            //implicitHeight: contentItem.implicitHeight -1
+            padding: 1
+
+            background: Rectangle {
+                border.color: "black"
+                radius: 2
+                color : "white"
+            }
+
+            contentItem: ListView {
+                //clip: true
+                implicitHeight: contentHeight
+                model: comboBox.popup.visible ? comboBox.delegateModel : null
+                currentIndex: comboBox.highlightedIndex
+                interactive: true
+
+            }
+        }
+
+
+        }
+    
+
 }
 
 /*##^##
