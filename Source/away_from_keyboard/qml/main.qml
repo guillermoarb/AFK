@@ -31,6 +31,14 @@ Window {
             task_lb.text = text
         }
 
+        function onStatusSetText(text){
+            status_lb.text = text
+        }
+
+        function onStatusSetColor(color){
+            status_clipped_rt.color = color
+        }
+
     }
 
     Rectangle {

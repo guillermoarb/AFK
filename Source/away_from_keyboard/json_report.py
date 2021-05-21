@@ -4,7 +4,7 @@ import math
 import os.path
 import pprint
 import os
-from tabulate import tabulate
+#from tabulate import tabulate
 
 class Report:
     def __init__(self):
@@ -54,24 +54,27 @@ class Report:
         else: #Update the item
             self.report_dic["days"][day_idx] = day
 
-    def report_add_issue(self, name, project):
-        activity = {}
-        activity["name"] = name
-        activity["project"] = project
-        activity["tasks"] = []
+    def report_add_issue(self, name, project, time):
+        issue = {}
+        issue["name"] = name
+        issue["project"] = project
+        issue["tasks"] = []
+        issue["time"] = time
 
-        activity_ind = self.issue_get_idx(name)
+        issue_ind = self.issue_get_idx(name)
 
-        if activity_ind == None:
-            self.report_dic["issues"].append(activity)
+        if issue_ind == None:
+            self.report_dic["issues"].append(issue)
 
-    def report_change_issue(self, name, new_name, project):
+    def report_set_issue(self, name, new_name, project, timer):
         
         activity_ind = self.issue_get_idx(name)
 
         if activity_ind != None:
             self.report_dic["issues"][activity_ind]["name"] = new_name
             self.report_dic["issues"][activity_ind]["project"] = project
+            self.report_dic["issues"][activity_ind]["time"] = timer.strftime("%H:%M:%S")
+
 
 
     def report_add_item(self, time, log, date, activity_name):
@@ -110,18 +113,15 @@ class Report:
             else: #Update the item
                 self.report_dic["issues"][activity_ind]["tasks"][item_idx] = item
 
-    def report_set_issue(self, issue_name, time):
+    def report_set_issue(self, name, new_name, project, timer):
+        
+        activity_ind = self.issue_get_idx(name)
 
-        issue_idx = self.issue_get_idx(issue_name)
+        if activity_ind != None:
+            self.report_dic["issues"][activity_ind]["name"] = new_name
+            self.report_dic["issues"][activity_ind]["project"] = project
+            self.report_dic["issues"][activity_ind]["time"] = timer.strftime("%H:%M:%S")
 
-        #If activity exist
-        if issue_idx != None:
-            error = "none"
-            self.report_dic["issues"][issue_idx]["time"] = time.strftime("%H:%M:%S")
-        else:
-            error = "not_found"
-
-        return error
 
     def issue_get_idx(self, issue_name):
 
@@ -264,7 +264,7 @@ class Report:
 
     def report_get_task_time(self, issue_name, task):
 
-        issue_time = datetime.time()
+        task_time = datetime.time()
         
         activity_idx = self.issue_get_idx(issue_name)
 
@@ -273,14 +273,29 @@ class Report:
 
             if task_idx != None:
                 act_time_split =  self.report_dic["issues"][activity_idx]["tasks"][task_idx]["time"].split(":")
-                issue_time = datetime.time(int(act_time_split[0]), int(act_time_split[1]), int(act_time_split[2]))
+                task_time = datetime.time(int(act_time_split[0]), int(act_time_split[1]), int(act_time_split[2]))
             else:
-                issue_time = datetime.time(0, 0, 0)
+                task_time = datetime.time(0, 0, 0)
+        else:
+            task_time = datetime.time(0, 0, 0)
+
+        return task_time
+            
+
+    def report_get_issue_time(self, issue_name):
+
+        issue_time = datetime.time()
+        
+        activity_idx = self.issue_get_idx(issue_name)
+
+        if activity_idx != None:
+            act_time_split =  self.report_dic["issues"][activity_idx]["time"].split(":")
+            issue_time = datetime.time(int(act_time_split[0]), int(act_time_split[1]), int(act_time_split[2]))
+
         else:
             issue_time = datetime.time(0, 0, 0)
 
         return issue_time
-            
 
     def json_report_open(self):
         os.system(f"code {self.json_rep_file_path}")

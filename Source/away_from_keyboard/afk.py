@@ -48,16 +48,26 @@ class State_Machine():
         # Increment counters
         self.one_min_task_sec_cnt = self.one_min_task_sec_cnt + sec_increment
 
-        #Check if screen is not locked
-        if (self.get_lock_status() == False):
-            # sec_Increment day timer
+        if(sys.platform == 'win32'):
+            #Check if screen is not locked
+            if (self.get_lock_status() == False):
+                # sec_Increment day timer
+                day_timer.add_time_sec(sec_increment)
+                task_timer.add_time_sec(sec_increment)
+                issue_timer.add_time_sec(sec_increment)
+                # Update day timer UI
+                backend.set_day_timer_text_ui(day_timer.time.strftime("%H:%M"))
+            else:
+                pass
+                #Log pause items, lock time
+        else:
             day_timer.add_time_sec(sec_increment)
             task_timer.add_time_sec(sec_increment)
+            issue_timer.add_time_sec(sec_increment)
             # Update day timer UI
             backend.set_day_timer_text_ui(day_timer.time.strftime("%H:%M"))
-        else:
-            pass
-            #Log pause items, lock time
+            backend.set_task_text_ui(task_text, task_timer)
+            backend.set_issue_text_ui(issue_text, issue_timer)
 
         #Call other tasks with greater times 
         if(self.one_min_task_sec_cnt >= 60):
@@ -124,6 +134,8 @@ class Backend(QObject):
     projectSetText = Signal(str)
     issueSetText = Signal(str)
     taskSetText = Signal(str)
+    statusSetText = Signal(str)
+    statusSetColor = Signal(str)
 
     #Menu mouse area click event
     @Slot()
@@ -182,7 +194,7 @@ class Backend(QObject):
             project_timer.time = project_timer.time.replace(0,0,0)
 
             #Add the issue here
-            report.report_add_issue(issue_text, project_text)
+            report.report_add_issue(issue_text, project_text, issue_timer.time.strftime("%H:%M:%S"))
 
         else:
 
@@ -190,23 +202,17 @@ class Backend(QObject):
             issue_text = issue
             task_text = task
 
-
-
-            #TODO get issue timer to continue it
-
-
-
-
-
-
+            #Not new issue, update info
             # Evaluate a change of project for the issue
             report_project = report.issue_get_project(issue)
 
             if ((report_project != None) and (report_project != project)):
                 # Update backend
                 project_text = project
-                #Update report
-                report.report_change_issue(issue_text, issue_text, project )
+
+            issue_timer.time = report.report_get_issue_time(issue)
+            report.report_set_issue(issue_text, issue_text, project_text, issue_timer.time)
+
 
             # The task is new
             if(report.issue_task_get_idx(issue, task) == None):
@@ -219,8 +225,8 @@ class Backend(QObject):
 
 
         # Update UI
-        self.set_issue_text_ui(issue_text)
-        self.set_task_text_ui(task_text)
+        self.set_issue_text_ui(issue_text, issue_timer)
+        self.set_task_text_ui(task_text, task_timer)
         self.set_project_text_ui(project_text)
         # Update issue and project
         report.report_update_task(  task_timer.time.strftime("%H:%M:%S"), 
@@ -228,6 +234,8 @@ class Backend(QObject):
                                     datetime.datetime.now().strftime("%m/%d/%y"), 
                                     issue_text )
 
+        self.set_status_text_ui("Added new info")
+        self.set_status_color_ui("#BF616A")
 
     def set_day_timer_text_ui(self,s):
         self.dayTimerSetText.emit(s)
@@ -235,15 +243,23 @@ class Backend(QObject):
     def set_project_text_ui(self, s):
         self.projectSetText.emit(s)
 
-    def set_issue_text_ui(self, s):
+    def set_issue_text_ui(self, s, timer):
+        s = self.attach_timer_to_str(s,timer)
         self.issueSetText.emit(s)
 
-    def set_task_text_ui(self,s):
+    def set_task_text_ui(self,s, timer):
+        s = self.attach_timer_to_str(s,timer)
         self.taskSetText.emit(s)
+
+    def set_status_text_ui(self,s):
+        self.statusSetText.emit(s)
+
+    def set_status_color_ui(self, s):
+        self.statusSetColor.emit(s)
 
     def update_report(self):
 
-#        report.report_add_issue(issue_text, project_text)
+        report.report_add_issue(issue_text, project_text, issue_timer.time.strftime("%H:%M:%S"))
 
         report.report_update_task(  task_timer.time.strftime("%H:%M:%S"), 
                                     task_text, 
@@ -255,6 +271,8 @@ class Backend(QObject):
 #        report.report_update_day(day_timer.time.strftime("%H:%M:%S"))
         report.report_print_json()
 
+    def attach_timer_to_str(self, s, timer):
+        return f'{s} - {timer.time.strftime("%H:%M")}'
 
 if __name__ == '__main__':
     #Init config values
@@ -265,7 +283,8 @@ if __name__ == '__main__':
     engine = QQmlApplicationEngine()
 
     #ctypes user32 API instance
-    user32 = ctypes.windll.User32
+    if(sys.platform == 'win32'):
+        user32 = ctypes.windll.User32
 
     #Prepare backends 
     console = Console()
@@ -298,8 +317,8 @@ if __name__ == '__main__':
     #Init UI
     backend.set_day_timer_text_ui("00:00")
     backend.set_project_text_ui("Project")
-    backend.set_issue_text_ui("Issue")
-    backend.set_task_text_ui("Task")
+    backend.set_issue_text_ui("Issue", issue_timer)
+    backend.set_task_text_ui("Task", task_timer)
 
     #Create, connect and start task timer 1 second
     timer_1s = QTimer()
