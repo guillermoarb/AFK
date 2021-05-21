@@ -171,29 +171,35 @@ class Backend(QObject):
         #Is empty ???
         #Is a valid value ???
 
-        # Is it a new issue or just new info for the actual ???
-
-        report_issue_idx = report.issue_get_idx(issue) 
-
-        if(report_issue_idx == None):
-            #Ok there is not an issue with that name
-
+        # Is it a new issue ???
+        if(report.issue_get_idx(issue)  == None):
             #Update backend
             issue_text = issue
             issue_timer.time = issue_timer.time.replace(0,0,0)
-
             task_text = task
             task_timer.time = task_timer.time.replace(0,0,0)
-
             project_text = project
             project_timer.time = project_timer.time.replace(0,0,0)
 
+            #Add the issue here
+            report.report_add_issue(issue_text, project_text)
+
         else:
 
-            # Not new issue, but update back end
+            # Not new issue, but is a valid issue, update
             issue_text = issue
+            task_text = task
 
-            # The issue is already in report, the project changed ???
+
+
+            #TODO get issue timer to continue it
+
+
+
+
+
+
+            # Evaluate a change of project for the issue
             report_project = report.issue_get_project(issue)
 
             if ((report_project != None) and (report_project != project)):
@@ -202,19 +208,13 @@ class Backend(QObject):
                 #Update report
                 report.report_change_issue(issue_text, issue_text, project )
 
-            # Same issue, is the task new ???
-            report_task_idx = report.issue_task_get_idx(issue, task)
-
-            if(report_task_idx == None):
-                #Update backend
-                task_text = task
+            # The task is new
+            if(report.issue_task_get_idx(issue, task) == None):
+                # New task clear the timer
                 task_timer.time = task_timer.time.replace(0,0,0)
 
-            # Same issue and a task was already in the report
+            # The task is not new, continue with logged time
             else:
-                # Update backend
-                task_text = task
-                self.set_task_text_ui(task)
                 task_timer.time = report.report_get_task_time(issue, task)
 
 
@@ -222,8 +222,7 @@ class Backend(QObject):
         self.set_issue_text_ui(issue_text)
         self.set_task_text_ui(task_text)
         self.set_project_text_ui(project_text)
-        # Update report
-        report.report_add_issue(issue_text, project_text)
+        # Update issue and project
         report.report_update_task(  task_timer.time.strftime("%H:%M:%S"), 
                                     task_text, 
                                     datetime.datetime.now().strftime("%m/%d/%y"), 
