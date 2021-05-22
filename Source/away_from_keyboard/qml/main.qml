@@ -556,19 +556,10 @@ Window {
 
                 delegate: ItemDelegate {
             id:itemDelegate
-            width: comboButton.width
+            width: comboBox.width
 
             background:Rectangle{
-                gradient: Gradient {
-                    GradientStop {
-                        position: 0.0
-                        color: itemDelegate.down ? "white" : "blue"
-                    }
-                    GradientStop {
-                        position: 1.0
-                        color: itemDelegate.down ? "yellow" : "orange"
-                    }
-                }
+                color:"green"
             }
 
             contentItem: Text {
@@ -577,11 +568,11 @@ Window {
 
                 horizontalAlignment: Text.AlignLeft
                 verticalAlignment: Text.AlignVCenter
-                font.pointSize: 11
-                font.family: "Arial"
+                font.pixelSize: 20
+                font.family: "Roboto"
                 color:  itemDelegate.down ? "black" : "white"
             }
-            highlighted: comboButton.highlightedIndex === index
+            highlighted: comboBox.highlightedIndex
 
         }
 
@@ -593,13 +584,16 @@ Window {
             ListElement { text: "Coconut"}
             ListElement { text: "Perro"}
             ListElement { text: "Gato"}
+            ListElement { text: "Coconut"}
+            ListElement { text: "Perro"}
+            ListElement { text: "Gato"}
         }
 
         popup: Popup {
             y: comboBox.height
             width: comboBox.width - 5
 
-            //implicitHeight: contentItem.implicitHeight -1
+            implicitHeight: contentItem.implicitHeight -1
             padding: 1
 
             background: Rectangle {
