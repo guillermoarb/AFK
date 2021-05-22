@@ -167,6 +167,11 @@ class Backend(QObject):
     def edit_close_ma_clicked(self):
         print("Edit close clicked")
     
+    @Slot(str, int)
+    def issue_ma_option_clicked(self, text, idx):
+        print(f"Issue combo box option selected: {text}, with index {idx}")
+
+
     # Edit dialog check button event
     # TODO this is not working !!!
     @Slot(str, str, str)

@@ -39,6 +39,7 @@ Window {
             status_clipped_rt.color = color
         }
 
+
     }
 
     Rectangle {
@@ -526,95 +527,103 @@ Window {
 
     }
 
-    ComboBox {
-        id: comboBox
-        x: 41
-        y: 287
-        width: 250
-        height: 25
-        font.pixelSize: 15
-        flat: true
-        editable: true
-        font.family: "Roboto"
-        
 
-
-
-        background: Rectangle {
-
-            radius: 4
-
-            color : "white"
-            height: comboBox.height
-            width: comboBox.width
-            smooth: true
-            border.width: 1
-            border.color: "white"
-
-
-        }
-
-                delegate: ItemDelegate {
-            id:itemDelegate
-            width: comboBox.width
-
-            background:Rectangle{
-                color:"green"
-            }
-
-            contentItem: Text {
-                text: modelData
-                elide: Text.ElideRight
-
-                horizontalAlignment: Text.AlignLeft
-                verticalAlignment: Text.AlignVCenter
-                font.pixelSize: 20
-                font.family: "Roboto"
-                color:  itemDelegate.down ? "black" : "white"
-            }
-            highlighted: comboBox.highlightedIndex
-
-        }
-
-        model: ListModel
-        {
-            id: cbItems
-            ListElement { text: "Banana"}
-            ListElement { text: "Apple" }
-            ListElement { text: "Coconut"}
-            ListElement { text: "Perro"}
-            ListElement { text: "Gato"}
-            ListElement { text: "Coconut"}
-            ListElement { text: "Perro"}
-            ListElement { text: "Gato"}
-        }
-
-        popup: Popup {
-            y: comboBox.height
-            width: comboBox.width - 5
-
-            implicitHeight: contentItem.implicitHeight -1
-            padding: 1
-
-            background: Rectangle {
-                border.color: "black"
-                radius: 2
-                color : "white"
-            }
-
-            contentItem: ListView {
-                //clip: true
-                implicitHeight: contentHeight
-                model: comboBox.popup.visible ? comboBox.delegateModel : null
-                currentIndex: comboBox.highlightedIndex
-                interactive: true
-
-            }
-        }
-
-
-        }
     
+
+Rectangle {
+    width: 200; height: 100
+
+    ListModel {
+        id: nameModel
+        ListElement { name: "Alice" }
+        ListElement { name: "Bob" }
+        ListElement { name: "Harry" }
+        ListElement { name: "Jane" }
+        ListElement { name: "Karen" }
+        ListElement { name: "Lionel" }
+        ListElement { name: "Victor" }
+        ListElement { name: "Wendy" }
+        ListElement { name: "Alice" }
+        ListElement { name: "Bob" }
+        ListElement { name: "Harry" }
+        ListElement { name: "Jane" }
+        ListElement { name: "Karen" }
+        ListElement { name: "Lionel" }
+        ListElement { name: "Victor" }
+        ListElement { name: "Wendy" }
+        ListElement { name: "Alice" }
+        ListElement { name: "Bob" }
+        ListElement { name: "Harry" }
+        ListElement { name: "Jane" }
+        ListElement { name: "Karen" }
+        ListElement { name: "Lionel" }
+        ListElement { name: "Victor" }
+        ListElement { name: "Wendy" }
+        ListElement { name: "Alice" }
+        ListElement { name: "Bob" }
+        ListElement { name: "Harry" }
+        ListElement { name: "Jane" }
+        ListElement { name: "Karen" }
+        ListElement { name: "Lionel" }
+        ListElement { name: "Victor" }
+        ListElement { name: "Wendy" }
+    }
+
+    Component {
+        id: nameDelegate
+        Text {
+            readonly property ListView __lv: ListView.view
+            width: parent.width
+            text: model.name;
+            color: "#3B4252"
+            font.pixelSize: 15
+            font.family: "Roboto"
+            MouseArea {
+                id: area_item
+                anchors.fill: parent
+                onClicked:
+                {
+                    __lv.currentIndex = index
+                    backend.issue_ma_option_clicked(model.name, model.index)
+                }
+
+            }
+
+        }
+    }
+
+    Rectangle {
+        anchors.fill: parent
+        border.color: "black"
+        color: "#ECEFF4"
+        //clip: true
+        //--> slide
+        ListView {
+            id: listView//--> hide
+            anchors.fill: parent
+            anchors.margins: 4
+            model: nameModel
+            delegate: nameDelegate
+            focus: true
+            clip: true
+            header: Rectangle {
+                color: "#4C566A"
+                width: parent.width
+                height: 8
+            }
+            highlight: Rectangle {
+                color: "#D8DEE9"
+                width: parent.width
+            }//<-- hide
+            preferredHighlightBegin: 0
+            preferredHighlightEnd: 10
+            highlightRangeMode: ListView.StrictlyEnforceRange
+
+        }
+        //<-- slide
+    }
+}
+
 
 }
 
