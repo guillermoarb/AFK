@@ -303,7 +303,7 @@ Window {
         x: 0
         y: 159
         width: 400
-        height: 204
+        height: 216
         color: "#ECEFF4"
         radius: 5
         anchors.verticalCenter: parent.verticalCenter
@@ -322,8 +322,8 @@ Window {
             border.color: "#00000000"
             anchors.left: parent.left
             anchors.top: parent.top
-            anchors.topMargin: 15
-            anchors.leftMargin: 15
+            anchors.topMargin: 10
+            anchors.leftMargin: 20
             Label {
                 id: edit_issue_lb
                 y: 5
@@ -338,64 +338,53 @@ Window {
                 font.family: "Roboto"
             }
         }
-
+        
         Rectangle {
-            id: edit_task_lb_rt
-            x: -75
-            y: -73
-            width: 50
-            height: 25
-            color: "#00000000"
-            border.color: "#00000000"
-            Label {
-                id: edit_task_lb
-                x: 10
-                y: -225
-                text: qsTr("Task")
-                font.pixelSize: 15
-                verticalAlignment: Text.AlignVCenter
-                font.family: "Roboto"
-            }
-        }
-
-        Rectangle {
-            id: issue_rt_tl
-            y: 87
+            id: task_rt_tl
             width: 200
             height: 35
-            border.color: "#2E3440"
-            border.width: 2
-            anchors.left: edit_issue_lb_rt.right
-            anchors.bottom: edit_issue_lb_rt.bottom
-            anchors.bottomMargin: 0
-            anchors.leftMargin: 15
+            color: "#D8DEE9"
+            border.width: 0
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: 131
+            anchors.topMargin: -270
             radius: 5
+            border.color: "#00000000"
 
             TextField {
-                id: issue_tl
+                id: task_tl
+                y: 12
                 width: 150
+
                 height: 25
-                color: "#3b4252"
+
+                placeholderText: qsTr("Task")
+                color: "#3B4252"
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 font.pixelSize: 15
                 anchors.leftMargin: 10
                 padding: 0
-                placeholderTextColor: "#4c566a"
-                selectionColor: "#bf616a"
+                rightPadding: 0
+                bottomPadding: 0
+                topPadding: 0
                 font.family: "Roboto"
-                selectedTextColor: "#eceff4"
-                selectByMouse: true
-                placeholderText: qsTr("Issue")
+                background: Rectangle {
+                    color: "#D8DEE9"
+                    radius:3
+                }
 
-               // background: Rectangle {
-                 //   border.color: "#2E3440"
-                   // border.width: 2
-                    //radius: 3
-               // }
+                selectByMouse: true
+                selectedTextColor: "#ECEFF4"
+                selectionColor: "#BF616A"
+                placeholderTextColor: "#4C566A"
+
+
+
             }
             Image {
-                id: issue_tl_arrow_down_image
+                id: task_tl_arrow_down_image
 
                 width: 16
                 height: 16
@@ -406,18 +395,18 @@ Window {
                 fillMode: Image.PreserveAspectFit
 
                 MouseArea {
-                    id: issue_tl_arrow_down_ma
+                    id: task_tl_arrow_down_ma
                     anchors.fill: parent
                     onClicked: {
-                        issue_cb_rt.visible = true
-                        issue_tl_arrow_up_image.visible = true
-                        issue_tl_arrow_down_image.visible = false
+                        task_cb_rt.visible = true
+                        task_tl_arrow_up_image.visible = true
+                        task_tl_arrow_down_image.visible = false
                     }
                 }
             }
 
             Image {
-                id: issue_tl_arrow_up_image
+                id: task_tl_arrow_up_image
 
                 width: 16
                 height: 16
@@ -428,14 +417,36 @@ Window {
                 fillMode: Image.PreserveAspectFit
                 visible: false
                 MouseArea {
-                    id: issue_tl_up_down_ma
+                    id: task_tl_up_down_ma
                     anchors.fill: parent
                     onClicked: {
-                        issue_cb_rt.visible = false
-                        issue_tl_arrow_down_image.visible = true
-                        issue_tl_arrow_up_image.visible = false
+                        task_cb_rt.visible = false
+                        task_tl_arrow_down_image.visible = true
+                        task_tl_arrow_up_image.visible = false
                     }
                 }
+            }
+        }
+
+
+
+        Rectangle {
+            id: edit_task_lb_rt
+            width: 50
+            height: 25
+            color: "#00000000"
+            border.color: "#00000000"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.topMargin: 150
+            anchors.leftMargin: 20
+            Label {
+                id: edit_task_lb
+                text: qsTr("Task")
+                anchors.fill: parent
+                font.pixelSize: 15
+                verticalAlignment: Text.AlignVCenter
+                font.family: "Roboto"
             }
         }
 
@@ -516,9 +527,86 @@ Window {
         }
 
 
+        Rectangle {
+            id: project_cb_rt
+            width: 200; height: 150
+            anchors.left: project_rt_tl.left
+            anchors.top: project_rt_tl.bottom
+            anchors.leftMargin: 0
+            anchors.topMargin: -5
+            visible: false
+            radius: 10
+
+
+            ListModel {
+                id: project_cb_Model
+                ListElement { name: "Alice" }
+                ListElement { name: "Bob" }
+                ListElement { name: "Harry" }
+                ListElement { name: "Jane" }
+                ListElement { name: "Karen" }
+                ListElement { name: "Lionel" }
+                ListElement { name: "Victor" }
+
+            }
+
+            Component {
+                id: project_cb_Delegate
+                Text {
+                    readonly property ListView __lv: ListView.view
+                    width: parent.width
+                    text: model.name;
+                    color: "#4C566A"
+                    font.pixelSize: 15
+                    font.family: "Roboto"
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked:
+                        {
+                            __lv.currentIndex = index
+                            backend.project_ma_option_clicked(model.name, model.index)
+                            project_tl.text = model.name
+                            project_cb_rt.visible = false
+                            project_tl_arrow_down_image.visible = true
+                            project_tl_arrow_up_image.visible = false
+                        }
+                    }
+
+                }
+            }
+
+            Rectangle {
+                border.color: "#D8DEE9"
+                anchors.fill: parent
+                color: "#D8DEE9"
+                radius: 4
+                //clip: true
+                //--> slide
+                ListView {
+                    id: project_listView//--> hide
+                    anchors.fill: parent
+                    anchors.margins: 4
+                    model: project_cb_Model
+                    delegate: project_cb_Delegate
+                    focus: true
+                    clip: true
+                    highlight: Rectangle {
+                        color: "#81A1C1"
+                        width: parent.width
+                    }//<-- hide
+                    preferredHighlightBegin: 0
+                    preferredHighlightEnd: 150
+                    highlightRangeMode: ListView.StrictlyEnforceRange
+
+                }
+                //<-- slide
+            }
+        }
+
+
 
         TextField {
-            id: task_tl
+            id: task_tl_old
             x: -19
             y: -155
             width: 200
@@ -568,7 +656,7 @@ Window {
                 objectName: "menu_ma"
                 anchors.fill: parent
                 onClicked: {
-                    backend.edit_check_ma_clicked(qsTr(project_tl.text), qsTr(issue_tl.text), qsTr(task_tl.text))
+                    backend.edit_check_ma_clicked(qsTr(issue_tl.text), qsTr(project_tl.text), qsTr(task_tl.text))
                     // Close the edit dialog
                     edit_container.visible = false
                 }
@@ -640,18 +728,21 @@ Window {
 
         Rectangle {
             id: project_rt_tl
-            x: 80
-            y: 105
-            width: 228
+            width: 200
             height: 35
-            color: "#00000000"
-            border.width: 2
+            color: "#D8DEE9"
+            border.width: 0
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: 15
+            anchors.topMargin: 105
             radius: 5
+            border.color: "#00000000"
 
             TextField {
                 id: project_tl
                 y: 12
-                width: 200
+                width: 150
                 height: 25
 
                 placeholderText: qsTr("Project")
@@ -666,7 +757,7 @@ Window {
                 topPadding: 0
                 font.family: "Roboto"
                 background: Rectangle {
-                    color: "#ECEFF4"
+                    color: "#D8DEE9"
                     radius:3
                 }
 
@@ -678,34 +769,176 @@ Window {
 
 
             }
+
+            Image {
+                id: project_tl_arrow_down_image
+
+                width: 16
+                height: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                source: "../images/arrow-down-sign-to-navigate.png"
+                anchors.rightMargin: 5
+                fillMode: Image.PreserveAspectFit
+
+                MouseArea {
+                    id: project_tl_arrow_down_ma
+                    anchors.fill: parent
+                    onClicked: {
+                        project_cb_rt.visible = true
+                        project_tl_arrow_up_image.visible = true
+                        project_tl_arrow_down_image.visible = false
+                    }
+                }
+            }
+
+            Image {
+                id: project_tl_arrow_up_image
+
+                width: 16
+                height: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                source: "../images/navigate-up-arrow.png"
+                anchors.rightMargin: 5
+                fillMode: Image.PreserveAspectFit
+                visible: false
+                MouseArea {
+                    id: project_tl_up_down_ma
+                    anchors.fill: parent
+                    onClicked: {
+                        project_cb_rt.visible = false
+                        project_tl_arrow_down_image.visible = true
+                        project_tl_arrow_up_image.visible = false
+                    }
+                }
+            }
         }
 
 
 
         Rectangle {
             id: edit_project_lb_rt
-            x: 80
-            y: 84
-            width: 60
-            height: 15
-            color: "#ECEFF4"
-            border.width: 0
+            width: 50
+            height: 25
+            color: "#00000000"
+            border.color: "#00000000"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.topMargin: 80
+            anchors.leftMargin: 20
 
             Label {
                 id: edit_project_lb
                 text: qsTr("Project")
                 anchors.fill: parent
                 font.pixelSize: 15
-                horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                anchors.rightMargin: 0
-                anchors.bottomMargin: -2
-                anchors.leftMargin: 0
-                anchors.topMargin: 3
+                font.bold: false
                 font.family: "Roboto"
             }
         }
+
+        Rectangle {
+            id: issue_rt_tl
+            width: 200
+            height: 35
+            color: "#D8DEE9"
+            border.width: 0
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.leftMargin: 15
+            anchors.topMargin: 35
+            radius: 5
+            border.color: "#00000000"
+
+            TextField {
+                id: issue_tl
+                y: 12
+                width: 150
+
+                height: 25
+
+                placeholderText: qsTr("Issue")
+                color: "#3B4252"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                font.pixelSize: 15
+                anchors.leftMargin: 10
+                padding: 0
+                rightPadding: 0
+                bottomPadding: 0
+                topPadding: 0
+                font.family: "Roboto"
+                background: Rectangle {
+                    color: "#D8DEE9"
+                    radius:3
+                }
+
+                selectByMouse: true
+                selectedTextColor: "#ECEFF4"
+                selectionColor: "#BF616A"
+                placeholderTextColor: "#4C566A"
+
+
+
+            }
+            Image {
+                id: issue_tl_arrow_down_image
+
+                width: 16
+                height: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                source: "../images/arrow-down-sign-to-navigate.png"
+                anchors.rightMargin: 5
+                fillMode: Image.PreserveAspectFit
+
+                MouseArea {
+                    id: issue_tl_arrow_down_ma
+                    anchors.fill: parent
+                    onClicked: {
+                        issue_cb_rt.visible = true
+                        issue_tl_arrow_up_image.visible = true
+                        issue_tl_arrow_down_image.visible = false
+
+                        //Hide things behind
+                        edit_project_lb_rt.visible = false
+                        project_rt_tl.visible = false
+                    }
+                }
+            }
+
+            Image {
+                id: issue_tl_arrow_up_image
+
+                width: 16
+                height: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                source: "../images/navigate-up-arrow.png"
+                anchors.rightMargin: 5
+                fillMode: Image.PreserveAspectFit
+                visible: false
+                MouseArea {
+                    id: issue_tl_up_down_ma
+                    anchors.fill: parent
+                    onClicked: {
+                        issue_cb_rt.visible = false
+                        issue_tl_arrow_down_image.visible = true
+                        issue_tl_arrow_up_image.visible = false
+
+                        //Unhide things behind
+                        edit_project_lb_rt.visible = true
+                        project_rt_tl.visible = true
+
+                    }
+                }
+            }
+        }
     }
+
+
 
 
     
@@ -713,7 +946,8 @@ Window {
     Rectangle {
         x: 68
         y: 726
-        width: 200; height: 150
+        width: 200;
+        height: 150
 
         ListModel {
             id: nameModel
@@ -807,7 +1041,7 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50"}D{i:2;locked:true}D{i:24}D{i:23}D{i:26}D{i:27}D{i:33;locked:true}
-D{i:56}D{i:59}D{i:62}D{i:61}D{i:80}
+    D{i:0;formeditorColor:"#4c4e50"}D{i:2;locked:true}D{i:25}D{i:34;locked:true}D{i:66}
+D{i:69}D{i:72}D{i:81}D{i:90;locked:true}D{i:105;locked:true}D{i:106;locked:true}
 }
 ##^##*/
