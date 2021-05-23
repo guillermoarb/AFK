@@ -4,7 +4,8 @@ import QtQuick.Controls 2.15
 
 Window {
     id: window
-    width: 400
+    width: 600
+
     height: 1000
     visible: true
     color: "#00000000"
@@ -49,7 +50,7 @@ Window {
         width: 400
         height: 100
         visible: true
-        radius: 5
+        radius: 3
         border.color: "#00000000"
         border.width: 1
         anchors.verticalCenter: parent.verticalCenter
@@ -286,12 +287,12 @@ Window {
             }
         }
 
-            DragHandler {
-                        onActiveChanged: if(active){
-                                             window.startSystemMove()
-                                             //internal.ifMaximizedWindowRestore()
-                                         }
-                    }
+        DragHandler {
+            onActiveChanged: if(active){
+                                 window.startSystemMove()
+                                 //internal.ifMaximizedWindowRestore()
+                             }
+        }
 
 
 
@@ -302,67 +303,16 @@ Window {
         x: 0
         y: 159
         width: 400
-        height: 100
-        color: "#ffffff"
+        height: 204
+        color: "#ECEFF4"
         radius: 5
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
-        visible: false
+        visible: true
 
 
 
-        TextField {
-            id: project_tl
-            y: 10
-            width: 200
-            height: 25
 
-            placeholderText: qsTr("Project")
-            color: "#3B4252"
-            anchors.verticalCenter: edit_project_lb_rt.verticalCenter
-            anchors.left: edit_project_lb_rt.right
-            font.pixelSize: 15
-            padding: 0
-            rightPadding: 0
-            bottomPadding: 0
-            topPadding: 0
-            anchors.leftMargin: 20
-            anchors.verticalCenterOffset: 0
-            font.family: "Roboto"
-            background: Rectangle {
-                color: "#ECEFF4"
-                radius:3
-            }
-
-            selectByMouse: true
-            selectedTextColor: "#ECEFF4"
-            selectionColor: "#BF616A"
-            placeholderTextColor: "#4C566A"
-
-
-
-        }
-
-        Rectangle {
-            id: edit_project_lb_rt
-            width: 50
-            height: 25
-            color: "#00000000"
-            border.color: "#00000000"
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.leftMargin: 10
-            anchors.topMargin: 10
-
-            Label {
-                id: edit_project_lb
-                text: qsTr("Project")
-                anchors.fill: parent
-                font.pixelSize: 15
-                verticalAlignment: Text.AlignVCenter
-                font.family: "Roboto"
-            }
-        }
 
         Rectangle {
             id: edit_issue_lb_rt
@@ -371,13 +321,37 @@ Window {
             color: "#00000000"
             border.color: "#00000000"
             anchors.left: parent.left
-            anchors.top: edit_project_lb_rt.bottom
-            anchors.leftMargin: 10
-            anchors.topMargin: 5
+            anchors.top: parent.top
+            anchors.topMargin: 15
+            anchors.leftMargin: 15
             Label {
                 id: edit_issue_lb
+                y: 5
+                width: 45
+                height: 15
                 text: qsTr("Issue")
-                anchors.fill: parent
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                font.pixelSize: 15
+                verticalAlignment: Text.AlignVCenter
+                anchors.leftMargin: 0
+                font.family: "Roboto"
+            }
+        }
+
+        Rectangle {
+            id: edit_task_lb_rt
+            x: -75
+            y: -73
+            width: 50
+            height: 25
+            color: "#00000000"
+            border.color: "#00000000"
+            Label {
+                id: edit_task_lb
+                x: 10
+                y: -225
+                text: qsTr("Task")
                 font.pixelSize: 15
                 verticalAlignment: Text.AlignVCenter
                 font.family: "Roboto"
@@ -385,60 +359,173 @@ Window {
         }
 
         Rectangle {
-            id: edit_task_lb_rt
-            width: 50
-            height: 25
-            color: "#00000000"
-            border.color: "#00000000"
-            anchors.left: parent.left
-            anchors.top: edit_issue_lb_rt.bottom
-            anchors.leftMargin: 10
-            anchors.topMargin: 5
-            Label {
-                id: edit_task_lb
-                text: qsTr("Task")
-                anchors.fill: parent
+            id: issue_rt_tl
+            y: 87
+            width: 200
+            height: 35
+            border.color: "#2E3440"
+            border.width: 2
+            anchors.left: edit_issue_lb_rt.right
+            anchors.bottom: edit_issue_lb_rt.bottom
+            anchors.bottomMargin: 0
+            anchors.leftMargin: 15
+            radius: 5
+
+            TextField {
+                id: issue_tl
+                width: 150
+                height: 25
+                color: "#3b4252"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
                 font.pixelSize: 15
-                verticalAlignment: Text.AlignVCenter
+                anchors.leftMargin: 10
+                padding: 0
+                placeholderTextColor: "#4c566a"
+                selectionColor: "#bf616a"
                 font.family: "Roboto"
+                selectedTextColor: "#eceff4"
+                selectByMouse: true
+                placeholderText: qsTr("Issue")
+
+               // background: Rectangle {
+                 //   border.color: "#2E3440"
+                   // border.width: 2
+                    //radius: 3
+               // }
+            }
+            Image {
+                id: issue_tl_arrow_down_image
+
+                width: 16
+                height: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                source: "../images/arrow-down-sign-to-navigate.png"
+                anchors.rightMargin: 5
+                fillMode: Image.PreserveAspectFit
+
+                MouseArea {
+                    id: issue_tl_arrow_down_ma
+                    anchors.fill: parent
+                    onClicked: {
+                        issue_cb_rt.visible = true
+                        issue_tl_arrow_up_image.visible = true
+                        issue_tl_arrow_down_image.visible = false
+                    }
+                }
+            }
+
+            Image {
+                id: issue_tl_arrow_up_image
+
+                width: 16
+                height: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                source: "../images/navigate-up-arrow.png"
+                anchors.rightMargin: 5
+                fillMode: Image.PreserveAspectFit
+                visible: false
+                MouseArea {
+                    id: issue_tl_up_down_ma
+                    anchors.fill: parent
+                    onClicked: {
+                        issue_cb_rt.visible = false
+                        issue_tl_arrow_down_image.visible = true
+                        issue_tl_arrow_up_image.visible = false
+                    }
+                }
             }
         }
 
-        TextField {
-            id: issue_tl
-            y: 10
-            width: 200
-            height: 25
-            color: "#3b4252"
-            anchors.verticalCenter: edit_issue_lb_rt.verticalCenter
-            anchors.left: edit_issue_lb_rt.right
-            font.pixelSize: 15
-            padding: 0
-            placeholderTextColor: "#4c566a"
-            anchors.leftMargin: 20
-            selectionColor: "#bf616a"
-            font.family: "Roboto"
-            selectedTextColor: "#eceff4"
-            selectByMouse: true
-            placeholderText: qsTr("Issue")
-            background: Rectangle {
-                color: "#eceff4"
-                radius: 3
+        Rectangle {
+            id: issue_cb_rt
+            width: 200; height: 150
+            anchors.left: issue_rt_tl.left
+            anchors.top: issue_rt_tl.bottom
+            anchors.leftMargin: 0
+            anchors.topMargin: -5
+            visible: false
+            radius: 10
+
+
+            ListModel {
+                id: issue_cb_Model
+                ListElement { name: "Alice" }
+                ListElement { name: "Bob" }
+                ListElement { name: "Harry" }
+                ListElement { name: "Jane" }
+                ListElement { name: "Karen" }
+                ListElement { name: "Lionel" }
+                ListElement { name: "Victor" }
+
             }
-            anchors.verticalCenterOffset: 1
+
+            Component {
+                id: issue_cb_Delegate
+                Text {
+                    readonly property ListView __lv: ListView.view
+                    width: parent.width
+                    text: model.name;
+                    color: "#4C566A"
+                    font.pixelSize: 15
+                    font.family: "Roboto"
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked:
+                        {
+                            __lv.currentIndex = index
+                            backend.issue_ma_option_clicked(model.name, model.index)
+                            issue_tl.text = model.name
+                            issue_cb_rt.visible = false
+                            issue_tl_arrow_down_image.visible = true
+                            issue_tl_arrow_up_image.visible = false
+                        }
+                    }
+
+                }
+            }
+
+            Rectangle {
+                border.color: "#D8DEE9"
+                anchors.fill: parent
+                color: "#D8DEE9"
+                radius: 4
+                //clip: true
+                //--> slide
+                ListView {
+                    id: listView//--> hide
+                    anchors.fill: parent
+                    anchors.margins: 4
+                    model: issue_cb_Model
+                    delegate: issue_cb_Delegate
+                    focus: true
+                    clip: true
+                    highlight: Rectangle {
+                        color: "#81A1C1"
+                        width: parent.width
+                    }//<-- hide
+                    preferredHighlightBegin: 0
+                    preferredHighlightEnd: 150
+                    highlightRangeMode: ListView.StrictlyEnforceRange
+
+                }
+                //<-- slide
+            }
         }
+
+
 
         TextField {
             id: task_tl
-            y: 71
+            x: -19
+            y: -155
             width: 200
             height: 25
             color: "#3b4252"
-            anchors.verticalCenter: edit_task_lb_rt.verticalCenter
-            anchors.left: edit_task_lb_rt.right
             font.pixelSize: 15
             padding: 0
-            anchors.leftMargin: 20
             placeholderTextColor: "#4c566a"
             selectionColor: "#bf616a"
             font.family: "Roboto"
@@ -449,18 +536,17 @@ Window {
                 color: "#eceff4"
                 radius: 3
             }
-            anchors.verticalCenterOffset: 0
         }
 
         Rectangle {
             id: edit_check_rt
-            x: 288
+            x: 241
             width: 80
             height: 25
             anchors.right: parent.right
             anchors.top: parent.top
-            anchors.rightMargin: 10
-            anchors.topMargin: 10
+            anchors.rightMargin: 79
+            anchors.topMargin: 376
             radius: 3
             color: "#A3BE8C"
 
@@ -517,6 +603,10 @@ Window {
                 id: edit_close_ma
                 objectName: "menu_ma"
                 anchors.fill: parent
+                anchors.rightMargin: -8
+                anchors.bottomMargin: -61
+                anchors.leftMargin: 8
+                anchors.topMargin: 61
                 onClicked: {
                     backend.edit_close_ma_clicked()
                     // Close the edit dialog
@@ -525,110 +615,199 @@ Window {
             }
         }
 
+        Rectangle {
+            id: add_issue_rtbt
+            y: 13
+            width: 50
+            height: 30
+            color: "#8FBCBB"
+            radius: 3
+            anchors.verticalCenter: issue_rt_tl.verticalCenter
+            anchors.left: issue_rt_tl.right
+            anchors.leftMargin: 50
+            Text {
+                id: add_issue_rtbt_text
+                text: qsTr("Add")
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: 15
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.family: "Roboto"
+                color: "#4C566A"
+            }
+        }
+
+        Rectangle {
+            id: project_rt_tl
+            x: 80
+            y: 105
+            width: 228
+            height: 35
+            color: "#00000000"
+            border.width: 2
+            radius: 5
+
+            TextField {
+                id: project_tl
+                y: 12
+                width: 200
+                height: 25
+
+                placeholderText: qsTr("Project")
+                color: "#3B4252"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                font.pixelSize: 15
+                anchors.leftMargin: 10
+                padding: 0
+                rightPadding: 0
+                bottomPadding: 0
+                topPadding: 0
+                font.family: "Roboto"
+                background: Rectangle {
+                    color: "#ECEFF4"
+                    radius:3
+                }
+
+                selectByMouse: true
+                selectedTextColor: "#ECEFF4"
+                selectionColor: "#BF616A"
+                placeholderTextColor: "#4C566A"
+
+
+
+            }
+        }
+
+
+
+        Rectangle {
+            id: edit_project_lb_rt
+            x: 80
+            y: 84
+            width: 60
+            height: 15
+            color: "#ECEFF4"
+            border.width: 0
+
+            Label {
+                id: edit_project_lb
+                text: qsTr("Project")
+                anchors.fill: parent
+                font.pixelSize: 15
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.rightMargin: 0
+                anchors.bottomMargin: -2
+                anchors.leftMargin: 0
+                anchors.topMargin: 3
+                font.family: "Roboto"
+            }
+        }
     }
 
 
     
 
-Rectangle {
-    width: 200; height: 100
+    Rectangle {
+        x: 68
+        y: 726
+        width: 200; height: 150
 
-    ListModel {
-        id: nameModel
-        ListElement { name: "Alice" }
-        ListElement { name: "Bob" }
-        ListElement { name: "Harry" }
-        ListElement { name: "Jane" }
-        ListElement { name: "Karen" }
-        ListElement { name: "Lionel" }
-        ListElement { name: "Victor" }
-        ListElement { name: "Wendy" }
-        ListElement { name: "Alice" }
-        ListElement { name: "Bob" }
-        ListElement { name: "Harry" }
-        ListElement { name: "Jane" }
-        ListElement { name: "Karen" }
-        ListElement { name: "Lionel" }
-        ListElement { name: "Victor" }
-        ListElement { name: "Wendy" }
-        ListElement { name: "Alice" }
-        ListElement { name: "Bob" }
-        ListElement { name: "Harry" }
-        ListElement { name: "Jane" }
-        ListElement { name: "Karen" }
-        ListElement { name: "Lionel" }
-        ListElement { name: "Victor" }
-        ListElement { name: "Wendy" }
-        ListElement { name: "Alice" }
-        ListElement { name: "Bob" }
-        ListElement { name: "Harry" }
-        ListElement { name: "Jane" }
-        ListElement { name: "Karen" }
-        ListElement { name: "Lionel" }
-        ListElement { name: "Victor" }
-        ListElement { name: "Wendy" }
-    }
+        ListModel {
+            id: nameModel
+            ListElement { name: "Alice" }
+            ListElement { name: "Bob" }
+            ListElement { name: "Harry" }
+            ListElement { name: "Jane" }
+            ListElement { name: "Karen" }
+            ListElement { name: "Lionel" }
+            ListElement { name: "Victor" }
 
-    Component {
-        id: nameDelegate
-        Text {
-            readonly property ListView __lv: ListView.view
-            width: parent.width
-            text: model.name;
-            color: "#3B4252"
-            font.pixelSize: 15
-            font.family: "Roboto"
-            MouseArea {
-                id: area_item
-                anchors.fill: parent
-                onClicked:
-                {
-                    __lv.currentIndex = index
-                    backend.issue_ma_option_clicked(model.name, model.index)
+        }
+
+        Component {
+            id: nameDelegate
+            Text {
+                readonly property ListView __lv: ListView.view
+                width: parent.width
+                text: model.name;
+                color: "#3B4252"
+                font.pixelSize: 15
+                font.family: "Roboto"
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked:
+                    {
+                        __lv.currentIndex = index
+                        backend.issue_ma_option_clicked(model.name, model.index)
+                        textField.text = model.name
+                    }
                 }
 
             }
-
         }
+
+        Rectangle {
+            border.color: "black"
+            anchors.fill: parent
+            color: "#ECEFF4"
+            //clip: true
+            //--> slide
+            ListView {
+                id: issue_cb_listView//--> hide
+                anchors.fill: parent
+                anchors.margins: 4
+                model: nameModel
+                delegate: nameDelegate
+                focus: true
+                clip: true
+                highlight: Rectangle {
+                    color: "#D8DEE9"
+                    width: parent.width
+                }//<-- hide
+                preferredHighlightBegin: 0
+                preferredHighlightEnd: 150
+                highlightRangeMode: ListView.StrictlyEnforceRange
+
+            }
+            //<-- slide
+        }
+    }
+
+    TextField {
+        id: textField
+        x: 32
+        y: 656
+        width: 194
+        height: 40
+        placeholderText: qsTr("Text Field")
     }
 
     Rectangle {
-        anchors.fill: parent
-        border.color: "black"
-        color: "#ECEFF4"
-        //clip: true
-        //--> slide
-        ListView {
-            id: listView//--> hide
-            anchors.fill: parent
-            anchors.margins: 4
-            model: nameModel
-            delegate: nameDelegate
-            focus: true
-            clip: true
-            header: Rectangle {
-                color: "#4C566A"
-                width: parent.width
-                height: 8
-            }
-            highlight: Rectangle {
-                color: "#D8DEE9"
-                width: parent.width
-            }//<-- hide
-            preferredHighlightBegin: 0
-            preferredHighlightEnd: 10
-            highlightRangeMode: ListView.StrictlyEnforceRange
+        id: rectangle
+        x: 107
+        y: 936
+        width: 85
+        height: 48
+        color: "#ffffff"
 
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+            onClicked: {
+                nameModel.append({"name": textField.text})
+            }
         }
-        //<-- slide
     }
-}
 
 
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50";formeditorZoom:0.9}D{i:2;locked:true}
+    D{i:0;formeditorColor:"#4c4e50"}D{i:2;locked:true}D{i:24}D{i:23}D{i:26}D{i:27}D{i:33;locked:true}
+D{i:56}D{i:59}D{i:62}D{i:61}D{i:80}
 }
 ##^##*/
