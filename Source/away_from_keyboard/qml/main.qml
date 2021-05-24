@@ -4,12 +4,12 @@ import QtQuick.Controls 2.15
 
 Window {
     id: window
-    width: 600
+    width: 1000
 
     height: 1000
     visible: true
     color: "#00000000"
-    title: qsTr("Hello World")
+    title: qsTr("AFK")
     flags: Qt.Window | Qt.FramelessWindowHint
 
 
@@ -50,7 +50,8 @@ Window {
         width: 400
         height: 100
         visible: true
-        radius: 3
+        radius: 5
+        color: "#ECEFF4"
         border.color: "#00000000"
         border.width: 1
         anchors.verticalCenter: parent.verticalCenter
@@ -59,7 +60,7 @@ Window {
 
         Rectangle {
             id: day_timer_rt
-            width: 148
+            width: 129
             height: 50
             color: "#00000000"
             border.color: "#00000000"
@@ -71,6 +72,7 @@ Window {
 
             Label {
                 id: day_timer_lb
+                font.family: "Moon"
                 color: "#2e3440"
                 text: qsTr("01:23")
                 anchors.fill: parent
@@ -80,10 +82,8 @@ Window {
                 topPadding: 4
                 clip: true
                 padding: 0
-                font.weight: Font.Black
-                font.bold: false
                 styleColor: "#b62323"
-                font.family: "Roboto Black"
+                
                 
                 MouseArea {
                     id: day_timer_ma
@@ -300,14 +300,12 @@ Window {
 
     Rectangle {
         id: edit_container
-        x: 0
-        y: 159
-        width: 400
-        height: 216
+        x: 300
+        y: 93
+        width: 338
+        height: 351
         color: "#ECEFF4"
         radius: 5
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
         visible: true
 
 
@@ -322,8 +320,8 @@ Window {
             border.color: "#00000000"
             anchors.left: parent.left
             anchors.top: parent.top
-            anchors.topMargin: 10
-            anchors.leftMargin: 20
+            anchors.topMargin: 60
+            anchors.leftMargin: 25
             Label {
                 id: edit_issue_lb
                 y: 5
@@ -334,6 +332,7 @@ Window {
                 anchors.left: parent.left
                 font.pixelSize: 15
                 verticalAlignment: Text.AlignVCenter
+                font.styleName: "Regular"
                 anchors.leftMargin: 0
                 font.family: "Roboto"
             }
@@ -341,14 +340,15 @@ Window {
         
         Rectangle {
             id: task_rt_tl
-            width: 200
             height: 35
             color: "#D8DEE9"
             border.width: 0
             anchors.left: parent.left
+            anchors.right: parent.right
             anchors.top: parent.top
-            anchors.leftMargin: 131
-            anchors.topMargin: -270
+            anchors.rightMargin: 20
+            anchors.topMargin: 230
+            anchors.leftMargin: 20
             radius: 5
             border.color: "#00000000"
 
@@ -438,8 +438,8 @@ Window {
             border.color: "#00000000"
             anchors.left: parent.left
             anchors.top: parent.top
-            anchors.topMargin: 150
-            anchors.leftMargin: 20
+            anchors.topMargin: 205
+            anchors.leftMargin: 25
             Label {
                 id: edit_task_lb
                 text: qsTr("Task")
@@ -452,24 +452,27 @@ Window {
 
         Rectangle {
             id: issue_cb_rt
-            width: 200; height: 150
+            height: 150
             anchors.left: issue_rt_tl.left
+            anchors.right: issue_rt_tl.right
             anchors.top: issue_rt_tl.bottom
+            anchors.rightMargin: 0
             anchors.leftMargin: 0
             anchors.topMargin: -5
             visible: false
             radius: 10
+            z:3
 
 
             ListModel {
                 id: issue_cb_Model
-                ListElement { name: "Alice" }
-                ListElement { name: "Bob" }
-                ListElement { name: "Harry" }
-                ListElement { name: "Jane" }
-                ListElement { name: "Karen" }
-                ListElement { name: "Lionel" }
-                ListElement { name: "Victor" }
+                ListElement { name: "Issue Alice" }
+                ListElement { name: "Issue Bob" }
+                ListElement { name: "Issue Harry" }
+                ListElement { name: "Issue Jane" }
+                ListElement { name: "Issue Karen" }
+                ListElement { name: "Issue Lionel" }
+                ListElement { name: "Issue Victor" }
 
             }
 
@@ -529,9 +532,12 @@ Window {
 
         Rectangle {
             id: project_cb_rt
-            width: 200; height: 150
+            height: 150
+            z:2
             anchors.left: project_rt_tl.left
+            anchors.right: project_rt_tl.right
             anchors.top: project_rt_tl.bottom
+            anchors.rightMargin: 0
             anchors.leftMargin: 0
             anchors.topMargin: -5
             visible: false
@@ -540,13 +546,13 @@ Window {
 
             ListModel {
                 id: project_cb_Model
-                ListElement { name: "Alice" }
-                ListElement { name: "Bob" }
-                ListElement { name: "Harry" }
-                ListElement { name: "Jane" }
-                ListElement { name: "Karen" }
-                ListElement { name: "Lionel" }
-                ListElement { name: "Victor" }
+                ListElement { name: "Project Alice" }
+                ListElement { name: "Project Bob" }
+                ListElement { name: "Project Harry" }
+                ListElement { name: "Project Jane" }
+                ListElement { name: "Project Karen" }
+                ListElement { name: "Project Lionel" }
+                ListElement { name: "Project Victor" }
 
             }
 
@@ -583,7 +589,7 @@ Window {
                 //clip: true
                 //--> slide
                 ListView {
-                    id: project_listView//--> hide
+                    id: project_cb_listView//--> hide
                     anchors.fill: parent
                     anchors.margins: 4
                     model: project_cb_Model
@@ -603,139 +609,194 @@ Window {
             }
         }
 
-
-
-        TextField {
-            id: task_tl_old
-            x: -19
-            y: -155
-            width: 200
-            height: 25
-            color: "#3b4252"
-            font.pixelSize: 15
-            padding: 0
-            placeholderTextColor: "#4c566a"
-            selectionColor: "#bf616a"
-            font.family: "Roboto"
-            selectedTextColor: "#eceff4"
-            selectByMouse: true
-            placeholderText: qsTr("Task")
-            background: Rectangle {
-                color: "#eceff4"
-                radius: 3
-            }
-        }
-
         Rectangle {
-            id: edit_check_rt
-            x: 241
-            width: 80
-            height: 25
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.rightMargin: 79
-            anchors.topMargin: 376
-            radius: 3
-            color: "#A3BE8C"
+            id: task_cb_rt
+            height: 150
+            anchors.left: task_rt_tl.left
+            anchors.right: task_rt_tl.right
+            anchors.top: task_rt_tl.bottom
+            anchors.rightMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: -5
+            visible: false
+            radius: 10
+            z:1
 
-            Image {
-                id: check_im
-                width: 20
-                height: 20
-                anchors.verticalCenter: parent.verticalCenter
-                source: "../images/check.png"
-                anchors.horizontalCenter: parent.horizontalCenter
-                sourceSize.height: 24
-                sourceSize.width: 24
-                mirror: false
-                fillMode: Image.PreserveAspectFit
+
+            ListModel {
+                id: task_cb_Model
+                ListElement { name: "Alice" }
+                ListElement { name: "Bob" }
+                ListElement { name: "Harry" }
+                ListElement { name: "Jane" }
+                ListElement { name: "Karen" }
+                ListElement { name: "Lionel" }
+                ListElement { name: "Victor" }
+
             }
 
-            MouseArea {
-                id: edit_check_ma
-                objectName: "menu_ma"
-                anchors.fill: parent
-                onClicked: {
-                    backend.edit_check_ma_clicked(qsTr(issue_tl.text), qsTr(project_tl.text), qsTr(task_tl.text))
-                    // Close the edit dialog
-                    edit_container.visible = false
+            Component {
+                id: task_cb_Delegate
+                Text {
+                    readonly property ListView __lv: ListView.view
+                    width: parent.width
+                    text: model.name;
+                    color: "#4C566A"
+                    font.pixelSize: 15
+                    font.family: "Roboto"
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked:
+                        {
+                            __lv.currentIndex = index
+                            backend.task_ma_option_clicked(model.name, model.index)
+                            task_tl.text = model.name
+                            task_cb_rt.visible = false
+                            task_tl_arrow_down_image.visible = true
+                            task_tl_arrow_up_image.visible = false
+                        }
+                    }
+
                 }
             }
-        }
 
-        Rectangle {
-            id: edit_close_rt
-            x: 310
-            width: 80
-            height: 25
-            color: "#BF616A"
-            radius: 3
-            anchors.right: parent.right
-            anchors.top: edit_check_rt.bottom
-            anchors.topMargin: 5
-            anchors.rightMargin: 10
-
-            Image {
-                id: close_im
-                x: -11
-                y: 31
-                width: 20
-                height: 20
-                anchors.verticalCenter: parent.verticalCenter
-                source: "images/close.png"
-                anchors.horizontalCenter: parent.horizontalCenter
-                fillMode: Image.PreserveAspectFit
-            }
-
-            MouseArea {
-                id: edit_close_ma
-                objectName: "menu_ma"
+            Rectangle {
+                border.color: "#D8DEE9"
                 anchors.fill: parent
-                anchors.rightMargin: -8
-                anchors.bottomMargin: -61
-                anchors.leftMargin: 8
-                anchors.topMargin: 61
-                onClicked: {
-                    backend.edit_close_ma_clicked()
-                    // Close the edit dialog
-                    edit_container.visible = false
+                color: "#D8DEE9"
+                radius: 4
+                //clip: true
+                //--> slide
+                ListView {
+                    id: task_cb_listView//--> hide
+                    anchors.fill: parent
+                    anchors.margins: 4
+                    model: task_cb_Model
+                    delegate: task_cb_Delegate
+                    focus: true
+                    clip: true
+                    highlight: Rectangle {
+                        color: "#81A1C1"
+                        width: parent.width
+                    }//<-- hide
+                    preferredHighlightBegin: 0
+                    preferredHighlightEnd: 150
+                    highlightRangeMode: ListView.StrictlyEnforceRange
+
                 }
+                //<-- slide
             }
         }
 
+
+
         Rectangle {
-            id: add_issue_rtbt
-            y: 13
-            width: 50
+            id: update_edit_rt_bt
+            y: 365
+            z: 0
+            width: 108
             height: 30
             color: "#8FBCBB"
             radius: 3
-            anchors.verticalCenter: issue_rt_tl.verticalCenter
-            anchors.left: issue_rt_tl.right
-            anchors.leftMargin: 50
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+            anchors.leftMargin: 20
             Text {
-                id: add_issue_rtbt_text
-                text: qsTr("Add")
+                id: update_edit_rt_bt_text
+                text: qsTr("Update")
                 anchors.verticalCenter: parent.verticalCenter
                 font.pixelSize: 15
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.family: "Roboto"
-                color: "#4C566A"
+                color: "#2E3440"
             }
+
+            MouseArea {
+                id: update_edit_ma
+                anchors.fill: parent
+                hoverEnabled: true
+
+                onEntered: {
+                    update_edit_rt_bt.color = "#80a9a8"
+                }
+
+                onExited: {
+                    update_edit_rt_bt.color = "#8FBCBB"
+
+                }
+
+                onClicked: {
+                    update_edit_rt_bt.color = "#8FBCBB"
+                    backend.edit_update_ma_clicked(qsTr(issue_tl.text), qsTr(project_tl.text), qsTr(task_tl.text))
+                    // Close the edit dialog
+                    edit_container.visible = false
+                }
+            }
+
+
+        }
+
+        Rectangle {
+            id: cancel_edit_rt_bt
+            y: 365
+            z: 0
+            width: 108
+            height: 30
+            color: "#BF616A"
+            radius: 3
+            anchors.verticalCenter: update_edit_rt_bt.verticalCenter
+            anchors.left: update_edit_rt_bt.right
+            anchors.leftMargin: 20
+            Text {
+                id: cancel_edit_rt_bt_text
+                text: qsTr("Cancel")
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: 15
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+                font.family: "Roboto"
+                color: "#2E3440"
+            }
+
+            MouseArea {
+                id: cancel_edit_ma
+                anchors.fill: parent
+                hoverEnabled: true
+
+                onEntered: {
+                    cancel_edit_rt_bt.color = "#ab575f"
+                }
+
+                onExited: {
+                    cancel_edit_rt_bt.color = "#BF616A"
+
+                }
+
+                onClicked: {
+                    cancel_edit_rt_bt.color = "#BF616A"
+                    backend.edit_close_ma_clicked()
+                    // Close the edit dialog
+                    edit_container.visible = false
+                }
+            }
+
         }
 
         Rectangle {
             id: project_rt_tl
-            width: 200
             height: 35
             color: "#D8DEE9"
             border.width: 0
             anchors.left: parent.left
+            anchors.right: parent.right
             anchors.top: parent.top
-            anchors.leftMargin: 15
-            anchors.topMargin: 105
+            anchors.rightMargin: 20
+            anchors.leftMargin: 20
+            anchors.topMargin: 155
             radius: 5
             border.color: "#00000000"
 
@@ -825,8 +886,8 @@ Window {
             border.color: "#00000000"
             anchors.left: parent.left
             anchors.top: parent.top
-            anchors.topMargin: 80
-            anchors.leftMargin: 20
+            anchors.topMargin: 130
+            anchors.leftMargin: 25
 
             Label {
                 id: edit_project_lb
@@ -841,16 +902,18 @@ Window {
 
         Rectangle {
             id: issue_rt_tl
-            width: 200
             height: 35
             color: "#D8DEE9"
             border.width: 0
             anchors.left: parent.left
+            anchors.right: parent.right
             anchors.top: parent.top
-            anchors.leftMargin: 15
-            anchors.topMargin: 35
+            anchors.rightMargin: 20
+            anchors.leftMargin: 20
+            anchors.topMargin: 85
             radius: 5
             border.color: "#00000000"
+            z:3
 
             TextField {
                 id: issue_tl
@@ -902,9 +965,6 @@ Window {
                         issue_tl_arrow_up_image.visible = true
                         issue_tl_arrow_down_image.visible = false
 
-                        //Hide things behind
-                        edit_project_lb_rt.visible = false
-                        project_rt_tl.visible = false
                     }
                 }
             }
@@ -928,13 +988,21 @@ Window {
                         issue_tl_arrow_down_image.visible = true
                         issue_tl_arrow_up_image.visible = false
 
-                        //Unhide things behind
-                        edit_project_lb_rt.visible = true
-                        project_rt_tl.visible = true
 
                     }
                 }
             }
+        }
+
+        Text {
+            id: text1
+            y: 14
+            color: "#2e3440"
+            text: qsTr("Update information")
+            anchors.left: parent.left
+            font.pixelSize: 30
+            anchors.leftMargin: 25
+            font.family: "Roboto Black"
         }
     }
 
@@ -1041,7 +1109,8 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50"}D{i:2;locked:true}D{i:25}D{i:34;locked:true}D{i:66}
-D{i:69}D{i:72}D{i:81}D{i:90;locked:true}D{i:105;locked:true}D{i:106;locked:true}
+    D{i:0;formeditorColor:"#4c4e50"}D{i:5;locked:true}D{i:2;locked:true}D{i:26;locked:true}
+D{i:28;locked:true}D{i:30;locked:true}D{i:33;locked:true}D{i:34}D{i:102;locked:true}
+D{i:117;locked:true}D{i:118;locked:true}
 }
 ##^##*/

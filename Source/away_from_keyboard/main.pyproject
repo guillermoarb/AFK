@@ -1,3 +1,3 @@
 {
-    "files": ["fonts/Roboto-Bold.ttf","fonts/Roboto-Black.ttf","main.qml","main.py","images/close.png","images/menu_lines.png","images/menu.png","images/menu_vertical.png","qml/main.qml","images/arrow-down-sign-to-navigate.png"]
+    "files": ["images/arrow-down-sign-to-navigate.png","main.qml","qml/main.qml","images/close.png","fonts/Moon Bold.otf","images/menu.png","fonts/Moon Light.otf","images/menu_lines.png","fonts/Roboto-Black.ttf","fonts/Roboto-Bold.ttf","main.py","images/menu_vertical.png","fonts/Moon  Bold.ttf"]
 }

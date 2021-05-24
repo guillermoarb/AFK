@@ -171,11 +171,19 @@ class Backend(QObject):
     def issue_ma_option_clicked(self, text, idx):
         print(f"Issue combo box option selected: {text}, with index {idx}")
 
+    @Slot(str, int)
+    def project_ma_option_clicked(self, text, idx):
+        print(f"Project combo box option selected: {text}, with index {idx}")
+
+    @Slot(str, int)
+    def task_ma_option_clicked(self, text, idx):
+        print(f"Task combo box option selected: {text}, with index {idx}")
+
 
     # Edit dialog check button event
     # TODO this is not working !!!
     @Slot(str, str, str)
-    def edit_check_ma_clicked(self, project, issue , task):
+    def edit_update_ma_clicked(self, project, issue , task):
         global project_text
         global issue_text
         global task_text 
