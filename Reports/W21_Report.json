@@ -1,0 +1,32 @@
+{
+    "days": [],
+    "issues": [
+        {
+            "name": "it_01",
+            "project": "pt_01",
+            "tasks": [
+                {
+                    "date": "05/27/21",
+                    "log": "tt_01",
+                    "time": "00:09:00"
+                }
+            ],
+            "time": "00:01:00"
+        },
+        {
+            "name": "",
+            "project": "NUEVO ITEM",
+            "tasks": [
+                {
+                    "date": "05/27/21",
+                    "log": "",
+                    "time": "00:11:15"
+                }
+            ],
+            "time": "00:00:00"
+        }
+    ],
+    "week_number": 0,
+    "worked_time_hr": 0,
+    "worked_time_min": 0
+}

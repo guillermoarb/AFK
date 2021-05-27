@@ -136,6 +136,7 @@ class Backend(QObject):
     taskSetText = Signal(str)
     statusSetText = Signal(str)
     statusSetColor = Signal(str)
+    issueComboBoxAddItem = Signal(str)
 
     #Menu mouse area click event
     @Slot()
@@ -162,6 +163,17 @@ class Backend(QObject):
     def project_ma_clicked(self, text):
         print(f"Project mouse area clicked {text}")
 
+    # Edit dialog opened
+    @Slot()
+    def edit_dialog_opened(self):
+        print(f"Edit dialog opened")
+        #Populate all issues in combo box
+        self.addItem_IssueCB("NUEVO ITEM")
+
+    def addItem_IssueCB(self, item):
+        self.issueComboBoxAddItem.emit(item)
+
+
     # Edit dialog close button event
     @Slot()
     def edit_close_ma_clicked(self):
@@ -179,6 +191,17 @@ class Backend(QObject):
     def task_ma_option_clicked(self, text, idx):
         print(f"Task combo box option selected: {text}, with index {idx}")
 
+    @Slot(str)
+    def issue_te_editingFinished(self, text):
+        print(f"Issue Text Edit finished with {text}")
+
+    @Slot(str)
+    def project_te_editingFinished(self, text):
+        print(f"Project Text Edit finished with {text}")
+
+    @Slot(str)
+    def task_te_editingFinished(self, text):
+        print(f"Task Text Edit finished with {text}")
 
     # Edit dialog check button event
     # TODO this is not working !!!

@@ -13,6 +13,10 @@ Window {
     flags: Qt.Window | Qt.FramelessWindowHint
 
 
+
+
+
+
     Connections{
         target: backend
         //Python signal is setText, sintax is strange
@@ -40,6 +44,10 @@ Window {
             status_clipped_rt.color = color
         }
 
+        function onIssueComboBoxAddItem(cb_item){
+            issue_cb_Model.append({ name: cb_item})
+        }
+
 
     }
 
@@ -56,6 +64,23 @@ Window {
         border.width: 1
         anchors.verticalCenter: parent.verticalCenter
         anchors.horizontalCenter: parent.horizontalCenter
+
+        // Key events in app_container
+
+        focus: true
+        Keys.onPressed: {
+            // Open edit window
+            if ((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_E)){
+                edit_container.visible = true
+                backend.edit_dialog_opened()
+            }
+            // Save all
+            if ((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_S)){
+                // edit_container.visible = true
+            }
+        }
+
+
 
 
         Rectangle {
@@ -379,6 +404,10 @@ Window {
                 selectedTextColor: "#ECEFF4"
                 selectionColor: "#BF616A"
                 placeholderTextColor: "#4C566A"
+
+                onEditingFinished: {
+                    backend.task_te_editingFinished(task_tl.text)
+                }
 
 
 
@@ -827,6 +856,16 @@ Window {
                 selectionColor: "#BF616A"
                 placeholderTextColor: "#4C566A"
 
+                onEditingFinished: {
+                    backend.project_te_editingFinished(project_tl.text)
+                }
+
+                focus: true
+                Keys.onPressed: {
+                    if (event.key === Qt.Key_Return){
+                        edit_container.visible = false
+                    }
+                }
 
 
             }
@@ -942,6 +981,17 @@ Window {
                 selectedTextColor: "#ECEFF4"
                 selectionColor: "#BF616A"
                 placeholderTextColor: "#4C566A"
+
+                onEditingFinished: {
+                    backend.issue_te_editingFinished(issue_tl.text)
+                }
+
+                focus: true
+                Keys.onPressed: {
+                    if (event.key === Qt.Key_Return){
+                        edit_container.visible = false
+                    }
+                }
 
 
 
@@ -1104,13 +1154,32 @@ Window {
         }
     }
 
+    Rectangle {
+        id: rectangle1
+        x: 505
+        y: 684
+        width: 200
+        height: 200
+        color: "#eceff4"
+        radius: 5
+
+        Label {
+            id: label
+            x: 5
+            y: 21
+            width: 162
+            height: 31
+            text: qsTr("Edit  ctrl + e")
+            font.pixelSize: 15
+            font.family: "Roboto"
+        }
+    }
+
 
 }
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50"}D{i:5;locked:true}D{i:2;locked:true}D{i:26;locked:true}
-D{i:28;locked:true}D{i:30;locked:true}D{i:33;locked:true}D{i:34}D{i:102;locked:true}
-D{i:117;locked:true}D{i:118;locked:true}
+    D{i:0;formeditorColor:"#4c4e50"}D{i:33;locked:true}D{i:102;locked:true}
 }
 ##^##*/
