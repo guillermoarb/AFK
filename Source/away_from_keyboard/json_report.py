@@ -321,19 +321,19 @@ class Report:
 
         return today_time
 
-    def activity_get_all(self):
+    def issue_get_all(self):
         activities_array = []
         for activity in self.report_dic["issues"]:
             activities_array.append(activity["name"])
 
         return activities_array
 
-    def task_get_all(self, activity):
+    def task_get_all(self, issue):
         tasks_array = []
 
-        activity_idx = self.issue_get_idx(activity)
+        issue_idx = self.issue_get_idx(issue)
 
-        for task in self.report_dic["issues"][activity_idx]["tasks"]:
+        for task in self.report_dic["issues"][issue_idx]["tasks"]:
             tasks_array.append(task["log"])
 
         return tasks_array

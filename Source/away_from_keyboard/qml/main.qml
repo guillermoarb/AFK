@@ -48,6 +48,14 @@ Window {
             issue_cb_Model.append({ name: cb_item})
         }
 
+        function onTaskComboBoxAddItem(cb_item){
+            task_cb_Model.append({ name: cb_item})
+        }
+
+        function onProjectComboBoxAddItem(cb_item){
+            project_cb_Model.append({ name: cb_item})
+        }
+
 
     }
 
@@ -495,13 +503,13 @@ Window {
 
             ListModel {
                 id: issue_cb_Model
-                ListElement { name: "Issue Alice" }
-                ListElement { name: "Issue Bob" }
-                ListElement { name: "Issue Harry" }
-                ListElement { name: "Issue Jane" }
-                ListElement { name: "Issue Karen" }
-                ListElement { name: "Issue Lionel" }
-                ListElement { name: "Issue Victor" }
+                //ListElement { name: "Issue Alice" }
+                //ListElement { name: "Issue Bob" }
+                //ListElement { name: "Issue Harry" }
+                //ListElement { name: "Issue Jane" }
+                //ListElement { name: "Issue Karen" }
+                //ListElement { name: "Issue Lionel" }
+                //ListElement { name: "Issue Victor" }
 
             }
 
@@ -575,13 +583,13 @@ Window {
 
             ListModel {
                 id: project_cb_Model
-                ListElement { name: "Project Alice" }
-                ListElement { name: "Project Bob" }
-                ListElement { name: "Project Harry" }
-                ListElement { name: "Project Jane" }
-                ListElement { name: "Project Karen" }
-                ListElement { name: "Project Lionel" }
-                ListElement { name: "Project Victor" }
+                //ListElement { name: "Project Alice" }
+                //ListElement { name: "Project Bob" }
+                //ListElement { name: "Project Harry" }
+                //ListElement { name: "Project Jane" }
+                //ListElement { name: "Project Karen" }
+                //ListElement { name: "Project Lionel" }
+                //ListElement { name: "Project Victor" }
 
             }
 
@@ -654,13 +662,13 @@ Window {
 
             ListModel {
                 id: task_cb_Model
-                ListElement { name: "Alice" }
-                ListElement { name: "Bob" }
-                ListElement { name: "Harry" }
-                ListElement { name: "Jane" }
-                ListElement { name: "Karen" }
-                ListElement { name: "Lionel" }
-                ListElement { name: "Victor" }
+                //ListElement { name: "Alice" }
+                //ListElement { name: "Bob" }
+                //ListElement { name: "Harry" }
+                //ListElement { name: "Jane" }
+                //ListElement { name: "Karen" }
+                //ListElement { name: "Lionel" }
+                //ListElement { name: "Victor" }
 
             }
 

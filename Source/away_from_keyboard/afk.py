@@ -137,6 +137,8 @@ class Backend(QObject):
     statusSetText = Signal(str)
     statusSetColor = Signal(str)
     issueComboBoxAddItem = Signal(str)
+    taskComboBoxAddItem = Signal(str)
+    projectComboBoxAddItem = Signal(str)
 
     #Menu mouse area click event
     @Slot()
@@ -168,11 +170,28 @@ class Backend(QObject):
     def edit_dialog_opened(self):
         print(f"Edit dialog opened")
         #Populate all issues in combo box
-        self.addItem_IssueCB("NUEVO ITEM")
+        issues = report.issue_get_all()
+
+        for issue in issues:
+            print(f"Issues {issue}")
+            self.addItem_IssueCB(issue)
+        
 
     def addItem_IssueCB(self, item):
         self.issueComboBoxAddItem.emit(item)
 
+    def addItem_ProjectCB(self, item):
+        self.projectComboBoxAddItem.emit(item)
+
+    def addItem_TaskCB(self, item):
+        self.taskComboBoxAddItem.emit(item)
+
+    def update_task_combobox(self, issue):
+        tasks = report.task_get_all(issue)
+        print(f"Tasks {tasks}")
+
+        for task in tasks:
+            self.addItem_TaskCB(task)
 
     # Edit dialog close button event
     @Slot()
@@ -182,10 +201,12 @@ class Backend(QObject):
     @Slot(str, int)
     def issue_ma_option_clicked(self, text, idx):
         print(f"Issue combo box option selected: {text}, with index {idx}")
+        self.update_task_combobox(text)
 
     @Slot(str, int)
     def project_ma_option_clicked(self, text, idx):
         print(f"Project combo box option selected: {text}, with index {idx}")
+        
 
     @Slot(str, int)
     def task_ma_option_clicked(self, text, idx):
@@ -194,6 +215,7 @@ class Backend(QObject):
     @Slot(str)
     def issue_te_editingFinished(self, text):
         print(f"Issue Text Edit finished with {text}")
+        self.update_task_combobox(text)
 
     @Slot(str)
     def project_te_editingFinished(self, text):
