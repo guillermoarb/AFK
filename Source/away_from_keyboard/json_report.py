@@ -15,7 +15,9 @@ class Report:
         self.report_dic = {}
 
         self.today = datetime.datetime.now()
-        self.report_update_week()
+        #self.report_update_week()
+        self.week = self.today.isocalendar()[1]
+
         
         self.json_rep_file_path = "W" + str(self.week) + "_Report.json"
         self.json_rep_file_path = os.path.join(folder_name, self.json_rep_file_path)
@@ -29,30 +31,63 @@ class Report:
 
         #Load actual json report
         if os.path.isfile(self.json_rep_file_path):
+            print(f"JSON Report {self.json_rep_file_path}")
             with open(self.json_rep_file_path, "r") as json_file:
+                #TODO Validate the document, is empty, is a valid JSON report ???
                 self.report_dic = json.loads(json_file.read())
         #Or create a new dictionary for reporting
         else:
-            self.report_dic["week_number"] = 0
+            self.report_dic["week_number"] = self.week
             self.report_dic["worked_time_hr"] = 0
             self.report_dic["worked_time_min"] = 0
             self.report_dic["issues"] = []
-            self.report_dic["days"] = []
+            # Avoid the need of creating and dummy day
+            self.report_dic["days"] = [{"name":"None", "time":"00:00:00"}]
 
-    def report_update_day(self, time_counter):        
+            #Set the fixed information
+            self.set_today()
+
+    def set_today(self):        
         day = {}
-        day["date"] = self.today.strftime("%m%d%y")
+        day["date"] = self.today.strftime("%m/%d/%y")
         day["name"] = self.today.strftime("%A")
-
-        seconds = self.report_counter_to_sec(time_counter)
-        day["worked_time_hr"], day["worked_time_min"] = self.report_sec_to_hr_min(seconds)
 
         day_idx = self.day_get_idx(day["name"])
         #If item don't exist add the item
         if day_idx == None:
             self.report_dic["days"].append(day)
-        else: #Update the item
-            self.report_dic["days"][day_idx] = day
+
+    def today_update_time(self, time):
+        #Get the actual day
+        day_idx = self.day_get_idx(self.today.strftime("%A"))
+        #Check if the day exist
+        if day_idx != None:
+            self.report_dic["days"][day_idx]["time"] = time
+
+    def today_get_time(self):
+        today_time = datetime.time()
+        # Get today index
+        day_name = self.today.strftime("%A")
+        day_idx = self.day_get_idx(day_name)
+
+        #If item exist add the item
+        if day_idx != None:
+
+            #Try to get time parts
+            try:
+                time_parts = self.report_dic["days"][day_idx]["time"].split(":")
+                #Format timer object
+                today_time = datetime.time(int(time_parts[0]), int(time_parts[1]), int(time_parts[2]))
+            except:
+                today_time = datetime.time(0,0,0)
+
+        else:
+            today_time = datetime.time(0,0,0)
+
+        print(f"Today time get {today_time}, Index {day_idx}, Day name {day_name}")
+
+        return today_time
+
 
     def report_add_issue(self, name, project, time):
         issue = {}
@@ -60,9 +95,9 @@ class Report:
         issue["project"] = project
         issue["tasks"] = []
         issue["time"] = time
-
+        #Get the issue location
         issue_ind = self.issue_get_idx(name)
-
+        #Look if the issue doesn't exist
         if issue_ind == None:
             self.report_dic["issues"].append(issue)
 
@@ -159,11 +194,15 @@ class Report:
         day_idx = 0
 
         for day in self.report_dic["days"]:
-            if day["name"] == day_name:
-                incidence = True
-                break
+            try: 
+                if day["name"] == day_name:
+                    incidence = True
+                    break
 
-            day_idx = day_idx + 1
+                day_idx = day_idx + 1
+
+            except:
+                day_idx = None
 
         if incidence == False:
             day_idx = None 
@@ -218,7 +257,7 @@ class Report:
 
     def report_update_week(self):
         self.week = self.today.isocalendar()[1]
-        self.report_dic["week_number"] = self.week
+        #self.report_dic["week_number"] = self.week
 
 
     def report_update_worked_time(self):
@@ -228,7 +267,7 @@ class Report:
 
         for activity in self.report_dic["issues"]:
             for item in activity["tasks"]:
-                time_seconds = self.report_counter_to_sec(item["time"])
+                time_seconds = self.time_str2int_seconds(item["time"])
                 #Total week time in seconds
                 total_week_time_seconds = total_week_time_seconds + time_seconds
                 #Total activity time in seconds
@@ -250,7 +289,26 @@ class Report:
         self.report_dic["worked_time_hr"] = week_time_hours
         self.report_dic["worked_time_min"] = week_time_minutes
 
-    def report_counter_to_sec(self, counter):
+    def week_update_worked_time(self):
+
+        total_week_time_seconds = 0
+
+        # Add the time for all the week days
+        for day in self.report_dic["days"]:
+            day_time_seconds = self.time_str2int_seconds(day["time"])
+            total_week_time_seconds = total_week_time_seconds + day_time_seconds
+
+        # Convert total time to hrs and minutes
+        hours = math.trunc(total_week_time_seconds / 3600)
+        minutes = math.trunc((total_week_time_seconds % 3600) / 60)
+
+        #Add to report dictionary
+        self.report_dic["worked_time"] = datetime.time(hours,minutes,0).strftime("%H:%M:%S")
+        self.report_dic["worked_time_hr"] = hours
+        self.report_dic["worked_time_min"] = minutes
+
+
+    def time_str2int_seconds(self, counter):
         time_parts = counter.split(":")
         time_seconds = (int(time_parts[0]) * 3600) + (int(time_parts[1]) * 60) + int(time_parts[2])
 
@@ -301,32 +359,19 @@ class Report:
         os.system(f"code {self.json_rep_file_path}")
 
 
-    def report_get_today_time(self):
-        today_time = datetime.time()
-        today_hr = 0
-        today_min = 0
-        day_name = self.today.strftime("%A")
-        day_idx = self.day_get_idx(day_name)
-
-        #If item don't exist add the item
-        if day_idx != None:
-            today_hr = self.report_dic["days"][day_idx]["worked_time_hr"]
-            today_min = self.report_dic["days"][day_idx]["worked_time_min"]
-
-        else:
-            today_hr = 0
-            today_min = 0
-             
-        today_time = datetime.time(today_hr, today_min, 0)
-
-        return today_time
-
     def issue_get_all(self):
-        activities_array = []
-        for activity in self.report_dic["issues"]:
-            activities_array.append(activity["name"])
+        issues_array = []
+        for issue in self.report_dic["issues"]:
+            issues_array.append(issue["name"])
 
-        return activities_array
+        return issues_array
+
+    def project_get_all(self):
+        projects_array = []
+        for project in self.report_dic["issues"]:
+            projects_array.append(project["project"])
+
+        return projects_array
 
     def task_get_all(self, issue):
         tasks_array = []
@@ -340,7 +385,7 @@ class Report:
 
     def report_generate_report(self):
         #Update the information before printing
-        self.report_update_worked_time()
+        #self.report_update_worked_time()
         #Get activity logs and time
         rows = []
         txt_dictionary = {}
@@ -379,10 +424,3 @@ class Report:
             md_file.write( tabulate( rows, headers="firstrow", tablefmt = "github" , numalign="left")   )
 
         os.system(f"code {self.md_rep_file_path}")
-
-
-
-
-
-
-

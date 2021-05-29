@@ -56,6 +56,28 @@ Window {
             project_cb_Model.append({ name: cb_item})
         }
 
+        function onTaskComboBoxClear(){
+            task_cb_Model.clear()
+        }
+
+        function onProjectComboBoxClear(){
+            project_cb_Model.clear()
+        }
+
+        function onIssueComboBoxClear(){
+            issue_cb_Model.clear()
+        }
+
+        function onEditDialogValidation(error){
+            if (error == "None"){
+                // Close the edit dialog
+                edit_container.visible = false
+                edit_container.focus = false
+                // Open / focus main app container
+                app_container.focus = true
+            }
+        }
+
 
     }
 
@@ -339,7 +361,7 @@ Window {
         height: 351
         color: "#ECEFF4"
         radius: 5
-        visible: true
+        visible: false
 
 
 
@@ -767,9 +789,8 @@ Window {
 
                 onClicked: {
                     update_edit_rt_bt.color = "#8FBCBB"
+                    // Send info to backend for validation, backend will close the dialog if the update is right
                     backend.edit_update_ma_clicked(qsTr(issue_tl.text), qsTr(project_tl.text), qsTr(task_tl.text))
-                    // Close the edit dialog
-                    edit_container.visible = false
                 }
             }
 
@@ -818,6 +839,11 @@ Window {
                     backend.edit_close_ma_clicked()
                     // Close the edit dialog
                     edit_container.visible = false
+                    edit_container.focus = false
+                    // Open / focus main container
+                    app_container.focus = true
+
+
                 }
             }
 
@@ -1069,98 +1095,11 @@ Window {
 
     
 
-    Rectangle {
-        x: 68
-        y: 726
-        width: 200;
-        height: 150
 
-        ListModel {
-            id: nameModel
-            ListElement { name: "Alice" }
-            ListElement { name: "Bob" }
-            ListElement { name: "Harry" }
-            ListElement { name: "Jane" }
-            ListElement { name: "Karen" }
-            ListElement { name: "Lionel" }
-            ListElement { name: "Victor" }
 
-        }
 
-        Component {
-            id: nameDelegate
-            Text {
-                readonly property ListView __lv: ListView.view
-                width: parent.width
-                text: model.name;
-                color: "#3B4252"
-                font.pixelSize: 15
-                font.family: "Roboto"
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked:
-                    {
-                        __lv.currentIndex = index
-                        backend.issue_ma_option_clicked(model.name, model.index)
-                        textField.text = model.name
-                    }
-                }
 
-            }
-        }
 
-        Rectangle {
-            border.color: "black"
-            anchors.fill: parent
-            color: "#ECEFF4"
-            //clip: true
-            //--> slide
-            ListView {
-                id: issue_cb_listView//--> hide
-                anchors.fill: parent
-                anchors.margins: 4
-                model: nameModel
-                delegate: nameDelegate
-                focus: true
-                clip: true
-                highlight: Rectangle {
-                    color: "#D8DEE9"
-                    width: parent.width
-                }//<-- hide
-                preferredHighlightBegin: 0
-                preferredHighlightEnd: 150
-                highlightRangeMode: ListView.StrictlyEnforceRange
-
-            }
-            //<-- slide
-        }
-    }
-
-    TextField {
-        id: textField
-        x: 32
-        y: 656
-        width: 194
-        height: 40
-        placeholderText: qsTr("Text Field")
-    }
-
-    Rectangle {
-        id: rectangle
-        x: 107
-        y: 936
-        width: 85
-        height: 48
-        color: "#ffffff"
-
-        MouseArea {
-            id: mouseArea
-            anchors.fill: parent
-            onClicked: {
-                nameModel.append({"name": textField.text})
-            }
-        }
-    }
 
     Rectangle {
         id: rectangle1
@@ -1170,7 +1109,8 @@ Window {
         height: 200
         color: "#eceff4"
         radius: 5
-
+        visible: false
+        
         Label {
             id: label
             x: 5

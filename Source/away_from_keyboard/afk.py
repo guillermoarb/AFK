@@ -25,6 +25,7 @@ class State_Machine():
 
     def __init__(self):
         self.state = "not_init"
+        #report.set_today()
 
     def get_lock_status(self):
         #Get foreground window ID
@@ -43,7 +44,7 @@ class State_Machine():
         return lock_status
 
     def one_sec_task(self):
-        sec_increment = 15  #Set to 1 for 1 sec
+        sec_increment = 1  #Set to 1 for 1 sec
 
         # Increment counters
         self.one_min_task_sec_cnt = self.one_min_task_sec_cnt + sec_increment
@@ -139,6 +140,12 @@ class Backend(QObject):
     issueComboBoxAddItem = Signal(str)
     taskComboBoxAddItem = Signal(str)
     projectComboBoxAddItem = Signal(str)
+    taskComboBoxClear = Signal()
+    projectComboBoxClear = Signal()
+    issueComboBoxClear = Signal()
+    editDialogValidation = Signal(str)
+
+
 
     #Menu mouse area click event
     @Slot()
@@ -165,23 +172,48 @@ class Backend(QObject):
     def project_ma_clicked(self, text):
         print(f"Project mouse area clicked {text}")
 
-    # Edit dialog opened
+    # Edit_dialog opened
     @Slot()
     def edit_dialog_opened(self):
         print(f"Edit dialog opened")
         #Populate all issues in combo box
+        self.issue_combobox_clear()
+        self.issue_combobox_update()
+
+        #Populate all projects in combo box
+        self.project_combobox_clear()
+        self.project_combobox_update()
+
+
+    
+    def addItem_IssueCB(self, issue):
+        self.issueComboBoxAddItem.emit(issue)
+    
+    def issue_combobox_clear(self):
+        self.issueComboBoxClear.emit()
+
+    def issue_combobox_update(self):
         issues = report.issue_get_all()
+        print(f"Issues {issues}")
 
         for issue in issues:
-            print(f"Issues {issue}")
             self.addItem_IssueCB(issue)
-        
-
-    def addItem_IssueCB(self, item):
-        self.issueComboBoxAddItem.emit(item)
 
     def addItem_ProjectCB(self, item):
         self.projectComboBoxAddItem.emit(item)
+
+    def project_combobox_update(self):
+        projects = report.project_get_all()
+        print(f"Projects {projects}")
+
+        #Eliminate duplicates
+        projects = (list(dict.fromkeys(projects)))
+
+        for project in projects:
+            self.addItem_ProjectCB(project)
+
+    def project_combobox_clear(self):
+        self.projectComboBoxClear.emit()
 
     def addItem_TaskCB(self, item):
         self.taskComboBoxAddItem.emit(item)
@@ -193,7 +225,10 @@ class Backend(QObject):
         for task in tasks:
             self.addItem_TaskCB(task)
 
-    # Edit dialog close button event
+    def task_combobox_clear(self):
+        self.taskComboBoxClear.emit()
+
+    # Edit_dialog close button event
     @Slot()
     def edit_close_ma_clicked(self):
         print("Edit close clicked")
@@ -201,6 +236,9 @@ class Backend(QObject):
     @Slot(str, int)
     def issue_ma_option_clicked(self, text, idx):
         print(f"Issue combo box option selected: {text}, with index {idx}")
+        #Clear all list model items
+        self.task_combobox_clear()
+        #Load list model items from new issue selected
         self.update_task_combobox(text)
 
     @Slot(str, int)
@@ -225,13 +263,15 @@ class Backend(QObject):
     def task_te_editingFinished(self, text):
         print(f"Task Text Edit finished with {text}")
 
-    # Edit dialog check button event
+    # Edit_dialog update button event
     # TODO this is not working !!!
     @Slot(str, str, str)
-    def edit_update_ma_clicked(self, project, issue , task):
+    def edit_update_ma_clicked(self, issue, project, task):
         global project_text
         global issue_text
-        global task_text 
+        global task_text
+
+        validation_error = None
         
         print(f"Edit check clicked  {project} {issue} {task}")
 
@@ -240,6 +280,9 @@ class Backend(QObject):
         #Validation
         #Is empty ???
         #Is a valid value ???
+
+        if(validation_error == None):
+            self.editDialogValidation.emit("None")
 
         # Is it a new issue ???
         if(report.issue_get_idx(issue)  == None):
@@ -291,7 +334,7 @@ class Backend(QObject):
                                     task_text, 
                                     datetime.datetime.now().strftime("%m/%d/%y"), 
                                     issue_text )
-
+        #Set status bar info
         self.set_status_text_ui("Added new info")
         self.set_status_color_ui("#BF616A")
 
@@ -316,17 +359,19 @@ class Backend(QObject):
         self.statusSetColor.emit(s)
 
     def update_report(self):
-
-        report.report_add_issue(issue_text, project_text, issue_timer.time.strftime("%H:%M:%S"))
-
+        #Update issue information
+        report.report_set_issue(issue_text, issue_text, project_text, issue_timer.time)
+        #Update task information
         report.report_update_task(  task_timer.time.strftime("%H:%M:%S"), 
                                     task_text, 
                                     datetime.datetime.now().strftime("%m/%d/%y"), 
                                     issue_text )
-
-#        report.report_update_week()
-#        report.report_update_worked_time()
-#        report.report_update_day(day_timer.time.strftime("%H:%M:%S"))
+        
+        # Update day time
+        report.today_update_time(day_timer.time.strftime("%H:%M:%S"))
+        # Update week time
+        report.week_update_worked_time()
+        # Print the report
         report.report_print_json()
 
     def attach_timer_to_str(self, s, timer):
@@ -345,10 +390,10 @@ if __name__ == '__main__':
         user32 = ctypes.windll.User32
 
     #Prepare backends 
+    report = Report()
     console = Console()
     backend = Backend()
     state_machine =State_Machine()
-    report = Report()
     # Create timers
     day_timer = Timer()
     pause_timer = Timer()
@@ -371,6 +416,10 @@ if __name__ == '__main__':
     engine.load(os.fspath(Path(__file__).resolve().parent / "qml/main.qml"))
     #engine.load("Source/away_from_keyboard/qml/main.qml")
 
+
+    #Init information from report
+    #Get day timer
+    day_timer.time = report.today_get_time()
 
     #Init UI
     backend.set_day_timer_text_ui("00:00")
