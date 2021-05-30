@@ -25,7 +25,9 @@ class State_Machine():
 
     def __init__(self):
         self.state = "not_init"
-        #report.set_today()
+        self.status_bar_counter = 0
+        self.status_bar_time_limit = 0
+        self.status_bar_state = 'stop'
 
     def get_lock_status(self):
         #Get foreground window ID
@@ -58,27 +60,58 @@ class State_Machine():
                 issue_timer.add_time_sec(sec_increment)
                 # Update day timer UI
                 backend.set_day_timer_text_ui(day_timer.time.strftime("%H:%M"))
+                backend.update_task_text_ui(task_text, task_timer)
+                backend.update_issue_text_ui(issue_text, issue_timer)
             else:
                 pass
-                #Log pause items, lock time
+                #TODO Log pause items, lock time
         else:
             day_timer.add_time_sec(sec_increment)
             task_timer.add_time_sec(sec_increment)
             issue_timer.add_time_sec(sec_increment)
             # Update day timer UI
             backend.set_day_timer_text_ui(day_timer.time.strftime("%H:%M"))
-            backend.set_task_text_ui(task_text, task_timer)
-            backend.set_issue_text_ui(issue_text, issue_timer)
+            backend.update_task_text_ui(task_text, task_timer)
+            backend.update_issue_text_ui(issue_text, issue_timer)
 
         #Call other tasks with greater times 
         if(self.one_min_task_sec_cnt >= 60):
             self.one_min_task_sec_cnt = 0
             self.one_min_task()
 
+        # Start counting delay for status bar
+        if (self.status_bar_state == 'start'):
+            self.status_bar_counter = self.status_bar_counter + 1
+            # Evaluate delay for status bar
+            if self.status_bar_counter >= self.status_bar_time_limit:
+                # Restore status_bar counter and state
+                self.status_bar_state = 'stop'
+                self.status_bar_counter = 0
+                # Restore status bar UI
+                backend.set_status_text_ui('')
+                backend.set_status_color_ui('default')
+
 
     def one_min_task(self):
             backend.update_report()
             print(day_timer)
+
+    def status_bar_show_sec(self, text, color, time):
+        if self.status_bar_state == 'stop':
+            # Set UI
+            backend.set_status_text_ui(text)
+            backend.set_status_color_ui(color)
+            # Start status bar time state and counter
+            self.status_bar_state = 'start'
+            self.status_bar_time_limit = time
+
+    def one_sec_task_pause(self, pause):
+        if(pause == True):
+            timer_1s.stop()
+
+        if(pause == False):
+            timer_1s.start(1000)
+
 
 class Timer():
 
@@ -145,6 +178,7 @@ class Backend(QObject):
     issueComboBoxClear = Signal()
     editDialogValidation = Signal(str)
 
+    day_timer_pause = False
 
 
     #Menu mouse area click event
@@ -161,6 +195,23 @@ class Backend(QObject):
     @Slot(str)
     def day_timer_ma_clicked(self, text):
         print(f"Day timer clicked, contains: {text}")
+        # Pause toggle
+        if self.day_timer_pause == False:
+            self.day_timer_pause = True
+            # Set pause color for status
+            self.set_status_text_ui('PAUSED')
+            self.set_status_color_ui('#bf616a')
+            # Pause one sec state machine
+            state_machine.one_sec_task_pause(True)
+        
+        else:
+            self.day_timer_pause = False
+            # Set pause color for status
+            self.set_status_text_ui('')
+            self.set_status_color_ui('default')
+            # Pause one sec state machine
+            state_machine.one_sec_task_pause(False)
+
 
     # Issue mouse area click event
     @Slot(str)
@@ -326,8 +377,8 @@ class Backend(QObject):
 
 
         # Update UI
-        self.set_issue_text_ui(issue_text, issue_timer)
-        self.set_task_text_ui(task_text, task_timer)
+        self.update_issue_text_ui(issue_text, issue_timer)
+        self.update_task_text_ui(task_text, task_timer)
         self.set_project_text_ui(project_text)
         # Update issue and project
         report.report_update_task(  task_timer.time.strftime("%H:%M:%S"), 
@@ -335,8 +386,7 @@ class Backend(QObject):
                                     datetime.datetime.now().strftime("%m/%d/%y"), 
                                     issue_text )
         #Set status bar info
-        self.set_status_text_ui("Added new info")
-        self.set_status_color_ui("#BF616A")
+        state_machine.status_bar_show_sec('New info added', '#4fe7a1', 3)
 
     def set_day_timer_text_ui(self,s):
         self.dayTimerSetText.emit(s)
@@ -344,11 +394,11 @@ class Backend(QObject):
     def set_project_text_ui(self, s):
         self.projectSetText.emit(s)
 
-    def set_issue_text_ui(self, s, timer):
-        s = self.attach_timer_to_str(s,timer)
+    def update_issue_text_ui(self, s, timer):
+        #s = self.attach_timer_to_str(s,timer)
         self.issueSetText.emit(s)
 
-    def set_task_text_ui(self,s, timer):
+    def update_task_text_ui(self,s, timer):
         s = self.attach_timer_to_str(s,timer)
         self.taskSetText.emit(s)
 
@@ -356,6 +406,10 @@ class Backend(QObject):
         self.statusSetText.emit(s)
 
     def set_status_color_ui(self, s):
+        # Check to restore color        
+        if s == 'default':
+            s = '#ECEFF4'
+        # Send signal to change the color
         self.statusSetColor.emit(s)
 
     def update_report(self):
@@ -420,12 +474,16 @@ if __name__ == '__main__':
     #Init information from report
     #Get day timer
     day_timer.time = report.today_get_time()
+    # Create the day if it doesn't exist
+    report.set_today()
+
+
 
     #Init UI
     backend.set_day_timer_text_ui("00:00")
     backend.set_project_text_ui("Project")
-    backend.set_issue_text_ui("Issue", issue_timer)
-    backend.set_task_text_ui("Task", task_timer)
+    backend.update_issue_text_ui("Issue", issue_timer)
+    backend.update_task_text_ui("Task", task_timer)
 
     #Create, connect and start task timer 1 second
     timer_1s = QTimer()

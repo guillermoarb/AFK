@@ -146,7 +146,6 @@ Window {
                     anchors.fill: parent
                     onClicked: {
                         backend.day_timer_ma_clicked(day_timer_lb.text)
-                        edit_container.visible = true
                     }
                 }
             }
@@ -183,7 +182,6 @@ Window {
                     anchors.fill: parent
                     onClicked: {
                         backend.issue_ma_clicked(issue_lb.text)
-                        edit_container.visible = false
 
                     }
                 }
@@ -322,11 +320,11 @@ Window {
                 anchors.rightMargin: 0
                 anchors.leftMargin: 0
                 anchors.bottomMargin: 0
-                color: "#4fe7a1"
+                color: "#ECEFF4"
 
                 Label {
                     id: status_lb
-                    text: qsTr("Saving ...")
+                    text: qsTr("")
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: parent.top
