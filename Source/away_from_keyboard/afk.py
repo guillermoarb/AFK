@@ -253,10 +253,12 @@ class Backend(QObject):
     def edit_dialog_on_return_key(self):
         pass
 
+    # Request from UI to exit the application
     @Slot()
     def quit_app(self):
         self.exit_app_request = True
 
+    # Request from UI to update/save the json report
     @Slot()
     def save_all(self):
         self.update_report()
@@ -296,6 +298,8 @@ class Backend(QObject):
         self.taskComboBoxAddItem.emit(item)
 
     def update_task_combobox(self, issue):
+        #Clear all list model items
+        self.task_combobox_clear()
         tasks = report.task_get_all_names(issue)
         print(f"Tasks {tasks}")
 
@@ -314,8 +318,6 @@ class Backend(QObject):
     @Slot(str, int)
     def issue_ma_option_clicked(self, text, idx):
         print(f"Issue combo box option selected: {text}, with index {idx}")
-        #Clear all list model items
-        self.task_combobox_clear()
         #Load list model items from new issue selected
         self.update_task_combobox(text)
 
@@ -457,6 +459,18 @@ class Backend(QObject):
 
     def attach_timer_to_str(self, s, timer):
         return f'{s} - {timer.time.strftime("%H:%M")}'
+
+
+    # Open the json report for this week
+    @Slot()
+    def open_json_report_file(self):
+        report.json_report_open()
+
+    # Generate a markdown report with the actual week information
+    @Slot()
+    def generate_markdown_week_report(self):
+        report.generate_report()
+
 
 if __name__ == '__main__':
     #Init config values

@@ -5,92 +5,98 @@
             "time": "00:00:00"
         },
         {
-            "date": "06/12/21",
-            "name": "Saturday",
-            "time": "23:58:39"
-        },
-        {
             "date": "06/13/21",
             "name": "Sunday",
-            "time": "11:17:16"
+            "time": "23:00:38"
         }
     ],
     "issues": [
         {
-            "name": "Making a cake",
+            "name": "GI_123456",
             "project": "Project",
             "tasks": [
                 {
-                    "date": "06/12/21",
-                    "log": "Ingredients selection",
-                    "time": "02:04:19"
+                    "date": "06/13/21",
+                    "log": "Arreglar la masa de la pizza",
+                    "time": "03:56:03"
+                },
+                {
+                    "date": "06/13/21",
+                    "log": "Reposo de masa",
+                    "time": "00:48:36"
+                },
+                {
+                    "date": "06/13/21",
+                    "log": "Amasado de masa",
+                    "time": "03:58:06"
                 }
             ],
-            "time": "02:04:19"
+            "time": "08:42:45"
         },
         {
-            "name": "Make cookie",
-            "project": "Cookie store",
+            "name": "GI_65436",
+            "project": "Pizza",
             "tasks": [
                 {
-                    "date": "06/12/21",
-                    "log": "Buy chocolate",
-                    "time": "00:55:34"
+                    "date": "06/13/21",
+                    "log": "Limpiar frijoles",
+                    "time": "01:02:44"
+                },
+                {
+                    "date": "06/13/21",
+                    "log": "Remojasr frijoles",
+                    "time": "02:07:12"
+                },
+                {
+                    "date": "06/13/21",
+                    "log": "Cocer frijoles",
+                    "time": "02:49:45"
+                },
+                {
+                    "date": "06/13/21",
+                    "log": "Agregar sal",
+                    "time": "01:00:34"
                 }
             ],
-            "time": "00:55:34"
+            "time": "07:00:15"
         },
         {
-            "name": "Make cookie 2",
-            "project": "Cookie store",
+            "name": "GI_63632",
+            "project": "Pizza",
             "tasks": [
                 {
-                    "date": "06/12/21",
-                    "log": "Buy chocolate",
-                    "time": "00:55:34"
+                    "date": "06/13/21",
+                    "log": "Arreglar reseta",
+                    "time": "00:53:48"
                 }
             ],
-            "time": "00:55:34"
+            "time": "00:53:48"
         },
         {
-            "name": "Make cookie 3",
-            "project": "Cookie store",
+            "name": "GI_23435",
+            "project": "Taco",
             "tasks": [
                 {
-                    "date": "06/12/21",
-                    "log": "Buy chocolate",
-                    "time": "00:55:34"
-                }
-            ],
-            "time": "00:55:34"
-        },
-        {
-            "name": "Make cookie",
-            "project": "Cookie store 4",
-            "tasks": [
+                    "date": "06/13/21",
+                    "log": "Picar verdura",
+                    "time": "00:49:26"
+                },
                 {
-                    "date": "06/12/21",
-                    "log": "Buy chocolate",
-                    "time": "00:55:34"
-                }
-            ],
-            "time": "00:55:34"
-        },
-        {
-            "name": "Make cookie",
-            "project": "Cookie store 5",
-            "tasks": [
+                    "date": "06/13/21",
+                    "log": "Preparar salsa",
+                    "time": "00:41:11"
+                },
                 {
-                    "date": "06/12/21",
-                    "log": "Buy chocolate",
-                    "time": "00:55:34"
+                    "date": "06/13/21",
+                    "log": "Asar carnita",
+                    "time": "01:35:21"
                 }
             ],
-            "time": "00:55:34"
+            "time": "03:05:58"
         }
     ],
     "week_number": 23,
-    "worked_time": "23:15:00",
+    "worked_time": "23:00:00",
     "worked_time_hr": 23,
-    "worked_time_min": 15
+    "worked_time_min": 0
 }

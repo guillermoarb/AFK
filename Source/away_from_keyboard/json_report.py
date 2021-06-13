@@ -414,7 +414,7 @@ class Report:
 
         return None    
 
-    def report_generate_report(self):
+    def generate_report(self):
         #Update the information before printing
         #self.report_update_worked_time()
         #Get activity logs and time

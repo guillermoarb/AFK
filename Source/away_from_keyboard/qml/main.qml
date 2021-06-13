@@ -111,9 +111,26 @@ Window {
             if ((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_S)){
                 backend.save_all()
             }
+
             // Quit app
             if ((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_Q)){
                 backend.quit_app()
+            }
+
+            // Open JSON report
+            if ((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_J)){
+                backend.open_json_report_file()
+            }
+
+            // Generate and open Markdown report
+            if ((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_R)){
+                backend.generate_markdown_week_report()
+            }
+
+            // Pause time counter (One second loop task)
+            if ((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_P)){
+                //Same action as clicking the main timer label/text
+                backend.day_timer_ma_clicked(day_timer_lb.text)
             }
 
         }
@@ -370,8 +387,35 @@ Window {
         anchors.bottom: app_container.top
         anchors.leftMargin: 0
         anchors.bottomMargin: 10
-        visible: false
+        visible: true
 
+        Keys.onPressed: {
+            // Close edit dialog with ESC key without a update request
+            if(event.key === Qt.Key_Escape){
+                // Close the edit dialog
+                edit_container.visible = false
+                edit_container.focus = false
+                // Open / focus main app container
+                app_container.focus = true
+                window.height = 100
+            }
+
+            // Perform a reques to update the time traking information
+            if((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_U)){
+                window.height = 100
+                app_container.focus = true
+                // Send info to backend for validation, backend will close the dialog if the update is right
+                backend.edit_update_ma_clicked(qsTr(issue_tl.text), qsTr(project_tl.text), qsTr(task_tl.text))
+            }
+        }
+
+        // Keys.onEscapePressed:{
+        //     // Close the edit dialog
+        //     edit_container.visible = false
+        //     edit_container.focus = false
+        //     // Open / focus main app container
+        //     app_container.focus = true
+        // }
 
 
         Rectangle {
@@ -452,6 +496,17 @@ Window {
                             issue_cb_rt.visible = false
                             issue_tl_arrow_down_image.visible = true
                             issue_tl_arrow_up_image.visible = false
+                            edit_container.focus = true
+                            edit_container.focus = true
+                    }
+
+                    Keys.onEscapePressed:{
+                        // Hide the combobox
+                        issue_cb_rt.visible = false
+                        issue_tl_arrow_down_image.visible = true
+                        issue_tl_arrow_up_image.visible = false
+                        edit_container.focus = true
+                        edit_container.focus = true
                     }
 
                 }
@@ -475,14 +530,6 @@ Window {
 
             ListModel {
                 id: project_cb_Model
-                //ListElement { name: "Project Alice" }
-                //ListElement { name: "Project Bob" }
-                //ListElement { name: "Project Harry" }
-                //ListElement { name: "Project Jane" }
-                //ListElement { name: "Project Karen" }
-                //ListElement { name: "Project Lionel" }
-                //ListElement { name: "Project Victor" }
-
             }
 
             Component {
@@ -516,9 +563,8 @@ Window {
                 color: "#D8DEE9"
                 radius: 4
                 //clip: true
-                //--> slide
                 ListView {
-                    id: project_cb_listView//--> hide
+                    id: project_cb_listView
                     anchors.fill: parent
                     anchors.margins: 4
                     model: project_cb_Model
@@ -528,13 +574,34 @@ Window {
                     highlight: Rectangle {
                         color: "#81A1C1"
                         width: parent.width
-                    }//<-- hide
+                    }
                     preferredHighlightBegin: 0
                     preferredHighlightEnd: 150
                     highlightRangeMode: ListView.StrictlyEnforceRange
 
+                    Keys.onDownPressed: project_cb_listView.incrementCurrentIndex()
+                    Keys.onUpPressed: project_cb_listView.decrementCurrentIndex()
+
+                    Keys.onReturnPressed: {
+                            backend.project_ma_option_clicked(currentItem.text, project_cb_listView.currentIndex)
+                            project_tl.text = currentItem.text
+                            project_cb_rt.visible = false
+                            project_tl_arrow_down_image.visible = true
+                            project_tl_arrow_up_image.visible = false
+                            edit_container.focus = true
+
+                    }
+
+                    Keys.onEscapePressed:{
+                        // Hide the combobox
+                        project_cb_rt.visible = false
+                        project_tl_arrow_down_image.visible = true
+                        project_tl_arrow_up_image.visible = false
+                        edit_container.focus = true
+                    }
+
+
                 }
-                //<-- slide
             }
         }
 
@@ -554,14 +621,6 @@ Window {
 
             ListModel {
                 id: task_cb_Model
-                //ListElement { name: "Alice" }
-                //ListElement { name: "Bob" }
-                //ListElement { name: "Harry" }
-                //ListElement { name: "Jane" }
-                //ListElement { name: "Karen" }
-                //ListElement { name: "Lionel" }
-                //ListElement { name: "Victor" }
-
             }
 
             Component {
@@ -594,10 +653,8 @@ Window {
                 anchors.fill: parent
                 color: "#D8DEE9"
                 radius: 4
-                //clip: true
-                //--> slide
                 ListView {
-                    id: task_cb_listView//--> hide
+                    id: task_cb_listView
                     anchors.fill: parent
                     anchors.margins: 4
                     model: task_cb_Model
@@ -607,13 +664,30 @@ Window {
                     highlight: Rectangle {
                         color: "#81A1C1"
                         width: parent.width
-                    }//<-- hide
+                    }
                     preferredHighlightBegin: 0
                     preferredHighlightEnd: 150
                     highlightRangeMode: ListView.StrictlyEnforceRange
 
+                    Keys.onDownPressed: task_cb_listView.incrementCurrentIndex()
+                    Keys.onUpPressed: task_cb_listView.decrementCurrentIndex()
+
+                    Keys.onReturnPressed: {
+                            backend.task_ma_option_clicked(currentItem.text, task_cb_listView.currentIndex)
+                            task_tl.text = currentItem.text
+                            task_cb_rt.visible = false
+                            task_tl_arrow_down_image.visible = true
+                            task_tl_arrow_up_image.visible = false
+                    }
+
+                    Keys.onEscapePressed:{
+                        // Hide the combobox
+                        task_cb_rt.visible = false
+                        task_tl_arrow_down_image.visible = true
+                        task_tl_arrow_up_image.visible = false
+                    }
+
                 }
-                //<-- slide
             }
         }
 
@@ -662,6 +736,8 @@ Window {
                     window.height = 100
                     // Send info to backend for validation, backend will close the dialog if the update is right
                     backend.edit_update_ma_clicked(qsTr(issue_tl.text), qsTr(project_tl.text), qsTr(task_tl.text))
+                    app_container.focus = true
+
                 }
             }
 
@@ -722,7 +798,7 @@ Window {
         }
 
 
-                Rectangle {
+            Rectangle {
             id: issue_rt_tl
             height: 35
             color: "#D8DEE9"
@@ -740,7 +816,7 @@ Window {
             TextField {
                 id: issue_tl
                 y: 12
-                width: 150
+                width: 260
 
                 height: 25
 
@@ -875,7 +951,8 @@ Window {
             TextField {
                 id: project_tl
                 y: 12
-                width: 150
+                width: 260
+
                 height: 25
 
                 placeholderText: qsTr("Project")
@@ -907,6 +984,11 @@ Window {
                 Keys.onPressed: {
                     if (event.key === Qt.Key_Return){
                         project_cb_rt.visible = false
+                        project_cb_listView.focus = true
+                    }
+                        if (event.key === Qt.Key_Down){
+                        project_cb_rt.visible = true
+                        project_cb_listView.focus = true
                     }
                 }
 
@@ -931,6 +1013,7 @@ Window {
                         project_cb_rt.visible = true
                         project_tl_arrow_up_image.visible = true
                         project_tl_arrow_down_image.visible = false
+                        project_cb_listView.focus = true
                     }
                 }
             }
@@ -999,7 +1082,7 @@ Window {
             TextField {
                 id: task_tl
                 y: 12
-                width: 150
+                width: 260
 
                 height: 25
 
@@ -1028,6 +1111,18 @@ Window {
                     backend.task_te_editingFinished(task_tl.text)
                 }
 
+                focus: true
+                Keys.onPressed: {
+                    if (event.key === Qt.Key_Return){
+                        task_cb_rt.visible = false
+                        task_cb_listView.focus = true
+                    }
+                        if (event.key === Qt.Key_Down){
+                        task_cb_rt.visible = true
+                        task_cb_listView.focus = true
+                    }
+                }
+
 
 
             }
@@ -1049,6 +1144,7 @@ Window {
                         task_cb_rt.visible = true
                         task_tl_arrow_up_image.visible = true
                         task_tl_arrow_down_image.visible = false
+                        task_cb_listView.focus = true
                     }
                 }
             }
@@ -1150,6 +1246,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50"}D{i:2}D{i:33;locked:true}D{i:22}
+    D{i:0;formeditorColor:"#4c4e50"}D{i:33;locked:true}
 }
 ##^##*/
