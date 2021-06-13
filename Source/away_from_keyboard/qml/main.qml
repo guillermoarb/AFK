@@ -69,7 +69,7 @@ Window {
         }
 
         function onEditDialogValidation(error){
-            if (error == "None"){
+            if (error === "None"){
                 // Close the edit dialog
                 edit_container.visible = false
                 edit_container.focus = false
@@ -84,7 +84,6 @@ Window {
     Rectangle {
         id: app_container
         x: 0
-        y: 159
         width: 400
         height: 100
         visible: true
@@ -92,8 +91,8 @@ Window {
         color: "#ECEFF4"
         border.color: "#00000000"
         border.width: 1
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 0
+        anchors.top: parent.top
+        anchors.topMargin: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
         // Key events in app_container
@@ -105,6 +104,7 @@ Window {
                 edit_container.visible = true
                 issue_tl.focus = true
                 window.height = 470
+                //window.setY(470)
                 backend.edit_dialog_opened()
             }
             // Save all
@@ -378,16 +378,15 @@ Window {
 
     Rectangle {
         id: edit_container
-        y: 93
         width: 338
         height: 351
         color: "#ECEFF4"
         radius: 5
         anchors.left: parent.left
-        anchors.bottom: app_container.top
+        anchors.top: app_container.bottom
+        anchors.topMargin: 10
         anchors.leftMargin: 0
-        anchors.bottomMargin: 10
-        visible: true
+        visible: false
 
         Keys.onPressed: {
             // Close edit dialog with ESC key without a update request
@@ -1246,6 +1245,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50"}D{i:33;locked:true}
+    D{i:0;formeditorColor:"#4c4e50"}D{i:2}D{i:33;locked:true}D{i:22}
 }
 ##^##*/

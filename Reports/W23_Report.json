@@ -7,7 +7,7 @@
         {
             "date": "06/13/21",
             "name": "Sunday",
-            "time": "23:00:38"
+            "time": "23:51:08"
         }
     ],
     "issues": [
@@ -96,7 +96,7 @@
         }
     ],
     "week_number": 23,
-    "worked_time": "23:00:00",
+    "worked_time": "23:51:00",
     "worked_time_hr": 23,
-    "worked_time_min": 0
+    "worked_time_min": 51
 }
