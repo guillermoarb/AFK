@@ -176,6 +176,16 @@ class Report:
 
         return activity_ind
 
+    def get_issue(self, issue_name):
+
+        if "issues" in self.report_dic:
+            for issue in self.report_dic["issues"]:
+                if issue["name"] == issue_name:
+                    return issue
+        else:
+            return None
+
+
     def issue_get_project(self, issue_name):
 
         issue_idx = self.issue_get_idx(issue_name)
@@ -300,6 +310,10 @@ class Report:
 
         # Convert total time to hrs and minutes
         hours = math.trunc(total_week_time_seconds / 3600)
+        
+        if hours >= 24:
+            hours = 23
+
         minutes = math.trunc((total_week_time_seconds % 3600) / 60)
 
         #Add to report dictionary
@@ -359,12 +373,16 @@ class Report:
         os.system(f"code {self.json_rep_file_path}")
 
 
-    def issue_get_all(self):
+    def issue_get_all_names(self):
         issues_array = []
-        for issue in self.report_dic["issues"]:
-            issues_array.append(issue["name"])
 
-        return issues_array
+        if "issues" in self.report_dic:
+            for issue in self.report_dic["issues"]:
+                issues_array.append(issue["name"])
+            return issues_array
+        else:
+            return None
+
 
     def project_get_all(self):
         projects_array = []
@@ -382,6 +400,19 @@ class Report:
             tasks_array.append(task["log"])
 
         return tasks_array
+
+    def task_get_all_names(self, issue):
+        tasks_array = []
+
+        issue_from_dict = self.get_issue(issue)
+
+        if issue_from_dict != None:
+            if "tasks" in issue_from_dict:
+                for task in issue_from_dict["tasks"]:
+                    tasks_array.append(task["log"])
+                return tasks_array
+
+        return None    
 
     def report_generate_report(self):
         #Update the information before printing

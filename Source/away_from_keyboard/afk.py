@@ -19,6 +19,11 @@ from PySide2.QtCore import QTimer, QObject, QUrl, Slot, Signal
 
 from  json_report import Report
 
+
+# Constants
+ONE_SECOND = 10 # Number of miliseconds for one second loop
+
+
 class State_Machine():
 
     one_min_task_sec_cnt = 0
@@ -47,6 +52,11 @@ class State_Machine():
 
     def one_sec_task(self):
         sec_increment = 1  #Set to 1 for 1 sec
+
+        #Check exit request
+        if backend.exit_app_request == True:
+            backend.update_report()
+            sys.exit()
 
         # Increment counters
         self.one_min_task_sec_cnt = self.one_min_task_sec_cnt + sec_increment
@@ -94,7 +104,7 @@ class State_Machine():
 
     def one_min_task(self):
             backend.update_report()
-            print(day_timer)
+            #print(day_timer)
 
     def status_bar_show_sec(self, text, color, time):
         if self.status_bar_state == 'stop':
@@ -110,7 +120,7 @@ class State_Machine():
             timer_1s.stop()
 
         if(pause == False):
-            timer_1s.start(1000)
+            timer_1s.start(ONE_SECOND)
 
 
 class Timer():
@@ -137,6 +147,9 @@ class Timer():
         if (minutes >= 60):
                 hours = hours + 1
                 minutes = 0
+
+        if hours >= 24:
+            hours = 23
 
         self.time = datetime.time(hours,minutes,seconds)
 
@@ -179,6 +192,7 @@ class Backend(QObject):
     editDialogValidation = Signal(str)
 
     day_timer_pause = False
+    exit_app_request = None
 
 
     #Menu mouse area click event
@@ -235,6 +249,17 @@ class Backend(QObject):
         self.project_combobox_clear()
         self.project_combobox_update()
 
+    @Slot()
+    def edit_dialog_on_return_key(self):
+        pass
+
+    @Slot()
+    def quit_app(self):
+        self.exit_app_request = True
+
+    @Slot()
+    def save_all(self):
+        self.update_report()
 
     
     def addItem_IssueCB(self, issue):
@@ -244,11 +269,12 @@ class Backend(QObject):
         self.issueComboBoxClear.emit()
 
     def issue_combobox_update(self):
-        issues = report.issue_get_all()
+        issues = report.issue_get_all_names()
         print(f"Issues {issues}")
 
-        for issue in issues:
-            self.addItem_IssueCB(issue)
+        if issues != None:
+            for issue in issues:
+                self.addItem_IssueCB(issue)
 
     def addItem_ProjectCB(self, item):
         self.projectComboBoxAddItem.emit(item)
@@ -270,11 +296,12 @@ class Backend(QObject):
         self.taskComboBoxAddItem.emit(item)
 
     def update_task_combobox(self, issue):
-        tasks = report.task_get_all(issue)
+        tasks = report.task_get_all_names(issue)
         print(f"Tasks {tasks}")
 
-        for task in tasks:
-            self.addItem_TaskCB(task)
+        if tasks != None:
+            for task in tasks:
+                self.addItem_TaskCB(task)
 
     def task_combobox_clear(self):
         self.taskComboBoxClear.emit()
@@ -456,9 +483,9 @@ if __name__ == '__main__':
     issue_timer = Timer()
     #Create text labels
     day_timer_text = ""
-    project_text = "pt_01"
-    issue_text = "it_01"
-    task_text = "tt_01"
+    project_text = "Project"
+    issue_text = "Issue"
+    task_text = "Task"
     status_text = ""
 
     #This has to be in two lines, otherway it does not work
@@ -488,7 +515,7 @@ if __name__ == '__main__':
     #Create, connect and start task timer 1 second
     timer_1s = QTimer()
     timer_1s.timeout.connect(state_machine.one_sec_task)
-    timer_1s.start(1000)
+    timer_1s.start(ONE_SECOND)  #In miliseconds
 
     if not engine.rootObjects():
         sys.exit(-1)

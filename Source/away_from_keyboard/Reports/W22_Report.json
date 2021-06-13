@@ -1,0 +1,99 @@
+{
+    "days": [
+        {
+            "name": "None",
+            "time": "00:00:00"
+        },
+        {
+            "date": "05/31/21",
+            "name": "Monday",
+            "time": "09:02:53"
+        },
+        {
+            "date": "06/01/21",
+            "name": "Tuesday",
+            "time": "07:13:44"
+        },
+        {
+            "date": "06/02/21",
+            "name": "Wednesday",
+            "time": "07:42:52"
+        }
+    ],
+    "issues": [
+        {
+            "name": "None",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "05/31/21",
+                    "log": "None",
+                    "time": "04:54:12"
+                }
+            ],
+            "time": "04:54:12"
+        },
+        {
+            "name": "GI#43 Port can_ialayer",
+            "project": "pt_01",
+            "tasks": [
+                {
+                    "date": "05/31/21",
+                    "log": "Code testing",
+                    "time": "01:03:56"
+                },
+                {
+                    "date": "06/02/21",
+                    "log": "Review setting",
+                    "time": "00:26:47"
+                }
+            ],
+            "time": "01:30:43"
+        },
+        {
+            "name": "GI#46 Port can_ialayer",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "05/31/21",
+                    "log": "Rework submit",
+                    "time": "03:01:32"
+                },
+                {
+                    "date": "06/01/21",
+                    "log": "Code development",
+                    "time": "02:15:40"
+                }
+            ],
+            "time": "05:17:12"
+        },
+        {
+            "name": "Meeting",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "06/02/21",
+                    "log": "Code review",
+                    "time": "04:54:06"
+                }
+            ],
+            "time": "04:54:06"
+        },
+        {
+            "name": "GI#46 Super Variants Dev",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "06/02/21",
+                    "log": "Code rework",
+                    "time": "06:28:22"
+                }
+            ],
+            "time": "06:28:22"
+        }
+    ],
+    "week_number": 22,
+    "worked_time": "23:59:00",
+    "worked_time_hr": 23,
+    "worked_time_min": 59
+}

@@ -4,16 +4,16 @@ import QtQuick.Controls 2.15
 
 Window {
     id: window
-    width: 1000
+    width: 400
 
-    height: 1000
+    height: 100
     visible: true
     color: "#00000000"
     title: qsTr("AFK")
     flags: Qt.Window | Qt.FramelessWindowHint
 
 
-
+    onActiveFocusItemChanged: print(activeFocusItem)
 
 
 
@@ -92,7 +92,8 @@ Window {
         color: "#ECEFF4"
         border.color: "#00000000"
         border.width: 1
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
         anchors.horizontalCenter: parent.horizontalCenter
 
         // Key events in app_container
@@ -102,12 +103,19 @@ Window {
             // Open edit window
             if ((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_E)){
                 edit_container.visible = true
+                issue_tl.focus = true
+                window.height = 470
                 backend.edit_dialog_opened()
             }
             // Save all
             if ((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_S)){
-                // edit_container.visible = true
+                backend.save_all()
             }
+            // Quit app
+            if ((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_Q)){
+                backend.quit_app()
+            }
+
         }
 
 
@@ -353,159 +361,18 @@ Window {
 
     Rectangle {
         id: edit_container
-        x: 300
         y: 93
         width: 338
         height: 351
         color: "#ECEFF4"
         radius: 5
+        anchors.left: parent.left
+        anchors.bottom: app_container.top
+        anchors.leftMargin: 0
+        anchors.bottomMargin: 10
         visible: false
 
 
-
-
-
-        Rectangle {
-            id: edit_issue_lb_rt
-            width: 50
-            height: 25
-            color: "#00000000"
-            border.color: "#00000000"
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.topMargin: 60
-            anchors.leftMargin: 25
-            Label {
-                id: edit_issue_lb
-                y: 5
-                width: 45
-                height: 15
-                text: qsTr("Issue")
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                font.pixelSize: 15
-                verticalAlignment: Text.AlignVCenter
-                font.styleName: "Regular"
-                anchors.leftMargin: 0
-                font.family: "Roboto"
-            }
-        }
-        
-        Rectangle {
-            id: task_rt_tl
-            height: 35
-            color: "#D8DEE9"
-            border.width: 0
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.rightMargin: 20
-            anchors.topMargin: 230
-            anchors.leftMargin: 20
-            radius: 5
-            border.color: "#00000000"
-
-            TextField {
-                id: task_tl
-                y: 12
-                width: 150
-
-                height: 25
-
-                placeholderText: qsTr("Task")
-                color: "#3B4252"
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                font.pixelSize: 15
-                anchors.leftMargin: 10
-                padding: 0
-                rightPadding: 0
-                bottomPadding: 0
-                topPadding: 0
-                font.family: "Roboto"
-                background: Rectangle {
-                    color: "#D8DEE9"
-                    radius:3
-                }
-
-                selectByMouse: true
-                selectedTextColor: "#ECEFF4"
-                selectionColor: "#BF616A"
-                placeholderTextColor: "#4C566A"
-
-                onEditingFinished: {
-                    backend.task_te_editingFinished(task_tl.text)
-                }
-
-
-
-            }
-            Image {
-                id: task_tl_arrow_down_image
-
-                width: 16
-                height: 16
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                source: "../images/arrow-down-sign-to-navigate.png"
-                anchors.rightMargin: 5
-                fillMode: Image.PreserveAspectFit
-
-                MouseArea {
-                    id: task_tl_arrow_down_ma
-                    anchors.fill: parent
-                    onClicked: {
-                        task_cb_rt.visible = true
-                        task_tl_arrow_up_image.visible = true
-                        task_tl_arrow_down_image.visible = false
-                    }
-                }
-            }
-
-            Image {
-                id: task_tl_arrow_up_image
-
-                width: 16
-                height: 16
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                source: "../images/navigate-up-arrow.png"
-                anchors.rightMargin: 5
-                fillMode: Image.PreserveAspectFit
-                visible: false
-                MouseArea {
-                    id: task_tl_up_down_ma
-                    anchors.fill: parent
-                    onClicked: {
-                        task_cb_rt.visible = false
-                        task_tl_arrow_down_image.visible = true
-                        task_tl_arrow_up_image.visible = false
-                    }
-                }
-            }
-        }
-
-
-
-        Rectangle {
-            id: edit_task_lb_rt
-            width: 50
-            height: 25
-            color: "#00000000"
-            border.color: "#00000000"
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.topMargin: 205
-            anchors.leftMargin: 25
-            Label {
-                id: edit_task_lb
-                text: qsTr("Task")
-                anchors.fill: parent
-                font.pixelSize: 15
-                verticalAlignment: Text.AlignVCenter
-                font.family: "Roboto"
-            }
-        }
 
         Rectangle {
             id: issue_cb_rt
@@ -523,14 +390,6 @@ Window {
 
             ListModel {
                 id: issue_cb_Model
-                //ListElement { name: "Issue Alice" }
-                //ListElement { name: "Issue Bob" }
-                //ListElement { name: "Issue Harry" }
-                //ListElement { name: "Issue Jane" }
-                //ListElement { name: "Issue Karen" }
-                //ListElement { name: "Issue Lionel" }
-                //ListElement { name: "Issue Victor" }
-
             }
 
             Component {
@@ -538,7 +397,7 @@ Window {
                 Text {
                     readonly property ListView __lv: ListView.view
                     width: parent.width
-                    text: model.name;
+                    text: model.name
                     color: "#4C566A"
                     font.pixelSize: 15
                     font.family: "Roboto"
@@ -553,6 +412,9 @@ Window {
                             issue_tl_arrow_down_image.visible = true
                             issue_tl_arrow_up_image.visible = false
                         }
+                        
+
+
                     }
 
                 }
@@ -564,25 +426,35 @@ Window {
                 color: "#D8DEE9"
                 radius: 4
                 //clip: true
-                //--> slide
                 ListView {
-                    id: listView//--> hide
+                    id: issue_listView
                     anchors.fill: parent
                     anchors.margins: 4
                     model: issue_cb_Model
                     delegate: issue_cb_Delegate
-                    focus: true
-                    clip: true
+                    //focus: true
+                    //clip: true
                     highlight: Rectangle {
                         color: "#81A1C1"
                         width: parent.width
-                    }//<-- hide
+                    }
+
                     preferredHighlightBegin: 0
                     preferredHighlightEnd: 150
                     highlightRangeMode: ListView.StrictlyEnforceRange
 
+                    Keys.onDownPressed: issue_listView.incrementCurrentIndex()
+                    Keys.onUpPressed: issue_listView.decrementCurrentIndex()
+
+                    Keys.onReturnPressed: {
+                            backend.issue_ma_option_clicked(currentItem.text, issue_listView.currentIndex)
+                            issue_tl.text = currentItem.text
+                            issue_cb_rt.visible = false
+                            issue_tl_arrow_down_image.visible = true
+                            issue_tl_arrow_up_image.visible = false
+                    }
+
                 }
-                //<-- slide
             }
         }
 
@@ -787,6 +659,7 @@ Window {
 
                 onClicked: {
                     update_edit_rt_bt.color = "#8FBCBB"
+                    window.height = 100
                     // Send info to backend for validation, backend will close the dialog if the update is right
                     backend.edit_update_ma_clicked(qsTr(issue_tl.text), qsTr(project_tl.text), qsTr(task_tl.text))
                 }
@@ -840,11 +713,149 @@ Window {
                     edit_container.focus = false
                     // Open / focus main container
                     app_container.focus = true
+                    window.height = 100
 
 
                 }
             }
 
+        }
+
+
+                Rectangle {
+            id: issue_rt_tl
+            height: 35
+            color: "#D8DEE9"
+            border.width: 0
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.rightMargin: 20
+            anchors.leftMargin: 20
+            anchors.topMargin: 85
+            radius: 5
+            border.color: "#00000000"
+            z:3
+
+            TextField {
+                id: issue_tl
+                y: 12
+                width: 150
+
+                height: 25
+
+                placeholderText: qsTr("Issue")
+                color: "#3B4252"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                font.pixelSize: 15
+                anchors.leftMargin: 10
+                padding: 0
+                rightPadding: 0
+                bottomPadding: 0
+                topPadding: 0
+                font.family: "Roboto"
+                background: Rectangle {
+                    color: "#D8DEE9"
+                    radius:3
+                }
+
+                selectByMouse: true
+                selectedTextColor: "#ECEFF4"
+                selectionColor: "#BF616A"
+                placeholderTextColor: "#4C566A"
+
+                onEditingFinished: {
+                    backend.issue_te_editingFinished(issue_tl.text)
+                }
+
+                focus: true
+                Keys.onPressed: {
+                    if (event.key === Qt.Key_Return){
+                        issue_cb_rt.visible = false
+                    }
+                    if (event.key === Qt.Key_Down){
+                        issue_cb_rt.visible = true
+                        issue_listView.focus = true
+                    }
+                }
+
+
+
+            }
+            Image {
+                id: issue_tl_arrow_down_image
+
+                width: 16
+                height: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                source: "../images/arrow-down-sign-to-navigate.png"
+                anchors.rightMargin: 5
+                fillMode: Image.PreserveAspectFit
+
+                MouseArea {
+                    id: issue_tl_arrow_down_ma
+                    anchors.fill: parent
+                    onClicked: {
+                        issue_cb_rt.visible = true
+                        issue_tl_arrow_up_image.visible = true
+                        issue_tl_arrow_down_image.visible = false
+                        issue_listView.focus = true
+
+                    }
+                }
+            }
+
+            Image {
+                id: issue_tl_arrow_up_image
+
+                width: 16
+                height: 16
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                source: "../images/navigate-up-arrow.png"
+                anchors.rightMargin: 5
+                fillMode: Image.PreserveAspectFit
+                visible: false
+                MouseArea {
+                    id: issue_tl_up_down_ma
+                    anchors.fill: parent
+                    onClicked: {
+                        issue_cb_rt.visible = false
+                        issue_tl_arrow_down_image.visible = true
+                        issue_tl_arrow_up_image.visible = false
+
+
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            id: edit_issue_lb_rt
+            width: 50
+            height: 25
+            color: "#00000000"
+            border.color: "#00000000"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.topMargin: 60
+            anchors.leftMargin: 25
+            Label {
+                id: edit_issue_lb
+                y: 5
+                width: 45
+                height: 15
+                text: qsTr("Issue")
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                font.pixelSize: 15
+                verticalAlignment: Text.AlignVCenter
+                font.styleName: "Regular"
+                anchors.leftMargin: 0
+                font.family: "Roboto"
+            }
         }
 
         Rectangle {
@@ -895,7 +906,7 @@ Window {
                 focus: true
                 Keys.onPressed: {
                     if (event.key === Qt.Key_Return){
-                        edit_container.visible = false
+                        project_cb_rt.visible = false
                     }
                 }
 
@@ -972,7 +983,7 @@ Window {
         }
 
         Rectangle {
-            id: issue_rt_tl
+            id: task_rt_tl
             height: 35
             color: "#D8DEE9"
             border.width: 0
@@ -980,20 +991,19 @@ Window {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.rightMargin: 20
+            anchors.topMargin: 230
             anchors.leftMargin: 20
-            anchors.topMargin: 85
             radius: 5
             border.color: "#00000000"
-            z:3
 
             TextField {
-                id: issue_tl
+                id: task_tl
                 y: 12
                 width: 150
 
                 height: 25
 
-                placeholderText: qsTr("Issue")
+                placeholderText: qsTr("Task")
                 color: "#3B4252"
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
@@ -1015,21 +1025,14 @@ Window {
                 placeholderTextColor: "#4C566A"
 
                 onEditingFinished: {
-                    backend.issue_te_editingFinished(issue_tl.text)
-                }
-
-                focus: true
-                Keys.onPressed: {
-                    if (event.key === Qt.Key_Return){
-                        edit_container.visible = false
-                    }
+                    backend.task_te_editingFinished(task_tl.text)
                 }
 
 
 
             }
             Image {
-                id: issue_tl_arrow_down_image
+                id: task_tl_arrow_down_image
 
                 width: 16
                 height: 16
@@ -1040,19 +1043,18 @@ Window {
                 fillMode: Image.PreserveAspectFit
 
                 MouseArea {
-                    id: issue_tl_arrow_down_ma
+                    id: task_tl_arrow_down_ma
                     anchors.fill: parent
                     onClicked: {
-                        issue_cb_rt.visible = true
-                        issue_tl_arrow_up_image.visible = true
-                        issue_tl_arrow_down_image.visible = false
-
+                        task_cb_rt.visible = true
+                        task_tl_arrow_up_image.visible = true
+                        task_tl_arrow_down_image.visible = false
                     }
                 }
             }
 
             Image {
-                id: issue_tl_arrow_up_image
+                id: task_tl_arrow_up_image
 
                 width: 16
                 height: 16
@@ -1063,18 +1065,40 @@ Window {
                 fillMode: Image.PreserveAspectFit
                 visible: false
                 MouseArea {
-                    id: issue_tl_up_down_ma
+                    id: task_tl_up_down_ma
                     anchors.fill: parent
                     onClicked: {
-                        issue_cb_rt.visible = false
-                        issue_tl_arrow_down_image.visible = true
-                        issue_tl_arrow_up_image.visible = false
-
-
+                        task_cb_rt.visible = false
+                        task_tl_arrow_down_image.visible = true
+                        task_tl_arrow_up_image.visible = false
                     }
                 }
             }
         }
+
+
+
+        Rectangle {
+            id: edit_task_lb_rt
+            width: 50
+            height: 25
+            color: "#00000000"
+            border.color: "#00000000"
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.topMargin: 205
+            anchors.leftMargin: 25
+            Label {
+                id: edit_task_lb
+                text: qsTr("Task")
+                anchors.fill: parent
+                font.pixelSize: 15
+                verticalAlignment: Text.AlignVCenter
+                font.family: "Roboto"
+            }
+        }
+
+
 
         Text {
             id: text1
@@ -1126,6 +1150,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50"}D{i:33;locked:true}D{i:102;locked:true}
+    D{i:0;formeditorColor:"#4c4e50"}D{i:2}D{i:33;locked:true}D{i:22}
 }
 ##^##*/

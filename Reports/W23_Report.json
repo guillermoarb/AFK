@@ -1,0 +1,96 @@
+{
+    "days": [
+        {
+            "name": "None",
+            "time": "00:00:00"
+        },
+        {
+            "date": "06/12/21",
+            "name": "Saturday",
+            "time": "23:58:39"
+        },
+        {
+            "date": "06/13/21",
+            "name": "Sunday",
+            "time": "11:17:16"
+        }
+    ],
+    "issues": [
+        {
+            "name": "Making a cake",
+            "project": "Project",
+            "tasks": [
+                {
+                    "date": "06/12/21",
+                    "log": "Ingredients selection",
+                    "time": "02:04:19"
+                }
+            ],
+            "time": "02:04:19"
+        },
+        {
+            "name": "Make cookie",
+            "project": "Cookie store",
+            "tasks": [
+                {
+                    "date": "06/12/21",
+                    "log": "Buy chocolate",
+                    "time": "00:55:34"
+                }
+            ],
+            "time": "00:55:34"
+        },
+        {
+            "name": "Make cookie 2",
+            "project": "Cookie store",
+            "tasks": [
+                {
+                    "date": "06/12/21",
+                    "log": "Buy chocolate",
+                    "time": "00:55:34"
+                }
+            ],
+            "time": "00:55:34"
+        },
+        {
+            "name": "Make cookie 3",
+            "project": "Cookie store",
+            "tasks": [
+                {
+                    "date": "06/12/21",
+                    "log": "Buy chocolate",
+                    "time": "00:55:34"
+                }
+            ],
+            "time": "00:55:34"
+        },
+        {
+            "name": "Make cookie",
+            "project": "Cookie store 4",
+            "tasks": [
+                {
+                    "date": "06/12/21",
+                    "log": "Buy chocolate",
+                    "time": "00:55:34"
+                }
+            ],
+            "time": "00:55:34"
+        },
+        {
+            "name": "Make cookie",
+            "project": "Cookie store 5",
+            "tasks": [
+                {
+                    "date": "06/12/21",
+                    "log": "Buy chocolate",
+                    "time": "00:55:34"
+                }
+            ],
+            "time": "00:55:34"
+        }
+    ],
+    "week_number": 23,
+    "worked_time": "23:15:00",
+    "worked_time_hr": 23,
+    "worked_time_min": 15
+}
