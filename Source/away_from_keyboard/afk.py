@@ -13,7 +13,7 @@ from pathlib import Path
 import sys
 from typing import List
 
-from PySide2.QtGui import QGuiApplication
+from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 from PySide2.QtCore import QTimer, QObject, QUrl, Slot, Signal
 
@@ -21,7 +21,7 @@ from  json_report import Report
 
 
 # Constants
-ONE_SECOND = 10 # Number of miliseconds for one second loop
+ONE_SECOND = 1000 # Number of miliseconds for one second loop
 
 
 class State_Machine():
@@ -479,6 +479,9 @@ if __name__ == '__main__':
     #Create the app and QML engine
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
+
+    # Set app icon
+    app.setWindowIcon(QIcon(os.fspath(Path(__file__).resolve().parent / "images/afk_at_garb_icon_64.png")))
 
     #ctypes user32 API instance
     if(sys.platform == 'win32'):

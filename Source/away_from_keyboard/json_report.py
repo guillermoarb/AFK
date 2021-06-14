@@ -4,7 +4,7 @@ import math
 import os.path
 import pprint
 import os
-#from tabulate import tabulate
+from tabulate import tabulate
 
 class Report:
     def __init__(self):
@@ -437,13 +437,13 @@ class Report:
             #if activity["total_time_min"] > 30:
             #    activity["total_time_hr"] = activity["total_time_hr"]  + 1
             #Make time a fraction
-            time = float(activity["total_time_hr"]) + float(activity["total_time_min"])  / 60
+            #time = float(activity["worked_time_hr"]) + float(activity["worked_time_min"])  / 60
             
             #Save the activity info in a row for a file
             txt_dictionary = {}
             txt_dictionary["project"] = activity["project"]
             txt_dictionary["name"] = activity["name"]
-            txt_dictionary["time"] = f"{time:.2f}"
+            txt_dictionary["time"] = activity["time"]
             txt_dictionary["logs"] = logs
             
             rows.append(txt_dictionary)
@@ -453,5 +453,7 @@ class Report:
         with open(self.md_rep_file_path, "w") as md_file:
             md_file.write(f"# WEEK {self.report_dic['week_number']} REPORT\n")
             md_file.write( tabulate( rows, headers="firstrow", tablefmt = "github" , numalign="left")   )
+            #End MD file with and empty line
+            md_file.write(f"\n")
 
         os.system(f"code {self.md_rep_file_path}")

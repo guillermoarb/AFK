@@ -386,7 +386,7 @@ Window {
         anchors.top: app_container.bottom
         anchors.topMargin: 10
         anchors.leftMargin: 0
-        visible: false
+        visible: true
 
         Keys.onPressed: {
             // Close edit dialog with ESC key without a update request
@@ -495,8 +495,9 @@ Window {
                             issue_cb_rt.visible = false
                             issue_tl_arrow_down_image.visible = true
                             issue_tl_arrow_up_image.visible = false
-                            edit_container.focus = true
-                            edit_container.focus = true
+                            // Focus next text line item
+                            //edit_container.focus = true
+                            project_tl.focus = true
                     }
 
                     Keys.onEscapePressed:{
@@ -587,8 +588,9 @@ Window {
                             project_cb_rt.visible = false
                             project_tl_arrow_down_image.visible = true
                             project_tl_arrow_up_image.visible = false
-                            edit_container.focus = true
-
+                            // Focus next text line edit item
+                            //edit_container.focus = true
+                            task_tl.focus = true
                     }
 
                     Keys.onEscapePressed:{
@@ -677,6 +679,8 @@ Window {
                             task_cb_rt.visible = false
                             task_tl_arrow_down_image.visible = true
                             task_tl_arrow_up_image.visible = false
+                            // Focus next edit
+                            // None
                     }
 
                     Keys.onEscapePressed:{
@@ -801,7 +805,7 @@ Window {
             id: issue_rt_tl
             height: 35
             color: "#D8DEE9"
-            border.width: 0
+            border.width: 3
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -855,6 +859,15 @@ Window {
                     }
                 }
 
+                // Highliight the item if the text line has focus
+                onActiveFocusChanged: {
+                    if (issue_tl.activeFocus) {
+                        issue_rt_tl.border.color = "#88C0D0"
+                    }
+                    else{
+                        issue_rt_tl.border.color = "#00000000"
+                    }
+                }
 
 
             }
@@ -937,7 +950,7 @@ Window {
             id: project_rt_tl
             height: 35
             color: "#D8DEE9"
-            border.width: 0
+            border.width: 3
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -988,6 +1001,16 @@ Window {
                         if (event.key === Qt.Key_Down){
                         project_cb_rt.visible = true
                         project_cb_listView.focus = true
+                    }
+                }
+
+                // Highliight the item if the text line has focus
+                onActiveFocusChanged: {
+                    if (project_tl.activeFocus) {
+                        project_rt_tl.border.color = "#88C0D0"
+                    }
+                    else{
+                        project_rt_tl.border.color = "#00000000"
                     }
                 }
 
@@ -1068,7 +1091,7 @@ Window {
             id: task_rt_tl
             height: 35
             color: "#D8DEE9"
-            border.width: 0
+            border.width: 3
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
@@ -1122,6 +1145,15 @@ Window {
                     }
                 }
 
+                // Highliight the item if the text line has focus
+                onActiveFocusChanged: {
+                    if (task_tl.activeFocus) {
+                        task_rt_tl.border.color = "#88C0D0"
+                    }
+                    else{
+                        task_rt_tl.border.color = "#00000000"
+                    }
+                }
 
 
             }
@@ -1245,6 +1277,6 @@ Window {
 
 /*##^##
 Designer {
-    D{i:0;formeditorColor:"#4c4e50"}D{i:2}D{i:33;locked:true}D{i:22}
+    D{i:0;formeditorColor:"#4c4e50"}D{i:33;locked:true}
 }
 ##^##*/

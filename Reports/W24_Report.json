@@ -1,0 +1,80 @@
+{
+    "days": [
+        {
+            "name": "None",
+            "time": "00:00:00"
+        },
+        {
+            "date": "06/14/21",
+            "name": "Monday",
+            "time": "22:06:59"
+        }
+    ],
+    "issues": [
+        {
+            "name": "GI_123456",
+            "project": "Cake",
+            "tasks": [
+                {
+                    "date": "06/14/21",
+                    "log": "Flower making",
+                    "time": "00:49:56"
+                },
+                {
+                    "date": "06/14/21",
+                    "log": "Baking in oven",
+                    "time": "01:26:43"
+                },
+                {
+                    "date": "06/14/21",
+                    "log": "Frosting",
+                    "time": "00:19:02"
+                }
+            ],
+            "time": "02:35:41"
+        },
+        {
+            "name": "GI_222222",
+            "project": "Project",
+            "tasks": [
+                {
+                    "date": "06/14/21",
+                    "log": "Preparacion de harina",
+                    "time": "00:37:15"
+                },
+                {
+                    "date": "06/14/21",
+                    "log": "Amazado",
+                    "time": "00:50:29"
+                },
+                {
+                    "date": "06/14/21",
+                    "log": "Horneado",
+                    "time": "01:26:15"
+                }
+            ],
+            "time": "02:53:59"
+        },
+        {
+            "name": "GI_XXXXXX",
+            "project": "X Files",
+            "tasks": [
+                {
+                    "date": "06/14/21",
+                    "log": "Running",
+                    "time": "00:30:53"
+                },
+                {
+                    "date": "06/14/21",
+                    "log": "Reading",
+                    "time": "01:09:04"
+                }
+            ],
+            "time": "01:39:57"
+        }
+    ],
+    "week_number": 24,
+    "worked_time": "22:06:00",
+    "worked_time_hr": 22,
+    "worked_time_min": 6
+}
