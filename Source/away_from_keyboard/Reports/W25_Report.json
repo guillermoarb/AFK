@@ -1,0 +1,155 @@
+{
+    "days": [
+        {
+            "name": "None",
+            "time": "00:00:00"
+        },
+        {
+            "date": "06/21/21",
+            "name": "Monday",
+            "time": "06:54:24"
+        },
+        {
+            "date": "06/22/21",
+            "name": "Tuesday",
+            "time": "07:00:17"
+        },
+        {
+            "date": "06/23/21",
+            "name": "Wednesday",
+            "time": "07:47:27"
+        },
+        {
+            "date": "06/24/21",
+            "name": "Thursday",
+            "time": "09:48:34"
+        },
+        {
+            "date": "06/25/21",
+            "name": "Friday",
+            "time": "07:43:53"
+        }
+    ],
+    "issues": [
+        {
+            "name": "177799 enable/disable eIWE for P702",
+            "project": "Ford 4x4 GenIII",
+            "tasks": [
+                {
+                    "date": "06/21/21",
+                    "log": "Code development",
+                    "time": "00:48:13"
+                },
+                {
+                    "date": "06/21/21",
+                    "log": "Review preparation",
+                    "time": "00:32:43"
+                }
+            ],
+            "time": "01:20:56"
+        },
+        {
+            "name": "Generic",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "06/21/21",
+                    "log": "Midyear review",
+                    "time": "02:10:10"
+                },
+                {
+                    "date": "06/21/21",
+                    "log": "Evaluate new message list v24",
+                    "time": "00:33:00"
+                }
+            ],
+            "time": "02:43:10"
+        },
+        {
+            "name": "GI_#46 - Port L2 CAN",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "06/21/21",
+                    "log": "Design porting",
+                    "time": "02:32:11"
+                }
+            ],
+            "time": "02:32:11"
+        },
+        {
+            "name": "177826",
+            "project": "Project",
+            "tasks": [
+                {
+                    "date": "06/25/21",
+                    "log": "Code development",
+                    "time": "12:26:15"
+                },
+                {
+                    "date": "06/23/21",
+                    "log": "Testing",
+                    "time": "06:22:22"
+                },
+                {
+                    "date": "06/25/21",
+                    "log": "Code rework",
+                    "time": "01:33:05"
+                }
+            ],
+            "time": "20:21:42"
+        },
+        {
+            "name": "GI_GenIV#55",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "06/22/21",
+                    "log": "DaVinci configuration",
+                    "time": "02:05:17"
+                }
+            ],
+            "time": "02:05:17"
+        },
+        {
+            "name": "Meeting",
+            "project": "Ford 4x4 GenIII",
+            "tasks": [
+                {
+                    "date": "06/25/21",
+                    "log": "Review",
+                    "time": "01:19:41"
+                }
+            ],
+            "time": "01:19:41"
+        },
+        {
+            "name": "Cuautla support",
+            "project": "Cuautla support",
+            "tasks": [
+                {
+                    "date": "06/25/21",
+                    "log": "Meeting",
+                    "time": "01:04:37"
+                }
+            ],
+            "time": "01:04:37"
+        },
+        {
+            "name": "GI#47 Super Variants",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "06/25/21",
+                    "log": "Rework",
+                    "time": "03:26:26"
+                }
+            ],
+            "time": "03:26:26"
+        }
+    ],
+    "week_number": 25,
+    "worked_time": "23:14:00",
+    "worked_time_hr": 23,
+    "worked_time_min": 14
+}

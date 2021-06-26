@@ -1,0 +1,102 @@
+{
+    "days": [
+        {
+            "name": "None",
+            "time": "00:00:00"
+        },
+        {
+            "date": "06/14/21",
+            "name": "Monday",
+            "time": "07:49:20"
+        },
+        {
+            "date": "06/15/21",
+            "name": "Tuesday",
+            "time": "06:52:20"
+        },
+        {
+            "date": "06/16/21",
+            "name": "Wednesday",
+            "time": "09:30:01"
+        },
+        {
+            "date": "06/17/21",
+            "name": "Thursday",
+            "time": "08:30:09"
+        },
+        {
+            "date": "06/18/21",
+            "name": "Friday",
+            "time": "07:45:51"
+        }
+    ],
+    "issues": [
+        {
+            "name": "GI43",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "06/14/21",
+                    "log": "Port detail design",
+                    "time": "00:59:18"
+                }
+            ],
+            "time": "00:59:18"
+        },
+        {
+            "name": "GI46 - Port L2 CAN",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "06/14/21",
+                    "log": "Port detail design",
+                    "time": "00:53:25"
+                },
+                {
+                    "date": "06/14/21",
+                    "log": "Prepare review",
+                    "time": "00:08:01"
+                },
+                {
+                    "date": "06/14/21",
+                    "log": "Architechture update for CAN",
+                    "time": "00:41:46"
+                }
+            ],
+            "time": "01:43:12"
+        },
+        {
+            "name": "Generic",
+            "project": "Ford 4x4 Gen IV",
+            "tasks": [
+                {
+                    "date": "06/14/21",
+                    "log": "Test app from branch 51",
+                    "time": "03:28:33"
+                },
+                {
+                    "date": "06/15/21",
+                    "log": "Benches testing",
+                    "time": "06:22:41"
+                }
+            ],
+            "time": "08:51:14"
+        },
+        {
+            "name": "177799",
+            "project": "Ford 4x4 Gen III",
+            "tasks": [
+                {
+                    "date": "06/17/21",
+                    "log": "Code development",
+                    "time": "04:26:12"
+                }
+            ],
+            "time": "04:26:12"
+        }
+    ],
+    "week_number": 24,
+    "worked_time": "23:27:00",
+    "worked_time_hr": 23,
+    "worked_time_min": 27
+}
