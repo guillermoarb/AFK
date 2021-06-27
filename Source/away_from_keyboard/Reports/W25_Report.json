@@ -28,6 +28,11 @@
             "date": "06/25/21",
             "name": "Friday",
             "time": "07:43:53"
+        },
+        {
+            "date": "06/26/21",
+            "name": "Saturday",
+            "time": "00:02:00"
         }
     ],
     "issues": [
@@ -149,7 +154,7 @@
         }
     ],
     "week_number": 25,
-    "worked_time": "23:14:00",
+    "worked_time": "23:16:00",
     "worked_time_hr": 23,
-    "worked_time_min": 14
+    "worked_time_min": 16
 }
