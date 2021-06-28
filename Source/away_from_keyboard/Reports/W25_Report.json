@@ -32,7 +32,12 @@
         {
             "date": "06/26/21",
             "name": "Saturday",
-            "time": "00:02:00"
+            "time": "00:14:00"
+        },
+        {
+            "date": "06/27/21",
+            "name": "Sunday",
+            "time": "00:10:52"
         }
     ],
     "issues": [
@@ -151,10 +156,117 @@
                 }
             ],
             "time": "03:26:26"
+        },
+        {
+            "name": "cbjwqk",
+            "project": "bcejkw",
+            "tasks": [
+                {
+                    "date": "06/26/21",
+                    "log": "cnjwk",
+                    "time": "00:00:51"
+                }
+            ],
+            "time": "00:00:51"
+        },
+        {
+            "name": "cndsjkscj",
+            "project": "nxwnwj",
+            "tasks": [
+                {
+                    "date": "06/26/21",
+                    "log": "ncjdw",
+                    "time": "00:01:51"
+                }
+            ],
+            "time": "00:01:51"
+        },
+        {
+            "name": "ciwo",
+            "project": "ncj",
+            "tasks": [
+                {
+                    "date": "06/26/21",
+                    "log": "ncjwkw",
+                    "time": "00:00:47"
+                }
+            ],
+            "time": "00:00:47"
+        },
+        {
+            "name": "ciwohw",
+            "project": "ncj",
+            "tasks": [
+                {
+                    "date": "06/26/21",
+                    "log": "ncjwkw",
+                    "time": "00:01:00"
+                }
+            ],
+            "time": "00:01:00"
+        },
+        {
+            "name": "Cuautla su",
+            "project": "Project",
+            "tasks": [
+                {
+                    "date": "06/26/21",
+                    "log": "Meeting",
+                    "time": "00:02:40"
+                }
+            ],
+            "time": "00:02:40"
+        },
+        {
+            "name": "New task",
+            "project": "Ford 4x4 GenIII",
+            "start_time": "06/26/2021, 23:54:24",
+            "tasks": [
+                {
+                    "last_log_date": "06/27/21",
+                    "log": "Task new",
+                    "time": "00:00:37"
+                },
+                {
+                    "last_log_date": "06/27/21",
+                    "log": "Task new 32",
+                    "time": "00:01:47"
+                },
+                {
+                    "last_log_date": "06/27/21",
+                    "log": "Task new 12",
+                    "time": "00:00:01"
+                }
+            ],
+            "time": "00:03:05"
+        },
+        {
+            "name": "New issue 32",
+            "project": "Ford 4x4 Gen IV",
+            "start_time": "06/27/2021, 00:10:58",
+            "tasks": [
+                {
+                    "last_log_date": "06/27/21",
+                    "log": "Task test",
+                    "time": "00:00:01"
+                },
+                {
+                    "last_log_date": "06/27/21",
+                    "log": "Task test 1234",
+                    "start_date": "06/27/21 00:14:52",
+                    "time": "00:00:46"
+                },
+                {
+                    "last_log_date": "06/27/21",
+                    "log": "Task 678",
+                    "time": "00:05:36"
+                }
+            ],
+            "time": "00:06:23"
         }
     ],
     "week_number": 25,
-    "worked_time": "23:16:00",
+    "worked_time": "23:39:00",
     "worked_time_hr": 23,
-    "worked_time_min": 16
+    "worked_time_min": 39
 }

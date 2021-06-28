@@ -351,7 +351,8 @@ class Backend(QObject):
         global issue_text
         global task_text
 
-        validation_error = None
+        validation_error = False
+        validation_errors = []
         
         print(f"Edit check clicked  {project} {issue} {task}")
 
@@ -359,63 +360,81 @@ class Backend(QObject):
 
         #Validation
         #Is empty ???
+        if(issue == '' or project == '' or task == '' ): 
+            validation_error = True
+            validation_errors.append('An input is empty')
+        
+        if(len(issue) > 30):
+            validation_error = True
+            validation_errors.append('Issue item is larger than 30 characters')
+
         #Is a valid value ???
 
-        if(validation_error == None):
-            self.editDialogValidation.emit("None")
+        if(validation_error == False):
+            print('No validation error ')
+            self.editDialogValidation.emit("False")
 
-        # Is it a new issue ???
-        if(report.issue_get_idx(issue)  == None):
-            #Update backend
-            issue_text = issue
-            issue_timer.time = issue_timer.time.replace(0,0,0)
-            task_text = task
-            task_timer.time = task_timer.time.replace(0,0,0)
-            project_text = project
-            project_timer.time = project_timer.time.replace(0,0,0)
-
-            #Add the issue here
-            report.report_add_issue(issue_text, project_text, issue_timer.time.strftime("%H:%M:%S"))
-
-        else:
-
-            # Not new issue, but is a valid issue, update
-            issue_text = issue
-            task_text = task
-
-            #Not new issue, update info
-            # Evaluate a change of project for the issue
-            report_project = report.issue_get_project(issue)
-
-            if ((report_project != None) and (report_project != project)):
-                # Update backend
-                project_text = project
-
-            issue_timer.time = report.report_get_issue_time(issue)
-            report.report_set_issue(issue_text, issue_text, project_text, issue_timer.time)
-
-
-            # The task is new
-            if(report.issue_task_get_idx(issue, task) == None):
-                # New task clear the timer
+            # Is it a new issue ???
+            if(report.issue_get_idx(issue)  == None):
+                #Update backend
+                issue_text = issue
+                issue_start_time = datetime.datetime.now()
+                issue_timer.time = issue_timer.time.replace(0,0,0)
+                task_text = task
                 task_timer.time = task_timer.time.replace(0,0,0)
+                project_text = project
+                project_timer.time = project_timer.time.replace(0,0,0)
 
-            # The task is not new, continue with logged time
+                #Add the issue here
+                report.report_add_issue(issue_text, 
+                                        project_text, 
+                                        issue_timer.time.strftime("%H:%M:%S"),
+                                        issue_start_time.strftime(("%m/%d/%Y, %H:%M:%S")))
+
+                # Add the task for the new issue
+                report.add_task(issue_text, task_text)
+
             else:
-                task_timer.time = report.report_get_task_time(issue, task)
+
+                # Not new issue, but is a valid issue, update
+                issue_text = issue
+                task_text = task
+
+                #Not new issue, update info
+                # Evaluate a change of project for the issue
+                report_project = report.issue_get_project(issue)
+
+                if ((report_project != None) and (report_project != project)):
+                    # Update backend
+                    project_text = project
+
+                issue_timer.time = report.report_get_issue_time(issue)
+                report.report_set_issue(issue_text, issue_text, project_text, issue_timer.time)
 
 
-        # Update UI
-        self.update_issue_text_ui(issue_text, issue_timer)
-        self.update_task_text_ui(task_text, task_timer)
-        self.set_project_text_ui(project_text)
-        # Update issue and project
-        report.report_update_task(  task_timer.time.strftime("%H:%M:%S"), 
-                                    task_text, 
-                                    datetime.datetime.now().strftime("%m/%d/%y"), 
-                                    issue_text )
-        #Set status bar info
-        state_machine.status_bar_show_sec('New info added', '#4fe7a1', 3)
+                # The task is new
+                if(report.issue_task_get_idx(issue, task) == None):
+                    # New task clear the timer
+                    task_timer.time = task_timer.time.replace(0,0,0)
+
+                # The task is not new, continue with logged time
+                else:
+                    task_timer.time = report.report_get_task_time(issue, task)
+                    # Update the task
+                    report.report_update_task(  issue_text, task_text, task_timer.time.strftime("%H:%M:%S"))
+
+            # Update UI
+            self.update_issue_text_ui(issue_text, issue_timer)
+            self.update_task_text_ui(task_text, task_timer)
+            self.set_project_text_ui(project_text)
+
+            #Set status bar info
+            state_machine.status_bar_show_sec('New info added', '#4fe7a1', 3)
+
+        # Error during input validation
+        else:
+            print(f'YES validation error {validation_errors}')
+            self.editDialogValidation.emit("True")
 
     def set_day_timer_text_ui(self,s):
         self.dayTimerSetText.emit(s)
@@ -445,10 +464,8 @@ class Backend(QObject):
         #Update issue information
         report.report_set_issue(issue_text, issue_text, project_text, issue_timer.time)
         #Update task information
-        report.report_update_task(  task_timer.time.strftime("%H:%M:%S"), 
-                                    task_text, 
-                                    datetime.datetime.now().strftime("%m/%d/%y"), 
-                                    issue_text )
+        report.report_update_task(  issue_text, task_text, task_timer.time.strftime("%H:%M:%S"))
+
         
         # Update day time
         report.today_update_time(day_timer.time.strftime("%H:%M:%S"))

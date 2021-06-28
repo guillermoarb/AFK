@@ -69,12 +69,19 @@ Window {
         }
 
         function onEditDialogValidation(error){
-            if (error === "None"){
+            if (error === "False"){
                 // Close the edit dialog
                 edit_container.visible = false
                 edit_container.focus = false
                 // Open / focus main app container
                 app_container.focus = true
+            }
+            else{
+                edit_container.visible = true
+                issue_tl.focus = true
+                window.height = 470
+                //window.setY(470)
+                backend.edit_dialog_opened() 
             }
         }
 
@@ -386,7 +393,7 @@ Window {
         anchors.top: app_container.bottom
         anchors.topMargin: 10
         anchors.leftMargin: 0
-        visible: true
+        visible: false
 
         Keys.onPressed: {
             // Close edit dialog with ESC key without a update request
@@ -402,7 +409,7 @@ Window {
             // Perform a reques to update the time traking information
             if((event.modifiers & Qt.ControlModifier) && (event.key === Qt.Key_U)){
                 window.height = 100
-                app_container.focus = true
+                //app_container.focus = true
                 // Send info to backend for validation, backend will close the dialog if the update is right
                 backend.edit_update_ma_clicked(qsTr(issue_tl.text), qsTr(project_tl.text), qsTr(task_tl.text))
             }
@@ -505,7 +512,6 @@ Window {
                         issue_cb_rt.visible = false
                         issue_tl_arrow_down_image.visible = true
                         issue_tl_arrow_up_image.visible = false
-                        edit_container.focus = true
                         edit_container.focus = true
                     }
 
@@ -739,7 +745,7 @@ Window {
                     window.height = 100
                     // Send info to backend for validation, backend will close the dialog if the update is right
                     backend.edit_update_ma_clicked(qsTr(issue_tl.text), qsTr(project_tl.text), qsTr(task_tl.text))
-                    app_container.focus = true
+                    //app_container.focus = true
 
                 }
             }

@@ -1,0 +1,18 @@
+{
+    "days": [
+        {
+            "name": "None",
+            "time": "00:00:00"
+        },
+        {
+            "date": "06/27/21",
+            "name": "Sunday",
+            "time": "00:00:35"
+        }
+    ],
+    "issues": [],
+    "week_number": 25,
+    "worked_time": "00:00:00",
+    "worked_time_hr": 0,
+    "worked_time_min": 0
+}

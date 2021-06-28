@@ -89,12 +89,14 @@ class Report:
         return today_time
 
 
-    def report_add_issue(self, name, project, time):
+    def report_add_issue(self, name, project, time, start_time):
         issue = {}
         issue["name"] = name
         issue["project"] = project
         issue["tasks"] = []
         issue["time"] = time
+        issue["start_time"] = start_time
+
         #Get the issue location
         issue_ind = self.issue_get_idx(name)
         #Look if the issue doesn't exist
@@ -130,23 +132,35 @@ class Report:
             else: #Update the item
                 self.report_dic["issues"][activity_ind]["tasks"][item_idx] = item
 
-    def report_update_task(self, time, log, date, activity_name):
-        item = {}
-        item["time"] = time
-        item["log"] = log
-        item["date"] = date
-
-        activity_ind = self.issue_get_idx(activity_name)
-
+    def report_update_task(self,issue, name, time):
+        
+        activity_ind = self.issue_get_idx(issue)
         #If activity exist
         if activity_ind != None:
-
             item_idx = self.task_get_idx(activity_ind, log)
-            #If item don't exist add the item
-            if item_idx == None:
-                self.report_dic["issues"][activity_ind]["tasks"].append(item)
-            else: #Update the item
-                self.report_dic["issues"][activity_ind]["tasks"][item_idx] = item
+            #If item exist add the item
+            if item_idx != None:
+                self.report_dic["issues"][activity_ind]["tasks"][item_idx]["time"] = time
+                self.report_dic["issues"][activity_ind]["tasks"][item_idx]["name"] = name
+                self.report_dic["issues"][activity_ind]["tasks"][item_idx]["last_update"] = self.today.strftime('%m/%d/%y %H:%M:%S')
+
+
+
+    def add_task(self, issue, name):
+        task = {}
+        task['time'] = '00:00:00'
+        task['name'] = name
+        task['last_update'] = '00:00:00'
+        task['creation_date'] = self.today.strftime('%m/%d/%y %H:%M:%S')
+        # Get the index for the issue
+        issue_idx = self.issue_get_idx(issue)
+        # Check if the task is not already logged
+        if(issue_idx != None):
+            task_idx = self.task_get_idx(issue_idx, name)
+            # If the task haven't been logged, the add the task to the issue
+            if task_idx == None:
+                self.report_dic["issues"][issue_idx]["tasks"].append(task)
+
 
     def report_set_issue(self, name, new_name, project, timer):
         
@@ -226,7 +240,7 @@ class Report:
         incidence = False
 
         for item in self.report_dic["issues"][activity_idx]["tasks"]:
-            if item["log"] == item_log:
+            if item["name"] == item_log:
                 incidence = True
                 break
 
