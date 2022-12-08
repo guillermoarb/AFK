@@ -13,9 +13,10 @@ from pathlib import Path
 import sys
 from typing import List
 
-from PySide2.QtGui import QGuiApplication, QIcon
-from PySide2.QtQml import QQmlApplicationEngine
-from PySide2.QtCore import QTimer, QObject, QUrl, Slot, Signal
+from PyQt5.QtGui import*
+from PyQt5.QtQml import*
+from PyQt5.QtCore import*
+
 
 from  json_report import Report
 
@@ -162,7 +163,7 @@ class Timer():
 
 class Console(QObject):
 
-    @Slot(str)
+    @pyqtSlot(str)
     def outputInt(self, s):
         print(s)
 
@@ -177,36 +178,36 @@ class Backend(QObject):
     global task_timer 
     global issue_timer 
 
-    dayTimerSetText = Signal(str)
-    projectSetText = Signal(str)
-    issueSetText = Signal(str)
-    taskSetText = Signal(str)
-    statusSetText = Signal(str)
-    statusSetColor = Signal(str)
-    issueComboBoxAddItem = Signal(str)
-    taskComboBoxAddItem = Signal(str)
-    projectComboBoxAddItem = Signal(str)
-    taskComboBoxClear = Signal()
-    projectComboBoxClear = Signal()
-    issueComboBoxClear = Signal()
-    editDialogValidation = Signal(str)
+    dayTimerSetText = pyqtSignal(str)
+    projectSetText = pyqtSignal(str)
+    issueSetText = pyqtSignal(str)
+    taskSetText = pyqtSignal(str)
+    statusSetText = pyqtSignal(str)
+    statusSetColor = pyqtSignal(str)
+    issueComboBoxAddItem = pyqtSignal(str)
+    taskComboBoxAddItem = pyqtSignal(str)
+    projectComboBoxAddItem = pyqtSignal(str)
+    taskComboBoxClear = pyqtSignal()
+    projectComboBoxClear = pyqtSignal()
+    issueComboBoxClear = pyqtSignal()
+    editDialogValidation = pyqtSignal(str)
 
     day_timer_pause = False
     exit_app_request = None
 
 
     #Menu mouse area click event
-    @Slot()
+    @pyqtSlot()
     def menu_ma_clicked(self):
         print("Menu Clicked")
 
     # Task mouse area click event
-    @Slot(str)
+    @pyqtSlot(str)
     def task_ma_clicked(self, text):
         print(f"Task clicked, contains: {text}")
 
     # Day timer mouse area click event
-    @Slot(str)
+    @pyqtSlot(str)
     def day_timer_ma_clicked(self, text):
         print(f"Day timer clicked, contains: {text}")
         # Pause toggle
@@ -228,17 +229,17 @@ class Backend(QObject):
 
 
     # Issue mouse area click event
-    @Slot(str)
+    @pyqtSlot(str)
     def issue_ma_clicked(self, text):
         print(f"Issue clicked, contains: {text}")
 
     # Project mouse area click event
-    @Slot(str)
+    @pyqtSlot(str)
     def project_ma_clicked(self, text):
         print(f"Project mouse area clicked {text}")
 
     # Edit_dialog opened
-    @Slot()
+    @pyqtSlot()
     def edit_dialog_opened(self):
         print(f"Edit dialog opened")
         #Populate all issues in combo box
@@ -249,17 +250,17 @@ class Backend(QObject):
         self.project_combobox_clear()
         self.project_combobox_update()
 
-    @Slot()
+    @pyqtSlot()
     def edit_dialog_on_return_key(self):
         pass
 
     # Request from UI to exit the application
-    @Slot()
+    @pyqtSlot()
     def quit_app(self):
         self.exit_app_request = True
 
     # Request from UI to update/save the json report
-    @Slot()
+    @pyqtSlot()
     def save_all(self):
         self.update_report()
 
@@ -311,41 +312,41 @@ class Backend(QObject):
         self.taskComboBoxClear.emit()
 
     # Edit_dialog close button event
-    @Slot()
+    @pyqtSlot()
     def edit_close_ma_clicked(self):
         print("Edit close clicked")
     
-    @Slot(str, int)
+    @pyqtSlot(str, int)
     def issue_ma_option_clicked(self, text, idx):
         print(f"Issue combo box option selected: {text}, with index {idx}")
         #Load list model items from new issue selected
         self.update_task_combobox(text)
 
-    @Slot(str, int)
+    @pyqtSlot(str, int)
     def project_ma_option_clicked(self, text, idx):
         print(f"Project combo box option selected: {text}, with index {idx}")
         
 
-    @Slot(str, int)
+    @pyqtSlot(str, int)
     def task_ma_option_clicked(self, text, idx):
         print(f"Task combo box option selected: {text}, with index {idx}")
 
-    @Slot(str)
+    @pyqtSlot(str)
     def issue_te_editingFinished(self, text):
         print(f"Issue Text Edit finished with {text}")
         self.update_task_combobox(text)
 
-    @Slot(str)
+    @pyqtSlot(str)
     def project_te_editingFinished(self, text):
         print(f"Project Text Edit finished with {text}")
 
-    @Slot(str)
+    @pyqtSlot(str)
     def task_te_editingFinished(self, text):
         print(f"Task Text Edit finished with {text}")
 
     # Edit_dialog update button event
     # TODO this is not working !!!
-    @Slot(str, str, str)
+    @pyqtSlot(str, str, str)
     def edit_update_ma_clicked(self, issue, project, task):
         global project_text
         global issue_text
@@ -462,12 +463,12 @@ class Backend(QObject):
 
 
     # Open the json report for this week
-    @Slot()
+    @pyqtSlot()
     def open_json_report_file(self):
         report.json_report_open()
 
     # Generate a markdown report with the actual week information
-    @Slot()
+    @pyqtSlot()
     def generate_markdown_week_report(self):
         report.generate_report()
 
